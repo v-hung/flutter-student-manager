@@ -13,14 +13,14 @@ class AppTheme {
 
 final appThemeProvider = Provider<AppTheme>((ref) {
   return AppTheme(themeData: ThemeData(
-    appBarTheme: const AppBarTheme(
+    appBarTheme: AppBarTheme(
       color: Colors.transparent,
       elevation: 0,
       // foregroundColor: primary,
       titleTextStyle: TextStyle(fontSize: 18, 
-        // color: primary, 
+        color: Colors.grey[900]!, 
         fontWeight: FontWeight.w600),
-      iconTheme: IconThemeData(
+      iconTheme: const IconThemeData(
         size: 20
       )
     ),
@@ -46,11 +46,11 @@ final appThemeProvider = Provider<AppTheme>((ref) {
         // foregroundColor: primary
       )
     ),
-    textTheme: const TextTheme(
-      // bodyMedium: TextStyle(color: primary),
+    textTheme: TextTheme(
+      bodyMedium: TextStyle(color: Colors.grey[900]!),
     ),
-    iconTheme: const IconThemeData(
-      // color: primary
+    iconTheme: IconThemeData(
+      color: Colors.grey[900]
     ),
     inputDecorationTheme: const InputDecorationTheme(
       // labelStyle: TextStyle(color: primary),

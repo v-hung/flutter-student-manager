@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_student_manager/components/bottom_navbar.dart';
+import 'package:flutter_student_manager/components/study/main_info.dart';
+import 'package:flutter_student_manager/components/study/study_user_info.dart';
 import 'package:flutter_student_manager/controllers/AuthController.dart';
 
 class StudyPage extends ConsumerStatefulWidget {
@@ -12,7 +14,20 @@ class StudyPage extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _StudyPageState();
 }
 
-class _StudyPageState extends ConsumerState<StudyPage> {
+class _StudyPageState extends ConsumerState<StudyPage> with TickerProviderStateMixin {
+  late TabController tabController;
+
+  @override
+  void initState() {
+    tabController = TabController(length: 3, vsync: this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    tabController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,66 +51,60 @@ class _StudyPageState extends ConsumerState<StudyPage> {
       ),
       body: Column(
         children: [
-          Consumer(
-            builder: (context, ref, child) {
-              final auth = ref.watch(authControllerProvider);
-              return Container(
-                // height: 70,
-                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  // borderRadius: BorderRadius.circular(10)
+          const StudyUserInfoWidget(),
+
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            padding: const EdgeInsets.all(3),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              color: Colors.grey[400]!.withOpacity(.6)
+              // color: Color.fromARGB(255, 202, 202, 202)
+            ),
+            child: TabBar(
+              controller: tabController,
+              indicator: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    spreadRadius: 1,
+                    blurRadius: 5,
+                    offset: Offset(0, 1), // changes position of shadow
+                  ),
+                ]
+              ),
+              labelColor: Colors.blue[700],
+              unselectedLabelColor: Colors.black,
+              
+              tabs: const [
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 5),
+                  child: Text("Học kỳ I", style: TextStyle(fontWeight: FontWeight.w600),),
                 ),
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 55,
-                      height: 55,
-                      child: CachedNetworkImage(
-                        imageUrl: auth.user?.getImage() ?? "",
-                        imageBuilder: (context, imageProvider) => Container(
-                          width: double.infinity,
-                          height: double.infinity,
-                          decoration: BoxDecoration(
-                            color: Colors.blue,
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              image: imageProvider, fit: BoxFit.cover),
-                          ),
-                        ),
-                        placeholder: (context, url) => const CircularProgressIndicator(),
-                        errorWidget: (context, url, error) => const Icon(Icons.error),
-                      ),
-                    ),
-                    const SizedBox(width: 15,),
-                    Expanded(
-                      child: Container(
-                        constraints: const BoxConstraints(minHeight: 55),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(auth.user?.name ?? "...", style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500
-                            ),),
-                            const SizedBox(height: 5,),
-                            Text("Trường THPT Thái Nguyên | Lớp 11A3", style: const TextStyle(
-                              // color: Colors.grey[700]!,
-                              // // fontSize: 18,
-                              // fontWeight: FontWeight.w500
-                            ),),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      child: Icon(CupertinoIcons.right_chevron, color: Colors.grey[600],)
-                    )
-                  ],
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 5),
+                  child: Text("Học kỳ II", style: TextStyle(fontWeight: FontWeight.w600),),
                 ),
-              );
-            }
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 5),
+                  child: Text("Cả năm", style: TextStyle(fontWeight: FontWeight.w600),),
+                ),
+              ],
+            ),
+          ),
+          
+          Expanded(
+            child: TabBarView(
+              physics: const NeverScrollableScrollPhysics(),
+              controller: tabController,
+              children: const [
+                const StudyMainInfo(),
+                Center(child: Text("Sử dụng")),
+                Center(child: Text("Còn trống")),
+              ],
+            ),
           ),
         ],
       ),

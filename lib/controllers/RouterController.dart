@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_student_manager/pages/YouArePage.dart';
+import 'package:flutter_student_manager/pages/home/notifications/NotificationsPage.dart';
 import 'package:flutter_student_manager/pages/settings/SettingsPage.dart';
 import 'package:flutter_student_manager/pages/study/StudyPage.dart';
 import 'package:go_router/go_router.dart';
@@ -65,7 +66,14 @@ class RouterNotifier extends ChangeNotifier {
             context: context, 
             state: state, 
             child: const HomePage(),
-          )
+          ),
+          routes: [
+             GoRoute(
+              name: "notifications",
+              path: "notifications",
+              builder: (context, state) => const NotificationsPage(),
+            ),
+          ]
         ),
         GoRoute(
           name: "study",

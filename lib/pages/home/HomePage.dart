@@ -106,9 +106,10 @@ class _HomePageState extends ConsumerState<HomePage> with TickerProviderStateMix
                               ),
                             ),
                           ),
-                          IconButton(onPressed: () {
-
-                          }, icon: Icon(CupertinoIcons.bell_fill), color: Colors.white,)
+                          IconButton(
+                            onPressed: () => context.go('/notifications'), 
+                            icon: const Icon(CupertinoIcons.bell_fill), color: Colors.white,
+                          )
                         ],
                       ),
                     );
@@ -119,7 +120,7 @@ class _HomePageState extends ConsumerState<HomePage> with TickerProviderStateMix
                 const HomeListIcon(),
 
                 const SizedBox(height: 20,),
-                const HomeListNotification()
+                const Expanded(child: HomeListNotification())
               ],
             ),
           ),
