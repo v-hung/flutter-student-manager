@@ -1,17 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_student_manager/components/bottom_navbar.dart';
+import 'package:flutter_student_manager/components/bottom_navbar_student.dart';
 import 'package:go_router/go_router.dart';
 
-class NotificationsPage extends ConsumerStatefulWidget {
-  const NotificationsPage({super.key});
+class HomePage extends ConsumerStatefulWidget {
+  const HomePage({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _NotificationsPageState();
 }
 
-class _NotificationsPageState extends ConsumerState<NotificationsPage> {
+class _NotificationsPageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +29,10 @@ class _NotificationsPageState extends ConsumerState<NotificationsPage> {
         title: const Text("Bản tin"),
         leading: IconButton(
           onPressed: () => context.go('/'),
-          icon: Icon(CupertinoIcons.back),
+          icon: const Icon(CupertinoIcons.back),
         ),
       ),
-      body: Text("Notifications")
+      body: const Text("Home")
     );
   }
 }

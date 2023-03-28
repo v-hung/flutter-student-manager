@@ -84,7 +84,188 @@ class _StudyMainInfoState extends ConsumerState<StudyMainInfo> {
                   )
                 ],
               ),
-            )
+            ),
+
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5)
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.only(bottom: 10),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(color: Colors.grey[300]!)
+                      )
+                    ),
+                    child: const Text("1. Môn ngữ Văn", style: TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.w500
+                    ),),
+                  ),
+                  const SizedBox(height: 5,),
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    margin: const EdgeInsets.only(left: 5),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(color: Colors.grey[300]!)
+                      )
+                    ),
+                    child: Row(children: [
+                      Container(
+                        width: 10, height: 10,
+                        decoration: BoxDecoration(
+                          color: Colors.cyan[300],
+                          borderRadius: BorderRadius.circular(2)
+                        ),
+                      ),
+                      const SizedBox(width: 10,),
+                      Expanded(
+                        child: Text("Miệng: ", style: TextStyle(
+                          color: Colors.grey[800]!, fontWeight: FontWeight.w500
+                        ),),
+                      ),
+                      const SizedBox(width: 10,),
+                      const Text("10", style: TextStyle(
+                        color: Colors.blue, fontWeight: FontWeight.w500,
+                        fontSize: 16
+                      ),),
+                      const SizedBox(width: 10,),
+                      const Text("9", style: TextStyle(
+                        color: Colors.blue, fontWeight: FontWeight.w500,
+                        fontSize: 16
+                      ),)
+                    ],),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    margin: const EdgeInsets.only(left: 5),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(color: Colors.grey[300]!)
+                      )
+                    ),
+                    child: Row(children: [
+                      Container(
+                        width: 10, height: 10,
+                        decoration: BoxDecoration(
+                          color: Colors.pink[300],
+                          borderRadius: BorderRadius.circular(2)
+                        ),
+                      ),
+                      const SizedBox(width: 10,),
+                      Expanded(
+                        child: Text("15 phút: ", style: TextStyle(
+                          color: Colors.grey[800]!, fontWeight: FontWeight.w500
+                        ),),
+                      ),
+                      const SizedBox(width: 10,),
+                      const Text("8.0", style: TextStyle(
+                        color: Colors.blue, fontWeight: FontWeight.w500,
+                        fontSize: 16
+                      ),),
+                      const SizedBox(width: 10,),
+                      const Text("10", style: TextStyle(
+                        color: Colors.blue, fontWeight: FontWeight.w500,
+                        fontSize: 16
+                      ),)
+                    ],),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    margin: const EdgeInsets.only(left: 5),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(color: Colors.grey[300]!)
+                      )
+                    ),
+                    child: Row(children: [
+                      Container(
+                        width: 10, height: 10,
+                        decoration: BoxDecoration(
+                          color: Colors.purple[300],
+                          borderRadius: BorderRadius.circular(2)
+                        ),
+                      ),
+                      const SizedBox(width: 10,),
+                      Expanded(
+                        child: Text("1 tiết: ", style: TextStyle(
+                          color: Colors.grey[800]!, fontWeight: FontWeight.w500
+                        ),),
+                      ),
+                      const SizedBox(width: 10,),
+                      const Text("9.8", style: TextStyle(
+                        color: Colors.blue, fontWeight: FontWeight.w500,
+                        fontSize: 16
+                      ),),
+                      const SizedBox(width: 10,),
+                      const Text("8.0", style: TextStyle(
+                        color: Colors.blue, fontWeight: FontWeight.w500,
+                        fontSize: 16
+                      ),)
+                    ],),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    margin: const EdgeInsets.only(left: 5),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(color: Colors.grey[300]!)
+                      )
+                    ),
+                    child: Row(children: [
+                      Container(
+                        width: 10, height: 10,
+                        decoration: BoxDecoration(
+                          color: Colors.orange[300],
+                          borderRadius: BorderRadius.circular(2)
+                        ),
+                      ),
+                      const SizedBox(width: 10,),
+                      Expanded(
+                        child: Text("Học kỳ: ", style: TextStyle(
+                          color: Colors.grey[800]!, fontWeight: FontWeight.w500
+                        ),),
+                      ),
+                      const SizedBox(width: 10,),
+                      const Text("9.8", style: TextStyle(
+                        color: Colors.blue, fontWeight: FontWeight.w500,
+                        fontSize: 16
+                      ),)
+                    ],),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    margin: const EdgeInsets.only(left: 5),
+                    child: Row(children: [
+                      Container(
+                        width: 10, height: 10,
+                        decoration: BoxDecoration(
+                          color: Colors.green[300],
+                          borderRadius: BorderRadius.circular(2)
+                        ),
+                      ),
+                      const SizedBox(width: 10,),
+                      Expanded(
+                        child: Text("TBM: ", style: TextStyle(
+                          color: Colors.grey[800]!, fontWeight: FontWeight.w500
+                        ),),
+                      ),
+                      const SizedBox(width: 10,),
+                      const Text("9.3", style: TextStyle(
+                        color: Colors.blue, fontWeight: FontWeight.w500,
+                        fontSize: 16
+                      ),),
+                    ],),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),

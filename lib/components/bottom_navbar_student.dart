@@ -5,35 +5,35 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_student_manager/controllers/RouterController.dart';
 import 'package:flutter_student_manager/utils/color.dart';
 
-class BottomNavBar extends ConsumerStatefulWidget {
-  const BottomNavBar({super.key});
+class BottomNavBarStudent extends ConsumerStatefulWidget {
+  const BottomNavBarStudent({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _BottomNavBarState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _BottomNavBarStudentState();
 }
 
-class _BottomNavBarState extends ConsumerState<BottomNavBar>{
+class _BottomNavBarStudentState extends ConsumerState<BottomNavBarStudent>{
   static const menu = <Map>[
     {
       "icon": CupertinoIcons.home,
       "label": "Trang chủ",
-      "path": "/",
+      "path": "/student",
     },
     {
       "icon": CupertinoIcons.book_solid,
       "label": "Học tập",
-      "path": "/study",
+      "path": "/student/study",
     },
     {
       "icon": CupertinoIcons.settings,
       "label": "Khác",
-      "path": "/settings",
+      "path": "/student/settings",
     }
   ];
 
   @override
   Widget build(BuildContext context) {
-    final location = ref.watch(routerProvider).location;
+    final location = "/${ref.watch(routerProvider).location.split("/")[1]}";
     final currentPageIndex = menu.indexWhere((v) => v['path'] == location);
 
     return Container(

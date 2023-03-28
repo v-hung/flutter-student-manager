@@ -51,12 +51,15 @@ class AuthRepository {
     try {
       final prefs = await ref.read(sharedPrefsProvider.future);
       String? token = await prefs.getString('token');
+      String? type = await prefs.getString('type');
 
       if (token == null) return null;
 
       var url = Uri.https(BASE_URL, '/api/collections/users/auth-refresh');
       var response = await http.post(url, headers: {
         'authorization': token,
+      }, body: {
+        'type': type
       });
 
       if (response.statusCode == 200) {
@@ -78,7 +81,7 @@ class AuthRepository {
     try {
       var url = Uri.https(BASE_URL, '/api/collections/users/auth-with-password');
       var response = await http.post(url, body: {
-        "identity": identity,
+        "username": identity,
         "password": password
       });
 
@@ -99,6 +102,14 @@ class AuthRepository {
     } catch (e) {
       return null;
     }
+  }
+
+  Future<void> logout() async {
+    try {
+      final prefs = await ref.read(sharedPrefsProvider.future);
+      await prefs.setString('token', "");
+
+    } catch (e) {}
   }
 }
 

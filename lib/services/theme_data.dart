@@ -24,7 +24,7 @@ final appThemeProvider = Provider<AppTheme>((ref) {
         size: 20
       )
     ),
-    // scaffoldBackgroundColor: primary4,
+    // scaffoldBackgroundColor: Colors.grey[200],
     // primarySwatch: primary,
     colorScheme: ColorScheme.fromSwatch().copyWith(
       // primary: primary2,

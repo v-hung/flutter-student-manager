@@ -8,12 +8,12 @@ enum AuthState {
 
 enum AuthType {
   teacher,
-  parents
+  student
 }
 
 class AuthModel {
   final AuthState authState;
-  final UserModel? user;
+  final dynamic user;
   final String? token;
   final AuthType? type;
   

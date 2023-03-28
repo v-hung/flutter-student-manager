@@ -8,8 +8,8 @@ import 'package:flutter_student_manager/controllers/RouterController.dart';
 import 'package:flutter_student_manager/utils/color.dart';
 
 void main() async {
-  initializeDateFormatting();
-  runApp(const ProviderScope(child: MyApp()));
+  initializeDateFormatting()
+    .then((value) => runApp(const ProviderScope(child: MyApp())));
 }
 
 class MyApp extends ConsumerWidget {

@@ -3,23 +3,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_student_manager/components/home/appbar.dart';
+import 'package:flutter_student_manager/components/home/appbar_student.dart';
 import 'package:flutter_student_manager/components/home/list_icon.dart';
 import 'package:flutter_student_manager/components/home/list_notification.dart';
 import 'package:flutter_student_manager/controllers/AuthController.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_student_manager/components/bottom_navbar.dart';
+import 'package:flutter_student_manager/components/bottom_navbar_student.dart';
 import 'package:flutter_student_manager/components/logo.dart';
 
-class HomePage extends ConsumerStatefulWidget {
-  const HomePage({super.key});
+class HomeStudentPage extends ConsumerStatefulWidget {
+  const HomeStudentPage({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _HomePageState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _HomeStudentPageState();
 }
 
-class _HomePageState extends ConsumerState<HomePage> with TickerProviderStateMixin {
+class _HomeStudentPageState extends ConsumerState<HomeStudentPage> with TickerProviderStateMixin {
   late TabController tabController;
 
   @override
@@ -124,7 +124,7 @@ class _HomePageState extends ConsumerState<HomePage> with TickerProviderStateMix
               ],
             ),
           ),
-          bottomNavigationBar: const BottomNavBar(),
+          bottomNavigationBar: const BottomNavBarStudent(),
         ),
       ],
     );

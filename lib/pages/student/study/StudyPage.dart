@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_student_manager/components/bottom_navbar.dart';
+import 'package:flutter_student_manager/components/bottom_navbar_student.dart';
 import 'package:flutter_student_manager/components/study/main_info.dart';
 import 'package:flutter_student_manager/components/study/study_user_info.dart';
 import 'package:flutter_student_manager/controllers/AuthController.dart';
@@ -58,7 +58,7 @@ class _StudyPageState extends ConsumerState<StudyPage> with TickerProviderStateM
             padding: const EdgeInsets.all(3),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
-              color: Colors.grey[400]!.withOpacity(.6)
+              color: Colors.black12
               // color: Color.fromARGB(255, 202, 202, 202)
             ),
             child: TabBar(
@@ -108,7 +108,7 @@ class _StudyPageState extends ConsumerState<StudyPage> with TickerProviderStateM
           ),
         ],
       ),
-      bottomNavigationBar: const BottomNavBar(),
+      bottomNavigationBar: const BottomNavBarStudent(),
     );
   }
 }

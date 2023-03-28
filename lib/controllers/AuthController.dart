@@ -19,7 +19,7 @@ class AuthNotifier extends StateNotifier<AuthModel> {
     var data = await ref.read(authRepositoryProvider).getCurrentUserData();
 
     if (data != null) {
-      state = AuthModel(user: data.user, token: data.token, authState: AuthState.login, type: AuthType.parents);
+      state = AuthModel(user: data.user, token: data.token, authState: AuthState.login, type: AuthType.student);
     }
     else {
       state = AuthModel(user: null, token: null, authState: AuthState.notLogin, type: null);
@@ -30,7 +30,7 @@ class AuthNotifier extends StateNotifier<AuthModel> {
     var data = await ref.read(authRepositoryProvider).signInWithPassword(identity, password);
 
     if (data != null) {
-      state = AuthModel(user: data.user, token: data.token, authState: AuthState.login, type: AuthType.parents);
+      state = AuthModel(user: data.user, token: data.token, authState: AuthState.login, type: AuthType.student);
       if (context.mounted) {
         context.go('/');
       }
@@ -42,8 +42,9 @@ class AuthNotifier extends StateNotifier<AuthModel> {
     }
   }
 
-  void logout() async {
-    // ref.read(authRepositoryProvider).setUserState(isOnline);
+  Future<void> logout() async {
+    ref.read(authRepositoryProvider).logout();
+    state = AuthModel(user: null, token: null, authState: AuthState.notLogin, type: null);
   }
 }
 

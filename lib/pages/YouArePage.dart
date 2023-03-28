@@ -97,7 +97,7 @@ class YouArePageState extends ConsumerState<YouArePage> {
                 ),
                 const SizedBox(height: 10,),
                 InkWell(
-                  onTap: () => context.go('/login?type=parents'),
+                  onTap: () => context.go('/login?type=student'),
                   child: Container(
                     height: 90,
                     padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),

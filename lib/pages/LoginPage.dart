@@ -75,7 +75,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           // width: 300,
                           height: 200,
                           alignment: Alignment.center,
-                          child: widget.type == "parents" 
+                          child: widget.type == "student" 
                             ? Image.asset("assets/img/parents_bg.png",)
                             : Image.asset("assets/img/teacher_bg.png",)
                         ),
