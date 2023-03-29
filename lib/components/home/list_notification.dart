@@ -19,6 +19,7 @@ class _HomeListNotificationState extends ConsumerState<HomeListNotification> {
         // final auth = ref.watch(authControllerProvider);
         return Column(
           children: [
+            const Spacer(),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               decoration: BoxDecoration(
@@ -38,7 +39,7 @@ class _HomeListNotificationState extends ConsumerState<HomeListNotification> {
                   child: const Icon(CupertinoIcons.news_solid, color: Colors.white, size: 20,)
                 ),
                 const SizedBox(width: 10,),
-                Expanded(child: Text("BẢN TIN MỚI", style: TextStyle(
+                Expanded(child: Text("LỊCH SỬ ĐI HỌC", style: TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: 16,
                   color: Colors.grey[800]

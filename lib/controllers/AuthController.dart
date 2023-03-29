@@ -26,13 +26,13 @@ class AuthNotifier extends StateNotifier<AuthModel> {
     }
   }
 
-  Future<void> signInWithPassword(BuildContext context, String identity, String password) async {
-    var data = await ref.read(authRepositoryProvider).signInWithPassword(identity, password);
+  Future<void> signInWithPassword(BuildContext context, String identity, String password, String type) async {
+    var data = await ref.read(authRepositoryProvider).signInWithPassword(identity, password, type);
 
     if (data != null) {
       state = AuthModel(user: data.user, token: data.token, authState: AuthState.login, type: AuthType.student);
       if (context.mounted) {
-        context.go('/');
+        context.go("/$type/home");
       }
     }
     else {

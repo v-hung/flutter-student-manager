@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_student_manager/models/ClassroomModel.dart';
+import 'package:flutter_student_manager/pages/ErrorPage.dart';
 import 'package:flutter_student_manager/pages/HomePage.dart';
 import 'package:flutter_student_manager/pages/YouArePage.dart';
 import 'package:flutter_student_manager/pages/student/home/HomeStudentPage.dart';
+import 'package:flutter_student_manager/pages/student/home/breakschool/BreakSchool.dart';
 import 'package:flutter_student_manager/pages/student/home/calendar/CalendarPage.dart';
+import 'package:flutter_student_manager/pages/student/home/classroom/ClassroomPage.dart';
 import 'package:flutter_student_manager/pages/student/home/notifications/NotificationsPage.dart';
+import 'package:flutter_student_manager/pages/student/home/tuition/TuitionPage.dart';
 import 'package:flutter_student_manager/pages/student/settings/SettingsPage.dart';
 import 'package:flutter_student_manager/pages/student/study/StudyPage.dart';
 import 'package:flutter_student_manager/pages/student/study/year/StudyYearPage.dart';
@@ -37,10 +42,10 @@ class RouterNotifier extends ChangeNotifier {
 
     if (areWeLoginIn >= 0 || state.subloc == "/loading") {
       if (auth.type == AuthType.student) {
-        return '/student';
+        return '/student/home';
       }
       else {
-        return '/teacher';
+        return '/teacher/home';
       }
 
     }
@@ -69,16 +74,16 @@ class RouterNotifier extends ChangeNotifier {
     GoRoute(
       name: "student",
       path: "/student",
-      // builder: (context, state) => const HomePage(),
-      pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
-        context: context, 
-        state: state, 
-        child: const HomePage(),
-      ),
+      builder: (context, state) => const HomePage(),
+      // pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
+      //   context: context, 
+      //   state: state, 
+      //   child: const HomePage(),
+      // ),
       routes: [
         GoRoute(
           name: "home-student",
-          path: "",
+          path: "home",
           builder: (context, state) => const HomeStudentPage(),
           routes: [
             GoRoute(
@@ -87,9 +92,24 @@ class RouterNotifier extends ChangeNotifier {
               builder: (context, state) => const NotificationsPage(),
             ),
             GoRoute(
+              name: "classroom",
+              path: "classroom",
+              builder: (context, state) => const ClassroomPage(),
+            ),
+            GoRoute(
               name: "calendar",
               path: "calendar",
               builder: (context, state) => const CalendarPage(),
+            ),
+            GoRoute(
+              name: "break-school",
+              path: "break-school",
+              builder: (context, state) => const BreakSchoolPage(),
+            ),
+            GoRoute(
+              name: "tuition",
+              path: "tuition",
+              builder: (context, state) => const TuitionPage(),
             ),
           ]
         ),
@@ -111,15 +131,15 @@ class RouterNotifier extends ChangeNotifier {
           ]
         ),
         GoRoute(
-        name: "settings",
-        path: "/settings",
-        // builder: (context, state) => const HomePage(),
-        pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
-          context: context, 
-          state: state, 
-          child: const SettingsPage(),
-        )
-      ),
+          name: "settings",
+          path: "settings",
+          // builder: (context, state) => const HomePage(),
+          pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
+            context: context, 
+            state: state, 
+            child: const SettingsPage(),
+          )
+        ),
       ]
     ),
   ];
@@ -133,6 +153,7 @@ final routerProvider = Provider<GoRouter>((ref) {
     debugLogDiagnostics: true,
     refreshListenable: router,
     redirect: router._redirectLogin,
-    routes: router._routers
+    routes: router._routers,
+    errorBuilder: ((context, state) => const ErrorPage() ),
   );
 });

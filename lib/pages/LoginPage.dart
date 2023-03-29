@@ -34,7 +34,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     await ref.read(authControllerProvider.notifier).signInWithPassword(
       context,
       emailController.text, 
-      passwordController.text
+      passwordController.text,
+      widget.type
     );
     setState(() {
       loading = false;

@@ -6,7 +6,9 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_student_manager/components/home/appbar_student.dart';
 import 'package:flutter_student_manager/components/home/list_icon.dart';
 import 'package:flutter_student_manager/components/home/list_notification.dart';
+import 'package:flutter_student_manager/components/student/list_icon_student.dart';
 import 'package:flutter_student_manager/controllers/AuthController.dart';
+import 'package:flutter_student_manager/models/StudentModel.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_student_manager/components/bottom_navbar_student.dart';
@@ -55,7 +57,7 @@ class _HomeStudentPageState extends ConsumerState<HomeStudentPage> with TickerPr
               children: [
                 Consumer(
                   builder: (context, ref, child) {
-                    final auth = ref.watch(authControllerProvider);
+                    final user = ref.watch(authControllerProvider).user as StudentModel;
                     return Container(
                       // height: 70,
                       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -69,7 +71,7 @@ class _HomeStudentPageState extends ConsumerState<HomeStudentPage> with TickerPr
                             width: 55,
                             height: 55,
                             child: CachedNetworkImage(
-                              imageUrl: auth.user?.getImage() ?? "",
+                              imageUrl: user.getImage(),
                               imageBuilder: (context, imageProvider) => Container(
                                 width: double.infinity,
                                 height: double.infinity,
@@ -92,7 +94,7 @@ class _HomeStudentPageState extends ConsumerState<HomeStudentPage> with TickerPr
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Text(auth.user?.name ?? "...", style: const TextStyle(
+                                  Text(user.name, style: const TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w500
                                   ),),
@@ -117,7 +119,7 @@ class _HomeStudentPageState extends ConsumerState<HomeStudentPage> with TickerPr
                 ),
 
                 const SizedBox(height: 20,),
-                const HomeListIcon(),
+                const HomeListIconStudent(),
 
                 const SizedBox(height: 20,),
                 const Expanded(child: HomeListNotification())
