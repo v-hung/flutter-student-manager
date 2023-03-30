@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_student_manager/components/bottom_navbar_student.dart';
+import 'package:flutter_student_manager/components/student/bottom_navbar_student.dart';
 import 'package:flutter_student_manager/components/student/classroom/classroom_info.dart';
 import 'package:flutter_student_manager/components/student/classroom/classroom_students.dart';
 import 'package:go_router/go_router.dart';
@@ -43,9 +43,9 @@ class ClassroomPageState extends ConsumerState<ClassroomPage> with TickerProvide
             width: 1
           )
         ),
-        title: const Text("Lớp học"),
+        title: const Text("Thông tin Lớp học"),
         leading: IconButton(
-          onPressed: () => context.go('/student/home'),
+          onPressed: () => context.pop(),
           icon: const Icon(CupertinoIcons.xmark),
         ),
       ),
@@ -85,7 +85,7 @@ class ClassroomPageState extends ConsumerState<ClassroomPage> with TickerProvide
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 5),
-                    child: Text("Học sinh", style: TextStyle(fontWeight: FontWeight.w600),),
+                    child: Text("Giáo viên", style: TextStyle(fontWeight: FontWeight.w600),),
                   ),
                 ],
               ),

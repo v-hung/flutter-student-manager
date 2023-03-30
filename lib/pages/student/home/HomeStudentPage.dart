@@ -11,7 +11,7 @@ import 'package:flutter_student_manager/controllers/AuthController.dart';
 import 'package:flutter_student_manager/models/StudentModel.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_student_manager/components/bottom_navbar_student.dart';
+import 'package:flutter_student_manager/components/student/bottom_navbar_student.dart';
 import 'package:flutter_student_manager/components/logo.dart';
 
 class HomeStudentPage extends ConsumerStatefulWidget {

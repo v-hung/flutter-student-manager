@@ -1,7 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_student_manager/components/bottom_navbar_student.dart';
+import 'package:flutter_student_manager/components/student/bottom_navbar_student.dart';
 import 'package:go_router/go_router.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -37,93 +38,40 @@ class CalendarPageState extends ConsumerState<CalendarPage> {
           )
         ),
         title: const Text("Lịch học"),
-        leading: IconButton(
-          onPressed: () => context.go('/'),
-          icon: const Icon(CupertinoIcons.xmark),
-        ),
-        actions: [
-          Center(
-            child: InkWell(
-              onTap: () {
-                setState(() {
-                  toDay = DateTime.now();
-                });
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(20)
-                ),
-                child: Text("Hôm nay"),
-              ),
-            ),
-          ),
-          const SizedBox(width: 10,)
-        ],
+        // leading: IconButton(
+        //   onPressed: () => context.pop(),
+        //   icon: const Icon(CupertinoIcons.xmark),
+        // ),
       ),
-      body: Column(
-        children: [
-          Container(
-            color: Colors.white,
-            child: TableCalendar(
-              locale: 'vi',
-              rowHeight: 43,
-              // headerVisible : false,
-              headerStyle: const HeaderStyle(
-                formatButtonVisible: false,
-                titleCentered: true,
-                // titleTextStyle: TextStyle(
-                //   color: Colors.blue,
-                //   fontSize: 16,
-                //   fontWeight: FontWeight.w500
-                // ),
-                leftChevronIcon: Icon(CupertinoIcons.back, color: Colors.blue,),
-                rightChevronIcon: Icon(CupertinoIcons.forward, color: Colors.blue,)
-              ),
-              startingDayOfWeek: StartingDayOfWeek.monday,
-              calendarFormat: extend ? CalendarFormat.month : CalendarFormat.week,
-              availableGestures: AvailableGestures.all,
-              selectedDayPredicate: (day) => isSameDay(day, toDay),
-              focusedDay: toDay, 
-              firstDay: DateTime.utc(2010,10,16), 
-              lastDay: DateTime.utc(2030,3,14),
-              calendarStyle: CalendarStyle(
-                selectedDecoration : const BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
-                todayDecoration : BoxDecoration(color: Colors.blue[300], shape: BoxShape.circle)
-              ),
-              onDaySelected: _onDaySelected,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Consumer(
+              builder: (context, ref, child) {
+                return CachedNetworkImage(
+                  imageUrl: "https://vtv1.mediacdn.vn/thumb_w/640/2021/8/17/vnapotalhocsinhhanoituutruongsomnhatvao192021-1629176652268160551271.jpg",
+                  imageBuilder: (context, imageProvider) => Image(
+                    image: imageProvider, 
+                    fit: BoxFit.cover
+                  ),
+                  placeholder: (context, url) => Container(
+                    height: 200,
+                    child: const Center(child: CircularProgressIndicator())
+                  ),
+                  errorWidget: (context, url, error) => const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Center(child: Text("Không thể tải lịch học"),),
+                  ),
+                );
+      
+                return Container(
+                  alignment: Alignment.center,
+                  child: const Text("Chưa cập nhập lịch học"),
+                );
+              },
             ),
-          ),
-          Container(
-            width: double.infinity,
-            color: Colors.white,
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Center(
-              child: InkWell(
-                onTap: () => setState(() {extend = !extend;}),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: extend ? const [
-                    Text("Mở lịch tuần"),
-                    SizedBox(width: 5,),
-                    Icon(CupertinoIcons.chevron_up, size: 12,)
-                  ] : const [
-                    Text("Mở lịch tháng"),
-                    SizedBox(width: 5,),
-                    Icon(CupertinoIcons.chevron_down, size: 12,)
-                  ],
-                ),
-              ),
-            ),
-          ),
-
-          ListView.builder(
-            itemBuilder: (context, index) {
-              return Container();
-            },
-          )
-        ],
+          ],
+        ),
       )
     );
   }

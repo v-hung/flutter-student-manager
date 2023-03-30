@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_student_manager/controllers/AuthController.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class ClassroomInfo extends ConsumerStatefulWidget {
   const ClassroomInfo({super.key});
@@ -12,6 +13,10 @@ class ClassroomInfo extends ConsumerStatefulWidget {
 }
 
 class _ClassroomInfoState extends ConsumerState<ClassroomInfo> {
+  final List<String> images = [
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Ecole_-_Salle_de_Classe_2.jpg/640px-Ecole_-_Salle_de_Classe_2.jpg",
+    "https://upload.wikimedia.org/wikipedia/commons/1/1d/Klassenzimmer1930.jpg",
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -20,295 +25,110 @@ class _ClassroomInfoState extends ConsumerState<ClassroomInfo> {
         physics: const AlwaysScrollableScrollPhysics(),
         child: Column(
           children: [
-            const ItemInfoWidget(
-              color: Colors.red,
-              icon: CupertinoIcons.book_solid,
-              title: "Học lực",
-              value: "Giỏi",
-            ),
-            const ItemInfoWidget(
-              color: Colors.indigo,
-              icon: CupertinoIcons.star_fill,
-              title: "Hạnh kiểm",
-              value: "Tốt",
-            ),
-            const ItemInfoWidget(
-              color: Colors.deepPurple,
-              icon: CupertinoIcons.bookmark_solid,
-              title: "Trung binhg các môn",
-              value: "8.9",
-            ),
-            ItemInfoWidget(
-              color: Colors.cyanAccent[700]!,
-              icon: CupertinoIcons.person_solid,
-              title: "Danh hiệu",
-              value: "HS giỏi",
-            ),
-            ItemInfoWidget(
-              color: Colors.lime[700]!,
-              icon: CupertinoIcons.list_bullet,
-              title: "Xếp hạng",
-              value: "2",
-            ),
-            ItemInfoWidget(
-              color: Colors.pink[700]!,
-              icon: CupertinoIcons.folder_solid,
-              title: "Buổi nghỉ",
-              value: "10",
-            ),
-            ItemInfoWidget(
-              color: Colors.yellow[700]!,
-              icon: Icons.stacked_line_chart_rounded,
-              title: "Thuộc diện",
-              value: "Lên lớp",
-            ),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(5)
+            const SizedBox(height: 10,),
+            CarouselSlider(
+              options: CarouselOptions(
+                // height: 400,
+                aspectRatio: 4/3,
+                viewportFraction: .95,
+                initialPage: 0,
+                enableInfiniteScroll: true,
+                reverse: false,
+                autoPlay: true,
+                autoPlayInterval: const Duration(seconds: 5),
+                autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                autoPlayCurve: Curves.fastOutSlowIn,
+                enlargeCenterPage: true,
+                enlargeFactor: 0.3,
+                // onPageChanged: callbackFunction,
+                scrollDirection: Axis.horizontal,
               ),
-              child: Column(
-                children: [
-                  Row(children: [
-                    Icon(Icons.edit_note_rounded, color: Colors.yellow,),
-                    const SizedBox(width: 5,),
-                    Expanded(child: Text("Nhận xét của giáo viên", style: TextStyle(
-                      color: Colors.grey[800]!, fontWeight: FontWeight.w500
-                    ),)),
-                  ],),
-                  const SizedBox(height: 5,),
-                  Text("Em cố gắng nhiều trong học tập. Cần rèn luyện nhiều hơn mốn Tiếng Anh.",
-                    style: TextStyle(fontWeight: FontWeight.w500),
-                  )
-                ],
-              ),
+              items: images.map((e) {
+                return CachedNetworkImage(
+                  imageUrl: e,
+                  imageBuilder: (context, imageProvider) => Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.grey,
+                      image: DecorationImage(
+                        image: imageProvider, fit: BoxFit.cover),
+                    ),
+                  ),
+                  placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                );
+              }).toList(),
             ),
 
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(5)
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.only(bottom: 10),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(color: Colors.grey[300]!)
-                      )
-                    ),
-                    child: const Text("1. Môn ngữ Văn", style: TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.w500
+            const SizedBox(height: 20,),
+
+            // Expanded(
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text("Lớp 12A2", style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700
                     ),),
-                  ),
-                  const SizedBox(height: 5,),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    margin: const EdgeInsets.only(left: 5),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(color: Colors.grey[300]!)
-                      )
+
+                    const SizedBox(height: 10,),
+
+                    Text("Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque perspiciatis explicabo aliquid ullam ducimus, optio voluptas voluptates ea illo a delectus nostrum labore! Totam, eos ipsum! Tenetur sunt expedita quis!"),
+
+                    const SizedBox(height: 10,),
+
+                    Text("Thông tin liên hệ", style: TextStyle(
+                      fontSize: 15,
+                      // color: Colors.grey[800]!,
+                      fontWeight: FontWeight.w500
+                    ),),
+
+                    const SizedBox(height: 10,),
+
+                    Container(
+                      width: double.infinity,
+                      child: DataTable(
+                        // columnSpacing: 83,
+                        headingRowHeight: 0,
+                        // dataRowHeight: 30,
+                        columns: const <DataColumn>[
+                          DataColumn(label: Text('')),
+                          DataColumn(label: Text('')),
+                        ],
+                        rows: const <DataRow>[
+                          DataRow(
+                            cells: <DataCell>[
+                              DataCell(Text("Email", style: TextStyle(fontWeight: FontWeight.w500),maxLines: 1,)),
+                              DataCell(Text('viet.hung.2898@gmail.com')),
+                            ],
+                          ),
+                          DataRow(
+                            cells: <DataCell>[
+                              DataCell(Text("Địa chỉ", style: TextStyle(fontWeight: FontWeight.w500),maxLines: 1,)),
+                              DataCell(Text('Sớn Tiến - Quyết Thắng - Thái Nguyên')),
+                            ],
+                          ),
+                          DataRow(
+                            cells: <DataCell>[
+                              DataCell(Text("Số điện thoại", style: TextStyle(fontWeight: FontWeight.w500), maxLines: 1,)),
+                              DataCell(Text('0399 633 237')),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                    child: Row(children: [
-                      Container(
-                        width: 10, height: 10,
-                        decoration: BoxDecoration(
-                          color: Colors.cyan[300],
-                          borderRadius: BorderRadius.circular(2)
-                        ),
-                      ),
-                      const SizedBox(width: 10,),
-                      Expanded(
-                        child: Text("Miệng: ", style: TextStyle(
-                          color: Colors.grey[800]!, fontWeight: FontWeight.w500
-                        ),),
-                      ),
-                      const SizedBox(width: 10,),
-                      const Text("10", style: TextStyle(
-                        color: Colors.blue, fontWeight: FontWeight.w500,
-                        fontSize: 16
-                      ),),
-                      const SizedBox(width: 10,),
-                      const Text("9", style: TextStyle(
-                        color: Colors.blue, fontWeight: FontWeight.w500,
-                        fontSize: 16
-                      ),)
-                    ],),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    margin: const EdgeInsets.only(left: 5),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(color: Colors.grey[300]!)
-                      )
-                    ),
-                    child: Row(children: [
-                      Container(
-                        width: 10, height: 10,
-                        decoration: BoxDecoration(
-                          color: Colors.pink[300],
-                          borderRadius: BorderRadius.circular(2)
-                        ),
-                      ),
-                      const SizedBox(width: 10,),
-                      Expanded(
-                        child: Text("15 phút: ", style: TextStyle(
-                          color: Colors.grey[800]!, fontWeight: FontWeight.w500
-                        ),),
-                      ),
-                      const SizedBox(width: 10,),
-                      const Text("8.0", style: TextStyle(
-                        color: Colors.blue, fontWeight: FontWeight.w500,
-                        fontSize: 16
-                      ),),
-                      const SizedBox(width: 10,),
-                      const Text("10", style: TextStyle(
-                        color: Colors.blue, fontWeight: FontWeight.w500,
-                        fontSize: 16
-                      ),)
-                    ],),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    margin: const EdgeInsets.only(left: 5),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(color: Colors.grey[300]!)
-                      )
-                    ),
-                    child: Row(children: [
-                      Container(
-                        width: 10, height: 10,
-                        decoration: BoxDecoration(
-                          color: Colors.purple[300],
-                          borderRadius: BorderRadius.circular(2)
-                        ),
-                      ),
-                      const SizedBox(width: 10,),
-                      Expanded(
-                        child: Text("1 tiết: ", style: TextStyle(
-                          color: Colors.grey[800]!, fontWeight: FontWeight.w500
-                        ),),
-                      ),
-                      const SizedBox(width: 10,),
-                      const Text("9.8", style: TextStyle(
-                        color: Colors.blue, fontWeight: FontWeight.w500,
-                        fontSize: 16
-                      ),),
-                      const SizedBox(width: 10,),
-                      const Text("8.0", style: TextStyle(
-                        color: Colors.blue, fontWeight: FontWeight.w500,
-                        fontSize: 16
-                      ),)
-                    ],),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    margin: const EdgeInsets.only(left: 5),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(color: Colors.grey[300]!)
-                      )
-                    ),
-                    child: Row(children: [
-                      Container(
-                        width: 10, height: 10,
-                        decoration: BoxDecoration(
-                          color: Colors.orange[300],
-                          borderRadius: BorderRadius.circular(2)
-                        ),
-                      ),
-                      const SizedBox(width: 10,),
-                      Expanded(
-                        child: Text("Học kỳ: ", style: TextStyle(
-                          color: Colors.grey[800]!, fontWeight: FontWeight.w500
-                        ),),
-                      ),
-                      const SizedBox(width: 10,),
-                      const Text("9.8", style: TextStyle(
-                        color: Colors.blue, fontWeight: FontWeight.w500,
-                        fontSize: 16
-                      ),)
-                    ],),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    margin: const EdgeInsets.only(left: 5),
-                    child: Row(children: [
-                      Container(
-                        width: 10, height: 10,
-                        decoration: BoxDecoration(
-                          color: Colors.green[300],
-                          borderRadius: BorderRadius.circular(2)
-                        ),
-                      ),
-                      const SizedBox(width: 10,),
-                      Expanded(
-                        child: Text("TBM: ", style: TextStyle(
-                          color: Colors.grey[800]!, fontWeight: FontWeight.w500
-                        ),),
-                      ),
-                      const SizedBox(width: 10,),
-                      const Text("9.3", style: TextStyle(
-                        color: Colors.blue, fontWeight: FontWeight.w500,
-                        fontSize: 16
-                      ),),
-                    ],),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
+            // )
           ],
         ),
       ),
-    );
-  }
-}
-
-class ItemInfoWidget extends ConsumerStatefulWidget {
-  final Color color;
-  final IconData icon;
-  final String title;
-  final String value;
-  const ItemInfoWidget({required this.color, required this.icon,
-    required this.title, required this.value, super.key
-  });
-
-  @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _ItemInfoWidgetState();
-}
-
-class _ItemInfoWidgetState extends ConsumerState<ItemInfoWidget> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(5)
-      ),
-      child: Row(children: [
-        Icon(widget.icon, color: widget.color,),
-        const SizedBox(width: 5,),
-        Expanded(child: Text(widget.title, style: TextStyle(
-          color: Colors.grey[800]!, fontWeight: FontWeight.w500
-        ),)),
-        const SizedBox(width: 5,),
-        Text(widget.value, style: const TextStyle(
-          fontWeight: FontWeight.w700,
-          fontSize: 16
-        ),)
-      ],),
     );
   }
 }

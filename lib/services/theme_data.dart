@@ -13,8 +13,9 @@ class AppTheme {
 
 final appThemeProvider = Provider<AppTheme>((ref) {
   return AppTheme(themeData: ThemeData(
+    scaffoldBackgroundColor: Colors.grey[100],
     appBarTheme: AppBarTheme(
-      color: Colors.transparent,
+      color: Colors.white,
       elevation: 0,
       // foregroundColor: primary,
       titleTextStyle: TextStyle(fontSize: 18, 
@@ -61,7 +62,7 @@ final appThemeProvider = Provider<AppTheme>((ref) {
       //   ),
       // )
       isDense: true,
-      contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10.0),
+      contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 15.0),
     ),
     tabBarTheme: const TabBarTheme(
       // labelColor: primary,

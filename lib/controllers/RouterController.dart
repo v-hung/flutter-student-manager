@@ -71,20 +71,30 @@ class RouterNotifier extends ChangeNotifier {
     ),
 
     // student
-    GoRoute(
-      name: "student",
-      path: "/student",
-      builder: (context, state) => const HomePage(),
+    ShellRoute(
+      // name: "student",
+      // path: "/student",
+      // builder: (context, state) => const HomePage(),
       // pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
       //   context: context, 
       //   state: state, 
       //   child: const HomePage(),
       // ),
+      pageBuilder: (context, state, child) => buildPageWithDefaultTransition<void>(
+        context: context, 
+        state: state, 
+        child: child,
+      ),
       routes: [
         GoRoute(
           name: "home-student",
-          path: "home",
-          builder: (context, state) => const HomeStudentPage(),
+          path: "/student/home",
+          // builder: (context, state) => const HomeStudentPage(),
+          pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
+            context: context, 
+            state: state, 
+            child: const HomeStudentPage(),
+          ),
           routes: [
             GoRoute(
               name: "notifications",
@@ -115,7 +125,7 @@ class RouterNotifier extends ChangeNotifier {
         ),
         GoRoute(
           name: "study",
-          path: "study",
+          path: "/student/study",
           // builder: (context, state) => const HomePage(),
           pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
             context: context, 
@@ -132,7 +142,7 @@ class RouterNotifier extends ChangeNotifier {
         ),
         GoRoute(
           name: "settings",
-          path: "settings",
+          path: "/student/settings",
           // builder: (context, state) => const HomePage(),
           pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
             context: context, 

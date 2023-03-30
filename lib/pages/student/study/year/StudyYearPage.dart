@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_student_manager/components/bottom_navbar_student.dart';
+import 'package:flutter_student_manager/components/student/bottom_navbar_student.dart';
 import 'package:flutter_student_manager/components/study/main_info.dart';
 import 'package:flutter_student_manager/components/study/study_user_info.dart';
 import 'package:flutter_student_manager/controllers/AuthController.dart';
@@ -54,7 +54,7 @@ class _StudyYearPageState extends ConsumerState<StudyYearPage> {
         ),
         title: const Text("Lựa chọn"),
         leading: InkWell(
-          onTap: () => context.go('/study'),
+          onTap: () => context.pop(),
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 5),
             child: Row(

@@ -17,24 +17,26 @@ class _BottomNavBarStudentState extends ConsumerState<BottomNavBarStudent>{
     {
       "icon": CupertinoIcons.home,
       "label": "Trang chủ",
-      "path": "/student",
+      "path": "/home",
     },
     {
       "icon": CupertinoIcons.book_solid,
       "label": "Học tập",
-      "path": "/student/study",
+      "path": "/study",
     },
     {
       "icon": CupertinoIcons.settings,
       "label": "Khác",
-      "path": "/student/settings",
+      "path": "/settings",
     }
   ];
 
   @override
   Widget build(BuildContext context) {
-    final location = "/${ref.watch(routerProvider).location.split("/")[1]}";
+    final location = "/${ref.watch(routerProvider).location.split("/")[2]}";
     final currentPageIndex = menu.indexWhere((v) => v['path'] == location);
+
+    print({location, currentPageIndex});
 
     return Container(
       decoration: BoxDecoration(border: Border(top: BorderSide(color: Colors.grey[300]!))),
@@ -50,7 +52,7 @@ class _BottomNavBarStudentState extends ConsumerState<BottomNavBarStudent>{
           // setState(() {
           //   currentPageIndex = index;
           // });
-          context.go(menu[index]['path']);
+          context.go("/student${menu[index]['path']}");
         },
         // animationDuration: const Duration(seconds: 1),
         height: 70,
