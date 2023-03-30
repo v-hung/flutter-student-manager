@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_student_manager/components/bottom_navbar_student.dart';
+import 'package:flutter_student_manager/components/student/bottom_navbar_student.dart';
 import 'package:flutter_student_manager/components/student/classroom/classroom_info.dart';
 import 'package:flutter_student_manager/components/student/classroom/classroom_students.dart';
 import 'package:go_router/go_router.dart';
@@ -32,22 +32,16 @@ class ClassroomPageState extends ConsumerState<ClassroomPage> with TickerProvide
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        titleSpacing: 0,
-        shape: Border(
-          bottom: BorderSide(
-            color: Colors.grey[300]!,
-            width: 1
-          )
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.green[600]!, Colors.green[400]!], 
+              stops: [0.5, 1.0],
+            ),
+          ),
         ),
-        title: const Text("Lớp học"),
-        leading: IconButton(
-          onPressed: () => context.go('/student/home'),
-          icon: const Icon(CupertinoIcons.xmark),
-        ),
+        title: const Text("Thông tin Lớp học"),
       ),
       body: Column(
         children: [
@@ -63,29 +57,19 @@ class ClassroomPageState extends ConsumerState<ClassroomPage> with TickerProvide
               ),
               child: TabBar(
                 controller: tabController,
-                indicator: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      spreadRadius: 1,
-                      blurRadius: 5,
-                      offset: Offset(0, 1), // changes position of shadow
-                    ),
-                  ]
-                ),
-                labelColor: Colors.blue[700],
-                unselectedLabelColor: Colors.black,
                 
-                tabs: const [
-                  Padding(
+                tabs: [
+                  Container(
+                    width: double.infinity,
                     padding: EdgeInsets.symmetric(vertical: 5),
+                    alignment: Alignment.center,
                     child: Text("Lớp học", style: TextStyle(fontWeight: FontWeight.w600),),
                   ),
-                  Padding(
+                  Container(
+                    width: double.infinity,
                     padding: EdgeInsets.symmetric(vertical: 5),
-                    child: Text("Học sinh", style: TextStyle(fontWeight: FontWeight.w600),),
+                    alignment: Alignment.center,
+                    child: Text("Giáo viên", style: TextStyle(fontWeight: FontWeight.w600),),
                   ),
                 ],
               ),

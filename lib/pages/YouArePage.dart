@@ -65,7 +65,7 @@ class YouArePageState extends ConsumerState<YouArePage> {
                           width: 70,
                           height: 70,
                           decoration: const BoxDecoration(
-                            color: Colors.blue,
+                            color: Colors.green,
                             shape: BoxShape.circle,
                             image: DecorationImage(image: AssetImage(
                               "assets/img/teacher.png"
@@ -120,7 +120,7 @@ class YouArePageState extends ConsumerState<YouArePage> {
                           width: 70,
                           height: 70,
                           decoration: const BoxDecoration(
-                            color: Colors.blue,
+                            color: Colors.green,
                             shape: BoxShape.circle,
                             image: DecorationImage(image: AssetImage(
                               "assets/img/family.png"

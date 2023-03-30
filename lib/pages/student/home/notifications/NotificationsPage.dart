@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_student_manager/components/bottom_navbar_student.dart';
+import 'package:flutter_student_manager/components/student/bottom_navbar_student.dart';
 import 'package:go_router/go_router.dart';
 
 class NotificationsPage extends ConsumerStatefulWidget {
@@ -17,20 +17,15 @@ class _NotificationsPageState extends ConsumerState<NotificationsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        titleSpacing: 0,
-        shape: Border(
-          bottom: BorderSide(
-            color: Colors.grey[300]!,
-            width: 1
-          )
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.green[600]!, Colors.green[400]!], 
+              stops: [0.5, 1.0],
+            ),
+          ),
         ),
         title: const Text("Bản tin"),
-        leading: IconButton(
-          onPressed: () => context.go('/'),
-          icon: const Icon(CupertinoIcons.back),
-        ),
       ),
       body: const Text("Notifications")
     );

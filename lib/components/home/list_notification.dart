@@ -47,16 +47,17 @@ class _HomeListNotificationState extends ConsumerState<HomeListNotification> {
               ]),
             ),
             Flexible(
+              flex: 0,
               child: Container(
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 decoration: BoxDecoration(
-                color: Colors.grey[200]!.withOpacity(.6),
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10)
-                )
-              ),
+                  color: Colors.grey[200]!.withOpacity(.6),
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(10),
+                    bottomRight: Radius.circular(10)
+                  )
+                ),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,10 +91,11 @@ class _HomeListNotificationState extends ConsumerState<HomeListNotification> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           InkWell(
-                            onTap: () => context.go('/notifications'),
+                            onTap: () => context.go('/student/notifications'),
                             child: Text("Xem thêm", style: TextStyle(
-                              color: Colors.blue[900],
+                              color: Colors.green[900],
                               decoration: TextDecoration.underline,
+                              decorationColor: Colors.green[900]
                             )),
                           ),
                         ],

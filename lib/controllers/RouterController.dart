@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_student_manager/models/ClassroomModel.dart';
@@ -42,10 +43,10 @@ class RouterNotifier extends ChangeNotifier {
 
     if (areWeLoginIn >= 0 || state.subloc == "/loading") {
       if (auth.type == AuthType.student) {
-        return '/student/home';
+        return '/student';
       }
       else {
-        return '/teacher/home';
+        return '/teacher';
       }
 
     }
@@ -71,20 +72,30 @@ class RouterNotifier extends ChangeNotifier {
     ),
 
     // student
-    GoRoute(
-      name: "student",
-      path: "/student",
-      builder: (context, state) => const HomePage(),
+    ShellRoute(
+      // name: "student",
+      // path: "/student",
+      // builder: (context, state) => const HomePage(),
       // pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
       //   context: context, 
       //   state: state, 
       //   child: const HomePage(),
       // ),
+      pageBuilder: (context, state, child) => buildPageWithDefaultTransition<void>(
+        context: context, 
+        state: state, 
+        child: child,
+      ),
       routes: [
         GoRoute(
           name: "home-student",
-          path: "home",
-          builder: (context, state) => const HomeStudentPage(),
+          path: "/student",
+          // builder: (context, state) => const HomeStudentPage(),
+          pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
+            context: context, 
+            state: state, 
+            child: const HomeStudentPage(),
+          ),
           routes: [
             GoRoute(
               name: "notifications",
@@ -115,7 +126,7 @@ class RouterNotifier extends ChangeNotifier {
         ),
         GoRoute(
           name: "study",
-          path: "study",
+          path: "/student/study",
           // builder: (context, state) => const HomePage(),
           pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
             context: context, 
@@ -126,13 +137,13 @@ class RouterNotifier extends ChangeNotifier {
             GoRoute(
               name: "study-year",
               path: "year",
-              builder: (context, state) => const StudyYearPage(),
+              builder: (context, state) => const StudyYearPage()
             ),
           ]
         ),
         GoRoute(
           name: "settings",
-          path: "settings",
+          path: "/student/settings",
           // builder: (context, state) => const HomePage(),
           pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
             context: context, 

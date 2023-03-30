@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_student_manager/components/bottom_navbar_student.dart';
+import 'package:flutter_student_manager/components/student/bottom_navbar_student.dart';
 import 'package:flutter_student_manager/components/study/main_info.dart';
 import 'package:flutter_student_manager/components/study/study_user_info.dart';
 import 'package:flutter_student_manager/controllers/AuthController.dart';
@@ -34,20 +34,15 @@ class _StudyPageState extends ConsumerState<StudyPage> with TickerProviderStateM
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        titleSpacing: 0,
-        shape: Border(
-          bottom: BorderSide(
-            color: Colors.grey[300]!,
-            width: 1
-          )
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.green[600]!, Colors.green[400]!], 
+              stops: [0.5, 1.0],
+            ),
+          ),
         ),
         title: const Text("Học tập"),
-        actions: [
-          IconButton(onPressed: () {
-          }, icon: const Icon(Icons.more_vert_rounded))
-        ],
       ),
       body: Column(
         children: [
@@ -63,32 +58,23 @@ class _StudyPageState extends ConsumerState<StudyPage> with TickerProviderStateM
             ),
             child: TabBar(
               controller: tabController,
-              indicator: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    spreadRadius: 1,
-                    blurRadius: 5,
-                    offset: Offset(0, 1), // changes position of shadow
-                  ),
-                ]
-              ),
-              labelColor: Colors.blue[700],
-              unselectedLabelColor: Colors.black,
-              
-              tabs: const [
-                Padding(
+              tabs: [
+                Container(
+                  width: double.infinity,
                   padding: EdgeInsets.symmetric(vertical: 5),
+                  alignment: Alignment.center,
                   child: Text("Học kỳ I", style: TextStyle(fontWeight: FontWeight.w600),),
                 ),
-                Padding(
+                Container(
+                  width: double.infinity,
                   padding: EdgeInsets.symmetric(vertical: 5),
+                  alignment: Alignment.center,
                   child: Text("Học kỳ II", style: TextStyle(fontWeight: FontWeight.w600),),
                 ),
-                Padding(
+                Container(
+                  width: double.infinity,
                   padding: EdgeInsets.symmetric(vertical: 5),
+                  alignment: Alignment.center,
                   child: Text("Cả năm", style: TextStyle(fontWeight: FontWeight.w600),),
                 ),
               ],

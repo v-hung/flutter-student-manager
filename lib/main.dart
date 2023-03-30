@@ -6,10 +6,12 @@ import 'package:flutter_student_manager/services/theme_data.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter_student_manager/controllers/RouterController.dart';
 import 'package:flutter_student_manager/utils/color.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
-  initializeDateFormatting()
-    .then((value) => runApp(const ProviderScope(child: MyApp())));
+  runApp(const ProviderScope(child: MyApp()));
+  // initializeDateFormatting()
+  //   .then((value) => runApp(const ProviderScope(child: MyApp())));
 }
 
 class MyApp extends ConsumerWidget {
@@ -24,6 +26,15 @@ class MyApp extends ConsumerWidget {
       scrollBehavior: const MaterialScrollBehavior().copyWith(
         dragDevices: {PointerDeviceKind.mouse, PointerDeviceKind.touch, PointerDeviceKind.stylus, PointerDeviceKind.unknown},
       ),
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'), 
+        Locale('vi'), // arabic, no country code
+      ],
       theme: appTheme.themeData,
       debugShowCheckedModeBanner: false,
       routerConfig: router,

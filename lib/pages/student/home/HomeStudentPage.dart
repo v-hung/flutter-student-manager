@@ -11,7 +11,7 @@ import 'package:flutter_student_manager/controllers/AuthController.dart';
 import 'package:flutter_student_manager/models/StudentModel.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_student_manager/components/bottom_navbar_student.dart';
+import 'package:flutter_student_manager/components/student/bottom_navbar_student.dart';
 import 'package:flutter_student_manager/components/logo.dart';
 
 class HomeStudentPage extends ConsumerStatefulWidget {
@@ -62,7 +62,7 @@ class _HomeStudentPageState extends ConsumerState<HomeStudentPage> with TickerPr
                       // height: 70,
                       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                       decoration: BoxDecoration(
-                        color: Colors.grey[200]!.withOpacity(.6),
+                        color: Colors.white.withOpacity(.6),
                         borderRadius: BorderRadius.circular(10)
                       ),
                       child: Row(
@@ -76,7 +76,7 @@ class _HomeStudentPageState extends ConsumerState<HomeStudentPage> with TickerPr
                                 width: double.infinity,
                                 height: double.infinity,
                                 decoration: BoxDecoration(
-                                  color: Colors.blue,
+                                  color: Colors.green,
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
                                     image: imageProvider, fit: BoxFit.cover),
@@ -109,7 +109,7 @@ class _HomeStudentPageState extends ConsumerState<HomeStudentPage> with TickerPr
                             ),
                           ),
                           IconButton(
-                            onPressed: () => context.go('/notifications'), 
+                            onPressed: () => context.go('/student/notifications'), 
                             icon: const Icon(CupertinoIcons.bell_fill), color: Colors.white,
                           )
                         ],

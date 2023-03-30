@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_student_manager/components/bottom_navbar_student.dart';
+import 'package:flutter_student_manager/components/student/bottom_navbar_student.dart';
 import 'package:flutter_student_manager/components/study/main_info.dart';
 import 'package:flutter_student_manager/components/study/study_user_info.dart';
 import 'package:flutter_student_manager/controllers/AuthController.dart';
@@ -42,31 +42,30 @@ class _StudyYearPageState extends ConsumerState<StudyYearPage> {
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        titleSpacing: 0,
-        leadingWidth: 100,
-        shape: Border(
-          bottom: BorderSide(
-            color: Colors.grey[300]!,
-            width: 1
-          )
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.green[600]!, Colors.green[400]!], 
+              stops: [0.5, 1.0],
+            ),
+          ),
         ),
         title: const Text("Lựa chọn"),
+        leadingWidth: 100,
         leading: InkWell(
-          onTap: () => context.go('/study'),
+          onTap: () => context.pop(),
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 5),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: const[
-                Icon(CupertinoIcons.back, color: Colors.blue,),
+                Icon(CupertinoIcons.back, color: Colors.white,),
                 SizedBox(width: 5,),
                 Padding(
                   padding: EdgeInsets.only(bottom: 3.0),
                   child: Text("Học tập", style: TextStyle(
-                    color: Colors.blue,
+                    color: Colors.white,
                     fontWeight: FontWeight.w500,
                     fontSize: 16
                   ),),

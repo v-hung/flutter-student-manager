@@ -22,12 +22,12 @@ class ErrorPage extends ConsumerWidget {
       
               if (auth.type == AuthType.student) {
                 return TextButton(onPressed: () {
-                  context.go('/student/home');
+                  context.go('/student');
                 }, child: Text("Về trang chủ"));
               }
               else if (auth.type == AuthType.teacher) {
                 return TextButton(onPressed: () {
-                  context.go('/teacher/home');
+                  context.go('/teacher');
                 }, child: Text("Về trang chủ"));
               }
               else {

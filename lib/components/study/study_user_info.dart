@@ -15,7 +15,7 @@ class StudyUserInfoWidget extends ConsumerWidget {
       builder: (context, ref, child) {
         final auth = ref.watch(authControllerProvider);
         return InkWell(
-          onTap: () => moveInfo ? context.go('/study/year') : null,
+          onTap: () => moveInfo ? context.go('/student/study/year') : null,
           child: Container(
             // height: 70,
             padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
@@ -38,7 +38,7 @@ class StudyUserInfoWidget extends ConsumerWidget {
                       width: double.infinity,
                       height: double.infinity,
                       decoration: BoxDecoration(
-                        color: Colors.blue,
+                        color: Colors.green,
                         shape: BoxShape.circle,
                         image: DecorationImage(
                           image: imageProvider, fit: BoxFit.cover),

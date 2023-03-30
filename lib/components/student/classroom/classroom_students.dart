@@ -67,7 +67,7 @@ class _ClassroomStudentsState extends ConsumerState<ClassroomStudents> {
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5),
+              padding: const EdgeInsets.symmetric(vertical: 5.0),
               child: students.when(
                 data: (data) {
                   final students = ref.watch(studentsFilterProvider);
@@ -79,7 +79,7 @@ class _ClassroomStudentsState extends ConsumerState<ClassroomStudents> {
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(5)
+                          borderRadius: BorderRadius.circular(10)
                         ),
                         child: Row(children: [
                           SizedBox(

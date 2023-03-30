@@ -89,10 +89,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        const Text(
+                        Text(
                           "Cẩn thận, bất kỳ ai có tài khoản của bạn đều có thể truy cập vào ứng dụng",
                           style: TextStyle(
-                            color: Colors.grey
+                            color: Colors.grey[800]!
                           ),
                           textAlign: TextAlign.left,
                         ),
@@ -102,7 +102,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           decoration: const InputDecoration(
                             labelText: 'Tài khoản',
                             border: OutlineInputBorder(),
-                            suffixIcon: Icon(CupertinoIcons.mail),
+                            prefixIcon: Icon(CupertinoIcons.mail),
                           ),
                         ),
                         const SizedBox(height: 15),
@@ -112,13 +112,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           decoration: InputDecoration(
                             labelText: 'Mặt khẩu',
                             border: const OutlineInputBorder(),
-                            suffixIcon: IconButton(
+                            prefixIcon: IconButton(
                               onPressed: () => setState(() {showPassword = !showPassword;}),
                               icon: Icon(showPassword ? CupertinoIcons.lock_open : CupertinoIcons.lock)
                             ),
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 50),
                       ],
                     ),
                   ),

@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_student_manager/components/bottom_navbar_student.dart';
+import 'package:flutter_student_manager/components/student/bottom_navbar_student.dart';
+import 'package:flutter_student_manager/components/student/tuition/svg_bot.dart';
+import 'package:flutter_student_manager/components/student/tuition/svg_top.dart';
 import 'package:go_router/go_router.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -25,48 +27,78 @@ class TuitionPageState extends ConsumerState<TuitionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         centerTitle: true,
         titleSpacing: 0,
-        shape: Border(
-          bottom: BorderSide(
-            color: Colors.grey[300]!,
-            width: 1
-          )
-        ),
-        title: const Text("Lịch học"),
+        title: const Text("Học phí", style: TextStyle(color: Colors.white),),
         leading: IconButton(
-          onPressed: () => context.go('/'),
-          icon: const Icon(CupertinoIcons.xmark),
+          onPressed: () => context.pop(),
+          icon: const Icon(CupertinoIcons.back, color: Colors.white,),
         ),
-        actions: [
-          Center(
-            child: InkWell(
-              onTap: () {
-                setState(() {
-                  toDay = DateTime.now();
-                });
-              },
+      ),
+      body: Stack(
+        children: [
+          Container(),
+          SizedBox(
+            width: double.infinity,
+            height: 100,
+            child: CustomPaint(
+              painter: SVGTuitionTopPainter(Colors.green[600]!, Colors.green[300]!),
+            ),
+          ),
+          Positioned.fill(
+            child: Align(
+              alignment: Alignment.bottomRight,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(20)
+                // color: Colors.red,
+                width: double.infinity,
+                height: 100,
+                child: CustomPaint(
+                  painter: SVGTuitionBottomPainter(Colors.orange[200]!, Colors.orange[400]!),
                 ),
-                child: Text("Hôm nay"),
+                // child: Text("fsadf"),
               ),
             ),
           ),
-          const SizedBox(width: 10,)
-        ],
-      ),
-      body: Column(
-        children: [
-         
+          SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.all(15),
+                    height: 200,
+                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(1),
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Colors.green)
+                    ),
+                  ),
+          
+                  for(var i = 0; i < 5; i ++) ...[
+                    Container(
+                      height: 50,
+                      margin: const EdgeInsets.only(bottom: 15, left: 15, right: 15),
+                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(.95),
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: Colors.green),
+                      ),
+                    ),
+                    // const SizedBox(height: 10,)
+                  ],
+                ],
+              ),
+            ),
+          ),
         ],
       )
     );
   }
 }
+
