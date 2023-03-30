@@ -66,68 +66,71 @@ class _ClassroomStudentsState extends ConsumerState<ClassroomStudents> {
             ),
           ),
           Expanded(
-            child: students.when(
-              data: (data) {
-                final students = ref.watch(studentsFilterProvider);
-                return ListView.builder(
-                  itemCount: students.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5)
-                      ),
-                      child: Row(children: [
-                        SizedBox(
-                          width: 55,
-                          height: 55,
-                          child: CachedNetworkImage(
-                            imageUrl: "https://play-lh.googleusercontent.com/Dfh0hAkVR-FAuwjF6h6EP992gtzVNy-jgfvshsyEUUJXvevtB92XCdyyZkFYqf21BA=w2560-h1440-rw",
-                            imageBuilder: (context, imageProvider) => Container(
-                              width: double.infinity,
-                              height: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Colors.blue,
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  image: imageProvider, fit: BoxFit.cover),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              child: students.when(
+                data: (data) {
+                  final students = ref.watch(studentsFilterProvider);
+                  return ListView.builder(
+                    itemCount: students.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(5)
+                        ),
+                        child: Row(children: [
+                          SizedBox(
+                            width: 55,
+                            height: 55,
+                            child: CachedNetworkImage(
+                              imageUrl: "https://play-lh.googleusercontent.com/Dfh0hAkVR-FAuwjF6h6EP992gtzVNy-jgfvshsyEUUJXvevtB92XCdyyZkFYqf21BA=w2560-h1440-rw",
+                              imageBuilder: (context, imageProvider) => Container(
+                                width: double.infinity,
+                                height: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: Colors.blue,
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                    image: imageProvider, fit: BoxFit.cover),
+                                ),
+                              ),
+                              placeholder: (context, url) => const CircularProgressIndicator(),
+                              errorWidget: (context, url, error) => const Icon(Icons.error),
+                            ),
+                          ),
+                          const SizedBox(width: 15,),
+                          Expanded(
+                            child: Container(
+                              constraints: const BoxConstraints(minHeight: 55),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text("Nguyễn Việt Hùng", style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500
+                                  ),),
+                                  const SizedBox(height: 5,),
+                                  Text("Trường THPT Thái Nguyên | Lớp 11A3", style: const TextStyle(
+                                    // color: Colors.grey[700]!,
+                                    // // fontSize: 18,
+                                    // fontWeight: FontWeight.w500
+                                  ),),
+                                ],
                               ),
                             ),
-                            placeholder: (context, url) => const CircularProgressIndicator(),
-                            errorWidget: (context, url, error) => const Icon(Icons.error),
                           ),
-                        ),
-                        const SizedBox(width: 15,),
-                        Expanded(
-                          child: Container(
-                            constraints: const BoxConstraints(minHeight: 55),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text("Nguyễn Việt Hùng", style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500
-                                ),),
-                                const SizedBox(height: 5,),
-                                Text("Trường THPT Thái Nguyên | Lớp 11A3", style: const TextStyle(
-                                  // color: Colors.grey[700]!,
-                                  // // fontSize: 18,
-                                  // fontWeight: FontWeight.w500
-                                ),),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],),
-                    );
-                  }
-                );
-              }, 
-              error: (_,__) => const Center(child: Text("Không thể tải dữ liệu")), 
-              loading: () => const StudentLoadingWidget()
+                        ],),
+                      );
+                    }
+                  );
+                }, 
+                error: (_,__) => const Center(child: Text("Không thể tải dữ liệu")), 
+                loading: () => const StudentLoadingWidget()
+              ),
             ),
           ),
         ],
