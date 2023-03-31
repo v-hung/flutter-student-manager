@@ -75,23 +75,18 @@ class RouterNotifier extends ChangeNotifier {
     ShellRoute(
       // name: "student",
       // path: "/student",
-      // builder: (context, state) => const HomePage(),
-      // pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
+      builder: (context, state, child) => child,
+      // pageBuilder: (context, state, child) => buildPageWithDefaultTransition<void>(
       //   context: context, 
       //   state: state, 
-      //   child: const HomePage(),
+      //   child: child,
       // ),
-      pageBuilder: (context, state, child) => buildPageWithDefaultTransition<void>(
-        context: context, 
-        state: state, 
-        child: child,
-      ),
       routes: [
         GoRoute(
           name: "home-student",
           path: "/student",
           // builder: (context, state) => const HomeStudentPage(),
-          pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
+          pageBuilder: (context, state) => buildPageWithDefaultTransition(
             context: context, 
             state: state, 
             child: const HomeStudentPage(),
@@ -127,8 +122,8 @@ class RouterNotifier extends ChangeNotifier {
         GoRoute(
           name: "study",
           path: "/student/study",
-          // builder: (context, state) => const HomePage(),
-          pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
+          // builder: (context, state) => const StudyPage(),
+          pageBuilder: (context, state) => buildPageWithDefaultTransition(
             context: context, 
             state: state, 
             child: const StudyPage(),
@@ -144,12 +139,12 @@ class RouterNotifier extends ChangeNotifier {
         GoRoute(
           name: "settings",
           path: "/student/settings",
-          // builder: (context, state) => const HomePage(),
-          pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
+          // builder: (context, state) => const SettingsPage(),
+          pageBuilder: (context, state) => buildPageWithDefaultTransition(
             context: context, 
             state: state, 
             child: const SettingsPage(),
-          )
+          ),
         ),
       ]
     ),

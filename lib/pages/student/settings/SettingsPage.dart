@@ -1,8 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_student_manager/components/student/bottom_navbar_student.dart';
+import 'package:flutter_student_manager/components/student/settings/body_settings.dart';
+import 'package:flutter_student_manager/components/student/settings/qrcode.dart';
 import 'package:flutter_student_manager/controllers/AuthController.dart';
+import 'package:flutter_student_manager/models/StudentModel.dart';
+import 'package:flutter_student_manager/utils/utils.dart';
+import 'package:intl/intl.dart';
 
 class SettingsPage extends ConsumerStatefulWidget {
   const SettingsPage({super.key});
@@ -12,19 +18,26 @@ class SettingsPage extends ConsumerStatefulWidget {
 }
 
 class _SettingsPageState extends ConsumerState<SettingsPage> {
-  var top = 250.0;
+  var top = 144.0;
   var opacity = 1.0;
+  var opacity2 = 1.0;
   late ScrollController scrollController;
 
   @override
   void initState() {
     super.initState();
     scrollController = ScrollController();
-    scrollController.addListener(() {setState(() {});});
+    scrollController.addListener(() {setState(() {
+      final topDistance = 144 - scrollController.offset;
+      top = topDistance > 0 ? topDistance : 0;
+      opacity = top / 144;
+      opacity2 = top / 10;
+    });});
   }
 
   @override
   Widget build(BuildContext context) {
+    final user = ref.watch(authControllerProvider).user as StudentModel;
     return Scaffold(
       body: Stack(
         children: [
@@ -33,85 +46,103 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             slivers: [
               SliverAppBar(
                 leading: IconButton(
-                  onPressed: () {},
-                  icon: Icon(
+                  onPressed: () {
+                    if (user.qrcode != null) {
+                      showModalQrCode(context, user.getImage(), user.getQrCode(), user.name);
+                    }
+                    else {
+                      showSnackBar(context: context, content: "Tài khoản chưa cập nhập qrcode");
+                    }
+                  },
+                  icon: const Icon(
                     CupertinoIcons.qrcode,
-                    color: top < 90 ? Colors.white : Colors.green
+                    color: Colors.green
                   ),
                 ),
+                backgroundColor: Colors.white.withOpacity(opacity2 > 1 ? 0 : opacity2 < 0 ? 1 :  1 - opacity2),
+                shape: opacity2 < 0.3 ? Border(bottom: BorderSide(color: Colors.grey[300]!)) : null,
                 actions: [
                   TextButton(
                     onPressed: () {},
-                    child: Text("Chỉnh sửa", style: TextStyle(
-                      color: top < 90 ? Colors.white : Colors.green
+                    child: const Text("Chỉnh sửa", style: TextStyle(
+                      color: Colors.green
                     ),)
                   ),
                 ],
                 floating: false,
-                
                 pinned: true,
-                expandedHeight: 250,
-                flexibleSpace: LayoutBuilder(
-                  builder: (ctx, cons)  {
-                    final tempTop = top;
-                    top = cons.biggest.height;
-                    opacity = (top - 56) / 194;
-                    return FlexibleSpaceBar(
-                      background: Container(
-                        color: Colors.grey[100],
+                expandedHeight: 200,
+                flexibleSpace: FlexibleSpaceBar(
+                  background: Container(
+                    color: Colors.transparent,
+                    child: Center(
+                      child: Transform.translate(
+                        offset: Offset(0, top - 144),
+                        child: SizedBox(
+                          width: 90,
+                          height: 90,
+                          child: CachedNetworkImage(
+                            imageUrl: user.getImage(),
+                            imageBuilder: (context, imageProvider) => Container(
+                              width: double.infinity,
+                              height: double.infinity,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                gradient: const LinearGradient(
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                  colors: [
+                                    Colors.green,
+                                    Colors.orange,
+                                  ],
+                                ),
+                                image: DecorationImage(
+                                  image: imageProvider, fit: BoxFit.cover),
+                              ),
+                            ),
+                            placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                            errorWidget: (context, url, error) => const Icon(Icons.error),
+                          ),
+                        ),
                       ),
-                      title: Text("Cài đặt", style: TextStyle(
-                        color: tempTop < 90 ? Colors.white : Colors.green
-                      ),),
-                      centerTitle: true,
-                    );
-                  }
-                ),
+                    ),
+                  ),
+                  title: Text(user.name, style: TextStyle(
+                    color: Colors.grey[900],
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600
+                  ),),
+                  centerTitle: true,
+                )
               ),
 
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    children: [
-                      Text("fsdafads", style: TextStyle(
-                        color: Colors.green.withOpacity(opacity > 1 ? 1 : opacity < 0 ? 0 : opacity)
-                      ),),
-                      Container(
-                        height: 1000,
-                        color: Colors.green,
-                      )
-                    ],
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20),
+                  child: IntrinsicHeight(
+                    child: Column(
+                      children: [
+                        Transform.translate(
+                          offset: const Offset(0,-30),
+                          child: Text(user.username ?? "Chưa tạo tài khoản", style: TextStyle(
+                            color: Colors.black.withOpacity(opacity > 1 ? 1 : opacity < 0 ? 0 : opacity)
+                          ),),
+                        ),
+                  
+                        // Text("data")
+                        const Expanded(child: StudentBodySettings()),
+                      ],
+                    ),
                   ),
                 ),
               )
             ],
-            // child: Container(
-            //   child: TextButton(onPressed: () {
-            //     ref.read(authControllerProvider.notifier).logout();
-            //   }, child: Text("Đăng xuất")),
-            // ),
+           
           ),
           // _buildFab()
         ],
       ),
       bottomNavigationBar: const BottomNavBarStudent(),
-    );
-  }
-
-  Widget _buildFab() {
-    return Positioned(
-      left: 0,
-      right: 0,
-      top: top,
-      child: Center(
-        child: Container(
-          height: 20,
-          child: Text("fsdafads", style: TextStyle(
-            color: top < 90 ? Colors.white : Colors.green
-          ),),
-        ),
-      ),
     );
   }
 }

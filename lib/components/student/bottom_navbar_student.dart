@@ -35,21 +35,22 @@ class _BottomNavBarStudentState extends ConsumerState<BottomNavBarStudent>{
   Widget build(BuildContext context) {
     final location = "/${"${ref.watch(routerProvider).location}/".split("/")[2]}";
     final currentPageIndex = menu.indexWhere((v) => v['path'] == location);
-
-    print(location);
+    final selectedIndex = currentPageIndex < 0 ? 0 : currentPageIndex;
 
     return Container(
       decoration: BoxDecoration(
-        border: Border(top: BorderSide(color: Colors.white))
+        border: Border(top: BorderSide(color: Colors.grey[300]!))
       ),
       child: NavigationBar(
-        destinations: menu.map((v) => 
-          NavigationDestination(
-            icon: Icon(v['icon'], color: location == v['path'] ? Colors.white : Colors.grey[800],), 
-            label: v['label']
-          )
-        ).toList(),
-        selectedIndex: currentPageIndex < 0 ? 0 : currentPageIndex,
+        destinations: [
+          for(var i = 0; i < menu.length; i++) ...[
+            NavigationDestination(
+              icon: Icon(menu[i]['icon'], color: selectedIndex == i ? Colors.white : Colors.grey[800],), 
+              label: menu[i]['label']
+            )
+          ],
+        ],
+        selectedIndex: selectedIndex,
         onDestinationSelected: (int index) {
           // setState(() {
           //   currentPageIndex = index;

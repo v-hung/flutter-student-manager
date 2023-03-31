@@ -79,7 +79,7 @@ class _ClassroomStudentsState extends ConsumerState<ClassroomStudents> {
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(10)
+                          borderRadius: BorderRadius.circular(5)
                         ),
                         child: Row(children: [
                           SizedBox(
@@ -123,6 +123,8 @@ class _ClassroomStudentsState extends ConsumerState<ClassroomStudents> {
                               ),
                             ),
                           ),
+                          const SizedBox(width: 15,),
+                          const Icon(CupertinoIcons.info, color: Colors.blue,)
                         ],),
                       );
                     }

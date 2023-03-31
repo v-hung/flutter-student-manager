@@ -3,11 +3,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_student_manager/utils/color.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 void showSnackBar({required BuildContext context, required String content}) {
   ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(content: Text(content))
+    SnackBar(
+      backgroundColor: Colors.grey,
+      content: Text(content)
+    )
   );
+}
+
+String formatCurrency(double price) {
+  final currencyFormatter = NumberFormat.currency(locale: 'vi');
+  return currencyFormatter.format(price);
+}
+
+String formatTimeToString(DateTime time) {
+  timeago.setLocaleMessages('vi', timeago.ViMessages());
+  timeago.setLocaleMessages('vi_short', timeago.ViShortMessages());
+  
+  final now = DateTime.now();
+  // time = DateTime.now().subtract(Duration(minutes: 15));
+  final difference  = now.difference(time);
+  return timeago.format(now.subtract(difference), locale: 'vi');
 }
 
 Future dialogEscape(BuildContext context, String title, String description) {

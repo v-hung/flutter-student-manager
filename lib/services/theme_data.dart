@@ -21,7 +21,7 @@ final appThemeProvider = Provider<AppTheme>((ref) {
       }
     ),
     useMaterial3: true,
-    scaffoldBackgroundColor: Colors.grey[100],
+    scaffoldBackgroundColor: const Color(0xfff0f2f5),
     appBarTheme: const AppBarTheme(
       color: Colors.green,
       surfaceTintColor: Colors.transparent,
@@ -29,7 +29,7 @@ final appThemeProvider = Provider<AppTheme>((ref) {
       centerTitle: true,
       titleTextStyle:  TextStyle(
         color: Colors.white,
-        fontSize: 18, 
+        fontSize: 16, 
         fontWeight: FontWeight.w600
       ),
       iconTheme: IconThemeData(
@@ -96,6 +96,7 @@ final appThemeProvider = Provider<AppTheme>((ref) {
       labelTextStyle: MaterialStateProperty.all(
         TextStyle(fontSize: 12, fontWeight: FontWeight.w500)
       ),
+      elevation: 0,
     )
   ));
 });

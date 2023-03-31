@@ -13,7 +13,8 @@ class StudentModel {
   final double? entrance_exam_score;
   final String? avatar;
   final double? tuition;
-  final int? classroom;
+  final int? class_id;
+  final String? username;
   
   StudentModel({
     required this.id,
@@ -26,7 +27,8 @@ class StudentModel {
     required this.entrance_exam_score,
     required this.avatar,
     required this.tuition,
-    required this.classroom,
+    required this.class_id,
+    required this.username,
   });
   
 
@@ -42,7 +44,8 @@ class StudentModel {
       'entrance_exam_score': entrance_exam_score,
       'avatar': avatar,
       'tuition': tuition,
-      'classroom': classroom,
+      'class_id': class_id,
+      'username': username,
     };
   }
 
@@ -58,7 +61,8 @@ class StudentModel {
       entrance_exam_score: map['entrance_exam_score'] == null ? null : map['entrance_exam_score'] as double,
       tuition: map['tuition'] == null ? null : map['tuition'] as double,
       avatar: map['avatar'] == null ? null : map['avatar'] as String,
-      classroom: map['classroom'] == null ? null : map['classroom'] as int,
+      class_id: map['class_id'] == null ? null : map['class_id'] as int,
+      username: map['username'] == null ? null : map['username'] as String,
     );
   }
 
@@ -68,5 +72,9 @@ class StudentModel {
 
   String getImage() {
     return "https://$BASE_URL/storage/$avatar";
+  }
+
+  String getQrCode() {
+    return "https://$BASE_URL/storage/$qrcode";
   }
 }

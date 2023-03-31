@@ -50,6 +50,8 @@ dependencies:
   table_calendar: ^3.0.8
   flutter_localizations:
     sdk: flutter
+  timeago: ^3.3.0
+  syncfusion_flutter_charts: ^21.1.37
 
 dev_dependencies:
   flutter_test:
