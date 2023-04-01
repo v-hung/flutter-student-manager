@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "273383696499",
+    "project_id": "trung-tam-353af",
+    "storage_bucket": "trung-tam-353af.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:273383696499:android:58eefdc465fbd8f32ea206",
+        "android_client_info": {
+          "package_name": "com.example.flutter_student_manager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "273383696499-1egj7lbfnso83sr0unv89asb2p76is9h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzhKr4abH7VK53nzzNCv5Z7hGmN7I-JQ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "273383696499-1egj7lbfnso83sr0unv89asb2p76is9h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

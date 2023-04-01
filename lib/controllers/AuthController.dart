@@ -32,7 +32,7 @@ class AuthNotifier extends StateNotifier<AuthModel> {
     if (data != null) {
       state = AuthModel(user: data.user, token: data.token, authState: AuthState.login, type: AuthType.student);
       if (context.mounted) {
-        context.go("/$type/home");
+        context.go("/$type");
       }
     }
     else {

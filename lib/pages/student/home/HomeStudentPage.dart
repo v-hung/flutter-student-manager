@@ -51,79 +51,81 @@ class _HomeStudentPageState extends ConsumerState<HomeStudentPage> with TickerPr
         Scaffold(
           extendBodyBehindAppBar: true,
           backgroundColor: Colors.transparent,
-          body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-            child: Column(
-              children: [
-                Consumer(
-                  builder: (context, ref, child) {
-                    final user = ref.watch(authControllerProvider).user as StudentModel;
-                    return Container(
-                      // height: 70,
-                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(.6),
-                        borderRadius: BorderRadius.circular(10)
-                      ),
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 55,
-                            height: 55,
-                            child: CachedNetworkImage(
-                              imageUrl: user.getImage(),
-                              imageBuilder: (context, imageProvider) => Container(
-                                width: double.infinity,
-                                height: double.infinity,
-                                decoration: BoxDecoration(
-                                  color: Colors.green,
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                    image: imageProvider, fit: BoxFit.cover),
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+              child: Column(
+                children: [
+                  Consumer(
+                    builder: (context, ref, child) {
+                      final user = ref.watch(authControllerProvider).user as StudentModel;
+                      return Container(
+                        // height: 70,
+                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(.6),
+                          borderRadius: BorderRadius.circular(10)
+                        ),
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 55,
+                              height: 55,
+                              child: CachedNetworkImage(
+                                imageUrl: user.getImage(),
+                                imageBuilder: (context, imageProvider) => Container(
+                                  width: double.infinity,
+                                  height: double.infinity,
+                                  decoration: BoxDecoration(
+                                    color: Colors.green,
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      image: imageProvider, fit: BoxFit.cover),
+                                  ),
+                                ),
+                                placeholder: (context, url) => const CircularProgressIndicator(),
+                                errorWidget: (context, url, error) => const Icon(Icons.error),
+                              ),
+                            ),
+                            const SizedBox(width: 15,),
+                            Expanded(
+                              child: Container(
+                                constraints: const BoxConstraints(minHeight: 55),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(user.name, style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500
+                                    ),),
+                                    const SizedBox(height: 5,),
+                                    Text("Trường THPT Thái Nguyên | Lớp 11A3", style: const TextStyle(
+                                      // color: Colors.grey[700]!,
+                                      // // fontSize: 18,
+                                      // fontWeight: FontWeight.w500
+                                    ),),
+                                  ],
                                 ),
                               ),
-                              placeholder: (context, url) => const CircularProgressIndicator(),
-                              errorWidget: (context, url, error) => const Icon(Icons.error),
                             ),
-                          ),
-                          const SizedBox(width: 15,),
-                          Expanded(
-                            child: Container(
-                              constraints: const BoxConstraints(minHeight: 55),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text(user.name, style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500
-                                  ),),
-                                  const SizedBox(height: 5,),
-                                  Text("Trường THPT Thái Nguyên | Lớp 11A3", style: const TextStyle(
-                                    // color: Colors.grey[700]!,
-                                    // // fontSize: 18,
-                                    // fontWeight: FontWeight.w500
-                                  ),),
-                                ],
-                              ),
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () => context.go('/student/notifications'), 
-                            icon: const Icon(CupertinoIcons.bell_fill), color: Colors.white,
-                          )
-                        ],
-                      ),
-                    );
-                  }
-                ),
-
-                const SizedBox(height: 20,),
-                const HomeListIconStudent(),
-
-                const SizedBox(height: 20,),
-                const Expanded(child: HomeListNotification())
-              ],
+                            IconButton(
+                              onPressed: () => context.go('/student/notifications'), 
+                              icon: const Icon(CupertinoIcons.bell_fill), color: Colors.white,
+                            )
+                          ],
+                        ),
+                      );
+                    }
+                  ),
+          
+                  const SizedBox(height: 20,),
+                  const HomeListIconStudent(),
+          
+                  const SizedBox(height: 20,),
+                  const Expanded(child: HomeListNotification())
+                ],
+              ),
             ),
           ),
           bottomNavigationBar: const BottomNavBarStudent(),

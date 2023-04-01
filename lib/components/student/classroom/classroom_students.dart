@@ -5,23 +5,21 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_student_manager/controllers/AuthController.dart';
 import 'package:flutter_student_manager/models/StudentModel.dart';
+import 'package:flutter_student_manager/models/TeacherModel.dart';
+import 'package:flutter_student_manager/repositories/StudentRepository.dart';
+import 'package:flutter_student_manager/utils/utils.dart';
 import 'package:shimmer/shimmer.dart';
 
-final studentsProvider = FutureProvider<List<StudentModel>>((ref) async {
-  await Future.delayed(const Duration(seconds: 1));
-  final List<StudentModel> a = [];
-  for (var i = 0; i < 10; i++) {
-    a.add(ref.watch(authControllerProvider).user as StudentModel);
-  }
-  return a;
+final teachersProvider = FutureProvider<List<TeacherModel>>((ref) async {
+  return await ref.read(studentRepositoryProvider).getTeachers();
 });
 
 final filterTextProvider = StateProvider<String>((ref) {
   return "";
 });
 
-final studentsFilterProvider = Provider<List<StudentModel>>((ref) {
-  List<StudentModel> students = ref.watch(studentsProvider).whenData((value) => value).value ?? [];
+final teachersFilterProvider = Provider<List<TeacherModel>>((ref) {
+  List<TeacherModel> students = ref.watch(teachersProvider).whenData((value) => value).value ?? [];
   final filter = ref.watch(filterTextProvider);
   return students.where((student) => student.name.toLowerCase().contains(filter.toLowerCase())).toList();
 });
@@ -44,7 +42,7 @@ class _ClassroomStudentsState extends ConsumerState<ClassroomStudents> {
 
   @override
   Widget build(BuildContext context) {
-    final students = ref.watch(studentsProvider);
+    final students = ref.watch(teachersProvider);
     return Container(
       child: Column(
         children: [
@@ -68,70 +66,75 @@ class _ClassroomStudentsState extends ConsumerState<ClassroomStudents> {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 5.0),
-              child: students.when(
-                data: (data) {
-                  final students = ref.watch(studentsFilterProvider);
-                  return ListView.builder(
-                    itemCount: students.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(5)
-                        ),
-                        child: Row(children: [
-                          SizedBox(
-                            width: 55,
-                            height: 55,
-                            child: CachedNetworkImage(
-                              imageUrl: "https://play-lh.googleusercontent.com/Dfh0hAkVR-FAuwjF6h6EP992gtzVNy-jgfvshsyEUUJXvevtB92XCdyyZkFYqf21BA=w2560-h1440-rw",
-                              imageBuilder: (context, imageProvider) => Container(
-                                width: double.infinity,
-                                height: double.infinity,
-                                decoration: BoxDecoration(
-                                  color: Colors.blue,
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                    image: imageProvider, fit: BoxFit.cover),
+              child: RefreshIndicator(
+                onRefresh: () => ref.refresh(teachersProvider.future),
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: students.when(
+                    data: (data) {
+                      final teachers = ref.watch(teachersFilterProvider);
+                      return Column(
+                        children: teachers.map((item) => 
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5)
+                            ),
+                            child: Row(children: [
+                              SizedBox(
+                                width: 55,
+                                height: 55,
+                                child: CachedNetworkImage(
+                                  imageUrl: toImage(item.avatar ?? ""),
+                                  imageBuilder: (context, imageProvider) => Container(
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                    decoration: BoxDecoration(
+                                      color: Colors.blue,
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                        image: imageProvider, fit: BoxFit.cover),
+                                    ),
+                                  ),
+                                  placeholder: (context, url) => const CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) => const Icon(Icons.error),
                                 ),
                               ),
-                              placeholder: (context, url) => const CircularProgressIndicator(),
-                              errorWidget: (context, url, error) => const Icon(Icons.error),
-                            ),
-                          ),
-                          const SizedBox(width: 15,),
-                          Expanded(
-                            child: Container(
-                              constraints: const BoxConstraints(minHeight: 55),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text("Nguyễn Việt Hùng", style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500
-                                  ),),
-                                  const SizedBox(height: 5,),
-                                  Text("Trường THPT Thái Nguyên | Lớp 11A3", style: const TextStyle(
-                                    // color: Colors.grey[700]!,
-                                    // // fontSize: 18,
-                                    // fontWeight: FontWeight.w500
-                                  ),),
-                                ],
+                              const SizedBox(width: 15,),
+                              Expanded(
+                                child: Container(
+                                  constraints: const BoxConstraints(minHeight: 55),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(item.name, style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500
+                                      ),),
+                                      const SizedBox(height: 5,),
+                                      Text(item.email, style: const TextStyle(
+                                        // color: Colors.grey[700]!,
+                                        // // fontSize: 18,
+                                        // fontWeight: FontWeight.w500
+                                      ),),
+                                    ],
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          const SizedBox(width: 15,),
-                          const Icon(CupertinoIcons.info, color: Colors.blue,)
-                        ],),
+                              const SizedBox(width: 15,),
+                              const Icon(CupertinoIcons.info, color: Colors.blue,)
+                            ],),
+                          )
+                        ).toList()
                       );
-                    }
-                  );
-                }, 
-                error: (_,__) => const Center(child: Text("Không thể tải dữ liệu")), 
-                loading: () => const StudentLoadingWidget()
+                    }, 
+                    error: (_,__) => const Center(child: Text("Không thể tải dữ liệu")), 
+                    loading: () => const StudentLoadingWidget()
+                  ),
+                ),
               ),
             ),
           ),

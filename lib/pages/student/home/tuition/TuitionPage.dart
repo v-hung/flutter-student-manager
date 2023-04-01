@@ -5,11 +5,19 @@ import 'package:flutter_student_manager/components/student/bottom_navbar_student
 import 'package:flutter_student_manager/components/student/tuition/pie_chart.dart';
 import 'package:flutter_student_manager/components/student/tuition/svg_bot.dart';
 import 'package:flutter_student_manager/components/student/tuition/svg_top.dart';
+import 'package:flutter_student_manager/controllers/AuthController.dart';
+import 'package:flutter_student_manager/models/StudentModel.dart';
+import 'package:flutter_student_manager/repositories/StudentRepository.dart';
 import 'package:flutter_student_manager/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+
+final tuitionProvider = FutureProvider<TuitionData>((ref) async {
+  final user = ref.watch(authControllerProvider).user as StudentModel;
+  return await ref.read(studentRepositoryProvider).getTuitionByUserId(user.id);
+});
 
 class TuitionPage extends ConsumerStatefulWidget {
   const TuitionPage({super.key});
@@ -32,6 +40,14 @@ class TuitionPageState extends ConsumerState<TuitionPage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final sizeLine = size.width - 60;
+
+    final heightSafeArea = size.height -
+      AppBar().preferredSize.height -
+      MediaQuery.of(context).padding.top -
+      MediaQuery.of(context).padding.bottom;
+
+    final tuitionData = ref.watch(tuitionProvider);
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.grey[200],
@@ -50,7 +66,7 @@ class TuitionPageState extends ConsumerState<TuitionPage> {
           Container(),
           SizedBox(
             width: double.infinity,
-            height: 100,
+            height: 200,
             child: CustomPaint(
               painter: SVGTuitionTopPainter(Colors.green[600]!, Colors.green[300]!),
             ),
@@ -70,99 +86,129 @@ class TuitionPageState extends ConsumerState<TuitionPage> {
             ),
           ),
           SafeArea(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.all(15),
-                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(1),
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          spreadRadius: 2,
-                          blurRadius: 7,
-                          offset: Offset(0, 1), // changes position of shadow
-                        ),
-                      ]
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //   children: [
-                        //     Text("Thời gian", style: TextStyle(
-                        //       fontWeight: FontWeight.w500
-                        //     ),),
-                        //     Text("300 Ngày", style: TextStyle(
-                        //       color: Colors.grey[700],
-                        //       fontWeight: FontWeight.w500
-                        //     ),)
-                        //   ],
-                        // ),
-
-                        const SizedBox(height: 10,),
-
-                        const PieChartTuition(),
-                      ],
-                    ),
-                  ),
-          
-                  for(var i = 0; i < 10; i ++) ...[
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 15, left: 15, right: 15),
-                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 7),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5),
-                        // border: Border.all(color: Colors.green[300]!),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            spreadRadius: 2,
-                            blurRadius: 7,
-                            offset: Offset(0, 1), // changes position of shadow
+            child: Container(
+              constraints: BoxConstraints(
+                minHeight: heightSafeArea
+              ),
+              child: RefreshIndicator(
+                onRefresh: () => ref.refresh(tuitionProvider.future),
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: tuitionData.when(
+                    data: (data) {
+                      if (data.tuitions.length == 0) {
+                        return Container(
+                          constraints: BoxConstraints(
+                            minHeight: heightSafeArea
                           ),
-                        ]
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                          child: Center(child: Text("Không có lịch sử học phí nào"))
+                        );
+                      }
+
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text("Học phí tháng $i năm 2023", style: TextStyle(
-                            fontWeight: FontWeight.w500
-                          ),),
-                          const SizedBox(height: 3,),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Số tiền"),
-                              Text(formatCurrency(350000), style: TextStyle(
-                                color: Colors.brown,
-                                fontWeight: FontWeight.w500
-                              ),),
-                            ],
+                          Container(
+                            margin: const EdgeInsets.all(15),
+                            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(1),
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  spreadRadius: 2,
+                                  blurRadius: 7,
+                                  offset: Offset(0, 1), // changes position of shadow
+                                ),
+                              ]
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Row(
+                                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                //   children: [
+                                //     Text("Thời gian", style: TextStyle(
+                                //       fontWeight: FontWeight.w500
+                                //     ),),
+                                //     Text("300 Ngày", style: TextStyle(
+                                //       color: Colors.grey[700],
+                                //       fontWeight: FontWeight.w500
+                                //     ),)
+                                //   ],
+                                // ),
+                  
+                                const SizedBox(height: 10,),
+                  
+                                const PieChartTuition(),
+                              ],
+                            ),
                           ),
-                          const SizedBox(height: 3,),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Trạng thái"),
-                              Text(i % 3 == 0 ? "Chưa đóng" : "Đã đóng", style: TextStyle(
-                                color: i % 3 == 0 ? Colors.deepOrange : Colors.green,
-                                fontWeight: FontWeight.w500
-                              ),),
-                            ],
-                          )
+                            
+                          for(var i = 0; i < 10; i ++) ...[
+                            Container(
+                              margin: const EdgeInsets.only(bottom: 15, left: 15, right: 15),
+                              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 7),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(5),
+                                // border: Border.all(color: Colors.green[300]!),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    spreadRadius: 2,
+                                    blurRadius: 7,
+                                    offset: Offset(0, 1), // changes position of shadow
+                                  ),
+                                ]
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("Học phí tháng $i năm 2023", style: TextStyle(
+                                    fontWeight: FontWeight.w500
+                                  ),),
+                                  const SizedBox(height: 3,),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("Số tiền"),
+                                      Text(formatCurrency(350000), style: TextStyle(
+                                        color: Colors.brown,
+                                        fontWeight: FontWeight.w500
+                                      ),),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 3,),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("Trạng thái"),
+                                      Text(i % 3 == 0 ? "Chưa đóng" : "Đã đóng", style: TextStyle(
+                                        color: i % 3 == 0 ? Colors.deepOrange : Colors.green,
+                                        fontWeight: FontWeight.w500
+                                      ),),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                            // const SizedBox(height: 10,)
+                          ],
                         ],
-                      ),
-                    ),
-                    // const SizedBox(height: 10,)
-                  ],
-                ],
+                      );
+                    },
+                    error: (e,__) => Container(
+                      height: heightSafeArea,
+                      child: Center(child: Text(e.toString()))
+                    ), 
+                    loading: () => SizedBox(
+                      height: MediaQuery.of(context).size.height * .5,
+                      child: const Center(child: CircularProgressIndicator())
+                    )
+                  )
+                ),
               ),
             ),
           ),

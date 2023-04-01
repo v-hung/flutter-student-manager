@@ -25,6 +25,7 @@ final appThemeProvider = Provider<AppTheme>((ref) {
     appBarTheme: const AppBarTheme(
       color: Colors.green,
       surfaceTintColor: Colors.transparent,
+      scrolledUnderElevation: 0,
       elevation: 0,
       centerTitle: true,
       titleTextStyle:  TextStyle(

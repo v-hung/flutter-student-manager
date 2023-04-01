@@ -25,13 +25,11 @@ class ClassRepository {
 
   Future<ClassroomModel> getClassroomById(int id) async {
     try {
-      final token = ref.watch(authControllerProvider).token;
-      var url = Uri.https(BASE_URL, '/api/classrooms/$id');
+      final auth = ref.watch(authControllerProvider);
+      var url = Uri.https(BASE_URL, '/api/${auth.type.toString().split('.').last}/classrooms/$id');
       var response = await http.get(url, headers: {
-        'authorization': "Bearer $token",
+        'authorization': "Bearer ${auth.token}",
       });
-
-      print(response.statusCode);
 
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);

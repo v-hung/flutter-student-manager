@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_student_manager/config/app.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_student_manager/utils/color.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -12,6 +13,10 @@ void showSnackBar({required BuildContext context, required String content}) {
       content: Text(content)
     )
   );
+}
+
+String toImage(String image) {
+  return "https://$BASE_URL/storage/$image";
 }
 
 String formatCurrency(double price) {

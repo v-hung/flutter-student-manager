@@ -8,7 +8,8 @@ class LoadingPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      body: SafeArea(
+      body: Container(
+        color: Color.fromARGB(255, 113, 154, 230),
         child: Center(
           child: SizedBox(
             width: 300,

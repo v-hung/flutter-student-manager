@@ -19,7 +19,7 @@ class TeacherModel {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
-      'uid': email,
+      'email': email,
       'name': name,
       'avatar': avatar,
     };
@@ -28,7 +28,7 @@ class TeacherModel {
   factory TeacherModel.fromMap(Map<String, dynamic> map) {
     return TeacherModel(
       id: map['id'] as int,
-      email: map['uid'] as String,
+      email: map['email'] as String,
       name: map['name'] as String,
       avatar: map['avatar'] == null ? null : map['avatar'] as String,
     );
