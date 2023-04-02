@@ -19,7 +19,12 @@ String toImage(String image) {
   return "https://$BASE_URL/storage/$image";
 }
 
-String formatCurrency(double price) {
+String formatCurrency(int price) {
+  final currencyFormatter = NumberFormat.currency(locale: 'vi');
+  return currencyFormatter.format(price);
+}
+
+String formatCurrencyDouble(double price) {
   final currencyFormatter = NumberFormat.currency(locale: 'vi');
   return currencyFormatter.format(price);
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_student_manager/controllers/AuthController.dart';
 import 'package:flutter_student_manager/models/StudentModel.dart';
+import 'package:flutter_student_manager/utils/utils.dart';
 import 'package:intl/intl.dart';
 
 class StudentBodySettings extends ConsumerStatefulWidget {
@@ -129,7 +130,7 @@ bool isSwitched = false;
                 color: Colors.cyan,
                 icon: CupertinoIcons.money_dollar,
                 label: "Học phí",
-                value: user.tuition != null ? user.tuition.toString() : null,
+                value: user.tuition != null ? formatCurrencyDouble(user.tuition!) : null,
               ),
 
               InfoWidget(

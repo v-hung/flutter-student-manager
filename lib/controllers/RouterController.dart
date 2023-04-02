@@ -6,7 +6,7 @@ import 'package:flutter_student_manager/pages/ErrorPage.dart';
 import 'package:flutter_student_manager/pages/HomePage.dart';
 import 'package:flutter_student_manager/pages/YouArePage.dart';
 import 'package:flutter_student_manager/pages/student/home/HomeStudentPage.dart';
-import 'package:flutter_student_manager/pages/student/home/breakschool/BreakSchool.dart';
+import 'package:flutter_student_manager/pages/student/home/breakschool/BreakSchoolPage.dart';
 import 'package:flutter_student_manager/pages/student/home/calendar/CalendarPage.dart';
 import 'package:flutter_student_manager/pages/student/home/classroom/ClassroomPage.dart';
 import 'package:flutter_student_manager/pages/student/home/notifications/NotificationsPage.dart';

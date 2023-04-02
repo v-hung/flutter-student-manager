@@ -2,6 +2,7 @@ import 'dart:convert';
 
 class TuitionModel {
   final int id;
+  final String title;
   final int student_id;
   final int tuition_fee;
   final String status;
@@ -9,6 +10,7 @@ class TuitionModel {
 
   TuitionModel({
     required this.id,
+    required this.title,
     required this.student_id,
     required this.tuition_fee,
     required this.status,
@@ -18,6 +20,7 @@ class TuitionModel {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
+      'title': title,
       'student_id': student_id,
       'tuition_fee': tuition_fee,
       'status': status,
@@ -28,6 +31,7 @@ class TuitionModel {
   factory TuitionModel.fromMap(Map<String, dynamic> map) {
     return TuitionModel(
       id: map['id'] as int,
+      title: map['title'] as String,
       student_id: map['student_id'] as int,
       tuition_fee: map['tuition_fee'] as int,
       status: map['status'] as String,

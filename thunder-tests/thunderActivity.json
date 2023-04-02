@@ -4,13 +4,31 @@
     "colId": "history",
     "containerId": "",
     "name": "https://trungtam.headbull.site/api/classrooms/5",
-    "url": "https://trungtam.headbull.site/api/student/classrooms/5",
-    "method": "GET",
+    "url": "https://trungtam.headbull.site/api/student/askforpermission",
+    "method": "POST",
     "sortNum": 0,
     "created": "2023-03-31T10:42:40.595Z",
-    "modified": "2023-04-01T01:48:16.998Z",
+    "modified": "2023-04-02T10:09:49.765Z",
     "headers": [],
     "params": [],
+    "body": {
+      "type": "formdata",
+      "raw": "",
+      "form": [
+        {
+          "name": "student_id",
+          "value": "12"
+        },
+        {
+          "name": "raeson",
+          "value": "f"
+        },
+        {
+          "name": "date",
+          "value": "2023-04-02 00:00:00.000"
+        }
+      ]
+    },
     "auth": {
       "type": "bearer",
       "bearer": "46|EsbsfnMKKrqD4EALNGnbGZiEaHHMvZq4wLiVHmwE"

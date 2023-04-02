@@ -52,11 +52,11 @@ final appThemeProvider = Provider<AppTheme>((ref) {
         foregroundColor : Colors.white,
       ),
     ),
-    textButtonTheme: TextButtonThemeData(
-      style: TextButton.styleFrom(
-        // foregroundColor: primary
-      )
-    ),
+    // textButtonTheme: TextButtonThemeData(
+    //   style: TextButton.styleFrom(
+    //     // foregroundColor: primary
+    //   )
+    // ),
     textTheme: TextTheme(
       bodyMedium: TextStyle(color: Colors.grey[900]!),
     ),
@@ -64,9 +64,14 @@ final appThemeProvider = Provider<AppTheme>((ref) {
     //   color: Colors.grey[900]
     // ),
     inputDecorationTheme: InputDecorationTheme(
-      border: const OutlineInputBorder(),
+      border: OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.grey[400]!),
+      ),
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(color: Colors.grey[400]!),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.red),
       ),
       
       isDense: true,

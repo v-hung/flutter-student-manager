@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_student_manager/models/BreakSchoolModel.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 
@@ -91,9 +92,8 @@ class StudentRepository {
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
 
-        print(data['tuition']);
-
         final tuitions =  List<TuitionModel>.from((data['tuition'] as List<dynamic>).map<TuitionModel>((x) => TuitionModel.fromMap(x as Map<String,dynamic>),),);
+
         return TuitionData(tuitions: tuitions, debt: data['debt'], paid: data['paid']);
       } 
       else {
@@ -102,6 +102,58 @@ class StudentRepository {
     } catch (e) {
       print(e);
       return Future.error("Không thể tải học phí");
+    }
+  }
+
+  Future<List<BreakSchoolModel>> getAskForPermissionByUserId(int id) async {
+    try {
+      final auth = ref.watch(authControllerProvider);
+      var url = Uri.https(BASE_URL, '/api/${auth.type.toString().split('.').last}/askforpermission/$id');
+      var response = await http.get(url, headers: {
+        'authorization': "Bearer ${auth.token}",
+      });
+
+      if (response.statusCode == 200) {
+        var res = jsonDecode(response.body);
+
+        final data =  List<BreakSchoolModel>.from((res['data'] as List<dynamic>).map<BreakSchoolModel>((x) => BreakSchoolModel.fromMap(x as Map<String,dynamic>),),);
+
+        return data;
+      } 
+      else {
+        return [];
+      }
+    } catch (e) {
+      print(e);
+      return [];
+    }
+  }
+
+  Future<BreakSchoolModel?> askForPermissionByUserId(int id, String reason, DateTime date) async {
+    try {
+      final auth = ref.watch(authControllerProvider);
+      var url = Uri.https(BASE_URL, '/api/${auth.type.toString().split('.').last}/askforpermission');
+      var response = await http.post(url, headers: {
+        'authorization': "Bearer ${auth.token}",
+      }, body: {
+        'student_id': id.toString(),
+        'reason': reason,
+        'date': date.toString()
+      });
+
+      if (response.statusCode == 200) {
+        var res = jsonDecode(response.body);
+
+        final data = BreakSchoolModel.fromMap(res['data']);
+
+        return data;
+      } 
+      else {
+        return null;
+      }
+    } catch (e) {
+      print(e);
+      return null;
     }
   }
 }

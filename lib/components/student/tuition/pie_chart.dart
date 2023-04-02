@@ -5,7 +5,9 @@ import 'package:flutter_student_manager/utils/utils.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class PieChartTuition extends ConsumerStatefulWidget {
-  const PieChartTuition({super.key});
+  final int debt;
+  final int paid;
+  const PieChartTuition({required this.debt, required this.paid, super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _PieChartTuitionState();
@@ -13,10 +15,16 @@ class PieChartTuition extends ConsumerStatefulWidget {
 
 class _PieChartTuitionState extends ConsumerState<PieChartTuition> {
 
-  final List<PieData> list = [
-    PieData(label: "Số tiền đã đóng", value: 45000, color: Colors.green),
-    PieData(label: "Tổng số nợ", value: 5000000, color: Colors.orange),
-  ];
+  List<PieData> list = [];
+
+  @override
+  void initState() {
+    super.initState();
+    list = [
+      PieData(label: "Số tiền đã đóng", value: widget.paid, color: Colors.green),
+      PieData(label: "Tổng số nợ", value: widget.debt, color: Colors.orange),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,11 +48,12 @@ class _PieChartTuitionState extends ConsumerState<PieChartTuition> {
             dataLabelSettings: DataLabelSettings(
               isVisible: true,
               builder: (data, _, __, ___, ____) => 
-                Text(formatCurrency(data.value), style: TextStyle(
+                Text(data.value != 0 ? formatCurrency(data.value) : "", style: const TextStyle(
                   color: Colors.white,
                   fontSize: 12
                 ),),
-            )
+            ),
+
           )
         ],
       ),
@@ -54,7 +63,7 @@ class _PieChartTuitionState extends ConsumerState<PieChartTuition> {
 
 class PieData {
   final String label;
-  final double value;
+  final int value;
   final Color color;
 
   PieData({

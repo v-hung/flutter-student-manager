@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_student_manager/controllers/AuthController.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter_student_manager/controllers/ClassroomController.dart';
+import 'package:flutter_student_manager/controllers/student/ClassroomController.dart';
 import 'package:flutter_student_manager/utils/utils.dart';
 
 class ClassroomInfo extends ConsumerStatefulWidget {

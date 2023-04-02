@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_student_manager/components/student/bottom_navbar_student.dart';
+import 'package:flutter_student_manager/controllers/student/ClassroomController.dart';
+import 'package:flutter_student_manager/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -25,6 +27,14 @@ class CalendarPageState extends ConsumerState<CalendarPage> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
+    final heightSafeArea = size.height -
+      AppBar().preferredSize.height -
+      MediaQuery.of(context).padding.top -
+      MediaQuery.of(context).padding.bottom;
+
+    final classroom = ref.watch(classroomFutureProvider);
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
@@ -45,10 +55,18 @@ class CalendarPageState extends ConsumerState<CalendarPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Consumer(
-              builder: (context, ref, child) {
+            classroom.when(
+              data: (data) {
+                if (data.schedule == null) {
+                  return Container(
+                    height: heightSafeArea,
+                    alignment: Alignment.center,
+                    child: const Text("Chưa cập nhập lịch học"),
+                  );
+                }
+
                 return CachedNetworkImage(
-                  imageUrl: "https://vtv1.mediacdn.vn/thumb_w/640/2021/8/17/vnapotalhocsinhhanoituutruongsomnhatvao192021-1629176652268160551271.jpg",
+                  imageUrl: toImage(data.schedule ?? ""),
                   imageBuilder: (context, imageProvider) => Image(
                     image: imageProvider, 
                     fit: BoxFit.cover
@@ -62,12 +80,16 @@ class CalendarPageState extends ConsumerState<CalendarPage> {
                     child: Center(child: Text("Không thể tải lịch học"),),
                   ),
                 );
-      
-                return Container(
-                  alignment: Alignment.center,
-                  child: const Text("Chưa cập nhập lịch học"),
-                );
+
               },
+              error: (e,__) => Container(
+                height: heightSafeArea,
+                child: Center(child: Text(e.toString()))
+              ), 
+              loading: () => SizedBox(
+                height: MediaQuery.of(context).size.height * .5,
+                child: const Center(child: CircularProgressIndicator())
+              )
             ),
           ],
         ),

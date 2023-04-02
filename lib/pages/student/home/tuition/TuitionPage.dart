@@ -126,27 +126,14 @@ class TuitionPageState extends ConsumerState<TuitionPage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // Row(
-                                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                //   children: [
-                                //     Text("Thời gian", style: TextStyle(
-                                //       fontWeight: FontWeight.w500
-                                //     ),),
-                                //     Text("300 Ngày", style: TextStyle(
-                                //       color: Colors.grey[700],
-                                //       fontWeight: FontWeight.w500
-                                //     ),)
-                                //   ],
-                                // ),
-                  
                                 const SizedBox(height: 10,),
                   
-                                const PieChartTuition(),
+                                PieChartTuition(debt: data.debt, paid: data.paid,),
                               ],
                             ),
                           ),
                             
-                          for(var i = 0; i < 10; i ++) ...[
+                          for(var i = 0; i < data.tuitions.length; i ++) ...[
                             Container(
                               margin: const EdgeInsets.only(bottom: 15, left: 15, right: 15),
                               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 7),
@@ -166,15 +153,15 @@ class TuitionPageState extends ConsumerState<TuitionPage> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("Học phí tháng $i năm 2023", style: TextStyle(
+                                  Text(data.tuitions[i].title, style: const TextStyle(
                                     fontWeight: FontWeight.w500
                                   ),),
                                   const SizedBox(height: 3,),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text("Số tiền"),
-                                      Text(formatCurrency(350000), style: TextStyle(
+                                      const Text("Số tiền"),
+                                      Text(formatCurrency(data.tuitions[i].tuition_fee), style: const TextStyle(
                                         color: Colors.brown,
                                         fontWeight: FontWeight.w500
                                       ),),
@@ -184,9 +171,9 @@ class TuitionPageState extends ConsumerState<TuitionPage> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text("Trạng thái"),
-                                      Text(i % 3 == 0 ? "Chưa đóng" : "Đã đóng", style: TextStyle(
-                                        color: i % 3 == 0 ? Colors.deepOrange : Colors.green,
+                                      const Text("Trạng thái"),
+                                      Text(data.tuitions[i].status == "paid" ? "Đã đóng" : "Chưa đóng", style: TextStyle(
+                                        color: data.tuitions[i].status == "paid" ? Colors.green : Colors.deepOrange,
                                         fontWeight: FontWeight.w500
                                       ),),
                                     ],
