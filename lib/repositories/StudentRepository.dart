@@ -145,13 +145,11 @@ class StudentRepository {
       var response = await http.get(url, headers: {
         'authorization': "Bearer ${auth.token}",
       });
-      print(response.body);
 
       if (response.statusCode == 200) {
         var body = jsonDecode(response.body);
 
         final data =  List<CodeScanModel>.from((body['data'] as List<dynamic>).map<CodeScanModel>((x) => CodeScanModel.fromMap(x as Map<String,dynamic>),),);
-        print(data);
         return data;
       } 
       else {

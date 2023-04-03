@@ -15,7 +15,6 @@ class StudyUserInfoWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final classroom = ref.watch(classroomFutureProvider).whenData((value) => value).value;
     return Consumer(
       builder: (context, ref, child) {
         final user = ref.watch(authControllerProvider).user as StudentModel;
@@ -78,13 +77,12 @@ class StudyUserInfoWidget extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text(user.name ?? "...", style: const TextStyle(
+                        Text(user.name, style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w500
                         ),),
                         const SizedBox(height: 5,),
-                        Text(classroom?.name ?? (user.date_of_birth != null ? DateFormat("dd/MM/yyy").format(user.date_of_birth!) : 
-                        user.entrance_exam_score != null ? "Điểm đầu vào: ${user.entrance_exam_score}" : "Học sinh")),
+                        Text(ref.watch(getUserTextStateProvider)),
                       ],
                     ),
                   ),

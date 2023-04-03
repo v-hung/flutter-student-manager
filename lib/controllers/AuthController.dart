@@ -3,10 +3,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_student_manager/controllers/student/ClassroomController.dart';
+import 'package:flutter_student_manager/models/StudentModel.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_student_manager/models/AuthModel.dart';
 import 'package:flutter_student_manager/repositories/AuthRepository.dart';
 import 'package:flutter_student_manager/utils/utils.dart';
+import 'package:intl/intl.dart';
 
 class AuthNotifier extends StateNotifier<AuthModel> {
   final Ref ref;
@@ -54,4 +57,13 @@ class AuthNotifier extends StateNotifier<AuthModel> {
 
 final authControllerProvider = StateNotifierProvider<AuthNotifier, AuthModel>((ref) {
   return AuthNotifier(ref);
+});
+
+final getUserTextStateProvider = Provider<String>((ref) {
+  final user = ref.watch(authControllerProvider).user;
+  if (user is StudentModel) {
+    final classroom = ref.watch(classroomFutureProvider).whenData((value) => value).value;
+    return "Sao Thái Nguyên${classroom?.name != null ? " | ${classroom!.name}" : ""}";
+  }
+  return "";
 });

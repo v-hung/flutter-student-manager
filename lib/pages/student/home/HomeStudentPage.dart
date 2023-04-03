@@ -3,9 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_student_manager/components/home/appbar_student.dart';
-import 'package:flutter_student_manager/components/home/list_icon.dart';
-import 'package:flutter_student_manager/components/home/list_notification.dart';
+import 'package:flutter_student_manager/components/student/notifications/list_notification.dart';
 import 'package:flutter_student_manager/components/student/list_icon_student.dart';
 import 'package:flutter_student_manager/controllers/AuthController.dart';
 import 'package:flutter_student_manager/controllers/student/ClassroomController.dart';
@@ -119,8 +117,7 @@ class _HomeStudentPageState extends ConsumerState<HomeStudentPage> with TickerPr
                                       fontWeight: FontWeight.w500
                                     ),),
                                     const SizedBox(height: 5,),
-                                    Text(classroom?.name ?? (user.date_of_birth != null ? DateFormat("dd/MM/yyy").format(user.date_of_birth!) : 
-                                      user.entrance_exam_score != null ? "Điểm đầu vào: ${user.entrance_exam_score}" : "Đang học")),
+                                    Text(ref.watch(getUserTextStateProvider)),
                                   ],
                                 ),
                               ),

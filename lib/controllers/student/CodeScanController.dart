@@ -6,51 +6,36 @@ import 'package:flutter_student_manager/models/CodeScanModel.dart';
 import 'package:flutter_student_manager/models/StudentModel.dart';
 import 'package:flutter_student_manager/repositories/StudentRepository.dart';
 
-class CodeScanController {
-  Ref ref;
-  late StreamSubscription subscription;
-  StreamController<List<CodeScanModel>> controller = StreamController<List<CodeScanModel>>.broadcast();
-  Stream get codeScanStream => controller.stream;
+class CodeScansController {
+  final Ref ref;
+  List<CodeScanModel> codeScans = [];
+  final StreamController<List<CodeScanModel>> _codeScansController = StreamController<List<CodeScanModel>>.broadcast();
+  Stream<List<CodeScanModel>> get codeScanStream => _codeScansController.stream;
  
-  CodeScanController(this.ref) {
-    // loadData();
-
-    // controller.stream.asyncMap((event) async => await loadData());
-    subscription = _setUp()
-    .asyncMap((event) async => await loadData())
-    .listen((event) {
-      print(event);
-    });
+  CodeScansController(this.ref) {
+    loadData();
   }
 
-
- 
-  resume() {
-    subscription.resume();
-  }
-
-  Future<List<CodeScanModel>> loadData() async {
+  Future<void> loadData() async {
     final user = ref.watch(authControllerProvider).user as StudentModel;
-    final data = ref.read(studentRepositoryProvider).getCodeScans(user.id);
-    print(data);
-    return data;
+    final data = await ref.read(studentRepositoryProvider).getCodeScans(user.id);
+    codeScans.addAll(data);
+    _codeScansController.sink.add(codeScans);
   }
- 
-  Stream<List<CodeScanModel>> _setUp() {
-    return controller.stream;
+
+  void dispose() {
+    _codeScansController.close();
   }
 }
 
-final codeScanStreamProvider = StreamProvider<CodeScanController>((ref) async* {
-  final counter = CodeScanController(ref);
- 
-  ref.onDispose(() => counter.controller.sink.close());
- 
-  await for (final value in counter.controller.stream) {
-    yield counter;
-  }
+final codeScansProvider = Provider<CodeScansController>((ref) {
+  return CodeScansController(ref);
 });
 
-final codeScanProvider = Provider<CodeScanController>((ref) {
-  return CodeScanController(ref);
+final codeScansStreamProvider = StreamProvider<List<CodeScanModel>>((ref) {
+  final codeScans = ref.watch(codeScansProvider);
+  return codeScans.codeScanStream.map((e) {
+    return e;
+  });
 });
+
