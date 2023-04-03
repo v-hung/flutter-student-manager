@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter_student_manager/config/app.dart';
+import 'package:flutter_student_manager/models/ClassroomModel.dart';
+import 'package:flutter_student_manager/models/SubjectModel.dart';
 
 class StudentModel {
   final int id;
@@ -15,6 +17,8 @@ class StudentModel {
   final double? tuition;
   final int? class_id;
   final String? username;
+  final ClassroomModel? classroom;
+  final List<SubjectModel> subjects;
   
   StudentModel({
     required this.id,
@@ -29,6 +33,8 @@ class StudentModel {
     required this.tuition,
     required this.class_id,
     required this.username,
+    this.classroom,
+    required this.subjects,
   });
   
 
@@ -46,6 +52,8 @@ class StudentModel {
       'tuition': tuition.toString(),
       'class_id': class_id,
       'username': username,
+      'classroom': classroom?.toMap(),
+      'subjects': subjects.map((x) => x.toMap()).toList(),
     };
   }
 
@@ -63,6 +71,8 @@ class StudentModel {
       avatar: map['avatar'] == null ? null : map['avatar'] as String,
       class_id: map['class_id'] == null ? null : map['class_id'] as int,
       username: map['username'] == null ? null : map['username'] as String,
+      classroom: map['classroom'] != null ? ClassroomModel.fromMap(map['classroom'] as Map<String,dynamic>) : null,
+      subjects: map['subjects'] != null ? List<SubjectModel>.from((map['subjects'] as List<dynamic>).map<SubjectModel>((x) => SubjectModel.fromMap(x as Map<String,dynamic>),),) : [],
     );
   }
 

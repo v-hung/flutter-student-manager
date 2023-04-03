@@ -44,7 +44,7 @@ class BreakSchoolPageState extends ConsumerState<BreakSchoolPage> {
       locale: const Locale("vi"),
       initialDate: selectedDate,
       firstDate: DateTime(2000),
-      lastDate: DateTime(2025),
+      lastDate: DateTime(DateTime.now().year + 5),
     );
     if (picked != null && picked != selectedDate) {
       setState(() {
@@ -74,7 +74,7 @@ class BreakSchoolPageState extends ConsumerState<BreakSchoolPage> {
             },
             initialDateTime: selectedDate,
             minimumYear: 2000,
-            maximumYear: 2025,
+            maximumYear: DateTime.now().year + 5,
           ),
         );
       }

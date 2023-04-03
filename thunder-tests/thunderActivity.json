@@ -4,11 +4,76 @@
     "colId": "history",
     "containerId": "",
     "name": "https://trungtam.headbull.site/api/classrooms/5",
-    "url": "https://trungtam.headbull.site/api/student/askforpermission",
+    "url": "https://trungtam.headbull.site/api/student/student/edit",
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-31T10:42:40.595Z",
-    "modified": "2023-04-02T10:09:49.765Z",
+    "modified": "2023-04-03T09:29:23.783Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "formdata",
+      "raw": "",
+      "form": [],
+      "files": [
+        {
+          "name": "avatar",
+          "value": "c:\\Users\\Viet Hung\\Downloads\\y-s-9Ukw2zmbXPc-unsplash.jpg"
+        }
+      ]
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "46|EsbsfnMKKrqD4EALNGnbGZiEaHHMvZq4wLiVHmwE"
+    },
+    "tests": []
+  },
+  {
+    "_id": "07d9dff4-0cbb-4688-96a9-0c6bcc074d91",
+    "colId": "history",
+    "containerId": "",
+    "name": "https://trungtam.headbull.site/api/classrooms/5 Copy",
+    "url": "https://trungtam.headbull.site/api/student/student/12",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-31T10:42:40.595Z",
+    "modified": "2023-04-03T02:13:11.437Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "formdata",
+      "raw": "",
+      "form": [
+        {
+          "name": "student_id",
+          "value": "12"
+        },
+        {
+          "name": "raeson",
+          "value": "f"
+        },
+        {
+          "name": "date",
+          "value": "2023-04-02 00:00:00.000"
+        }
+      ]
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "46|EsbsfnMKKrqD4EALNGnbGZiEaHHMvZq4wLiVHmwE"
+    },
+    "tests": []
+  },
+  {
+    "_id": "3dc46b51-f18c-4b68-9b3a-b904a36621bb",
+    "colId": "history",
+    "containerId": "",
+    "name": "https://trungtam.headbull.site/api/classrooms/5 Copy",
+    "url": "https://trungtam.headbull.site/api/student/subjects",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-31T10:42:40.595Z",
+    "modified": "2023-04-03T03:58:29.276Z",
     "headers": [],
     "params": [],
     "body": {

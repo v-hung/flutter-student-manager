@@ -1,3 +1,5 @@
+import 'package:flutter_student_manager/models/StudentModel.dart';
+import 'package:flutter_student_manager/models/TeacherModel.dart';
 import 'package:flutter_student_manager/models/UserModel.dart';
 
 enum AuthState {
@@ -31,6 +33,16 @@ class AuthModel {
       token = null;
 
   AuthModel changeState (AuthState authState) {
+    return AuthModel(user: user, authState: authState, token: token, type: type);
+  }
+
+  AuthModel changeUser (dynamic userData) {
+    if (userData is StudentModel) {
+      return AuthModel(user: userData, authState: authState, token: token, type: type);
+    }
+    else if (userData is TeacherModel) {
+      return AuthModel(user: userData, authState: authState, token: token, type: type);
+    }
     return AuthModel(user: user, authState: authState, token: token, type: type);
   }
 }

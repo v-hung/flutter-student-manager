@@ -7,8 +7,14 @@ import 'package:flutter_student_manager/components/student/settings/body_setting
 import 'package:flutter_student_manager/components/student/settings/qrcode.dart';
 import 'package:flutter_student_manager/controllers/AuthController.dart';
 import 'package:flutter_student_manager/models/StudentModel.dart';
+import 'package:flutter_student_manager/repositories/StudentRepository.dart';
 import 'package:flutter_student_manager/utils/utils.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+
+final subjectsFutureProvider = FutureProvider((ref) async {
+  return await ref.read(studentRepositoryProvider).getSubjects();
+});
 
 class SettingsPage extends ConsumerStatefulWidget {
   const SettingsPage({super.key});
@@ -63,7 +69,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 shape: opacity2 < 0.3 ? Border(bottom: BorderSide(color: Colors.grey[300]!)) : null,
                 actions: [
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () => context.go('/student/settings/edit'),
                     child: const Text("Chỉnh sửa", style: TextStyle(
                       color: Colors.green
                     ),)
@@ -101,7 +107,24 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                               ),
                             ),
                             placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-                            errorWidget: (context, url, error) => const Icon(Icons.error),
+                            errorWidget: (context, url, error) => Center(
+                              child: Container(
+                                width: double.infinity,
+                                height: double.infinity,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    colors: [
+                                      Colors.green,
+                                      Colors.orange,
+                                    ],
+                                  ),
+                                ),
+                                child: Icon(CupertinoIcons.person_fill, color: Colors.green[50], size: 50,)
+                              )
+                            ),
                           ),
                         ),
                       ),

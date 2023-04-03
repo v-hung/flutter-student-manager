@@ -66,8 +66,6 @@ class AuthRepository {
         'type': type
       });
 
-      print(token);
-
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
         var user = null;

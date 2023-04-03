@@ -1,12 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_student_manager/models/CodeScanModel.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:mime/mime.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_student_manager/models/BreakSchoolModel.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_student_manager/models/SubjectModel.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter_student_manager/config/app.dart';
@@ -15,8 +14,7 @@ import 'package:flutter_student_manager/models/ClassroomModel.dart';
 import 'package:flutter_student_manager/models/StudentModel.dart';
 import 'package:flutter_student_manager/models/TeacherModel.dart';
 import 'package:flutter_student_manager/models/TuitionModel.dart';
-import 'package:flutter_student_manager/models/UserModel.dart';
-import 'package:flutter_student_manager/services/shared_prefs_service.dart';
+import 'package:http_parser/http_parser.dart';
 
 class TuitionData {
   final List<TuitionModel> tuitions;
@@ -35,6 +33,65 @@ class StudentRepository {
   StudentRepository({
     required this.ref,
   });
+
+  Future<StudentModel> getStudentInfoById(int id) async {
+    try {
+      final auth = ref.watch(authControllerProvider);
+      var url = Uri.https(BASE_URL, '/api/${auth.type.toString().split('.').last}/student/$id');
+      var response = await http.get(url, headers: {
+        'authorization': "Bearer ${auth.token}",
+      });
+
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+
+        return StudentModel.fromMap(data['data']);
+      } 
+      else {
+        return Future.error("Không thể tải lớp");
+      }
+    } catch (e) {
+      print(e);
+      return Future.error("Không thể tải lớp");
+    }
+  }
+
+  Future<StudentModel?> updateStudentInfoById(XFile? avatar, String name, String date, String address, String phone) async {
+    try {
+      final auth = ref.watch(authControllerProvider);
+      var url = Uri.https(BASE_URL, '/api/${auth.type.toString().split('.').last}/student/edit');
+
+      var request = http.MultipartRequest("POST", url);
+      request.headers['authorization'] = "Bearer ${auth.token}";
+      request.fields['name'] = name;
+      request.fields['date_of_birth'] = date;
+      request.fields['address'] = address;
+      request.fields['contact_info'] = phone;
+      if (avatar != null) {
+        print(avatar);
+        request.files.add(await http.MultipartFile.fromPath('avatar', avatar.path, 
+          contentType: MediaType.parse(lookupMimeType(avatar.path) ?? "jpg")
+          // contentType: MediaType('image', 'jpeg')
+        ));
+      }
+
+      var streamedResponse = await request.send();
+      var response = await http.Response.fromStream(streamedResponse);
+      print(response.body);
+
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+
+        return StudentModel.fromMap(data['data']);
+      } 
+      else {
+        return null;
+      }
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
 
   Future<ClassroomModel> getClassroomById(int id) async {
     try {
@@ -78,6 +135,54 @@ class StudentRepository {
     } catch (e) {
       print(e);
       return Future.error("Không thể tải giáo viên");
+    }
+  }
+
+  Future<List<CodeScanModel>> getCodeScans(int id) async {
+    try {
+      final auth = ref.watch(authControllerProvider);
+      var url = Uri.https(BASE_URL, '/api/${auth.type.toString().split('.').last}/attendance-notification/$id');
+      var response = await http.get(url, headers: {
+        'authorization': "Bearer ${auth.token}",
+      });
+      print(response.body);
+
+      if (response.statusCode == 200) {
+        var body = jsonDecode(response.body);
+
+        final data =  List<CodeScanModel>.from((body['data'] as List<dynamic>).map<CodeScanModel>((x) => CodeScanModel.fromMap(x as Map<String,dynamic>),),);
+        print(data);
+        return data;
+      } 
+      else {
+        return [];
+      }
+    } catch (e) {
+      print(e);
+      return [];
+    }
+  }
+
+  Future<List<SubjectModel>> getSubjects() async {
+    try {
+      final auth = ref.watch(authControllerProvider);
+      var url = Uri.https(BASE_URL, '/api/${auth.type.toString().split('.').last}/subjects');
+      var response = await http.get(url, headers: {
+        'authorization': "Bearer ${auth.token}",
+      });
+
+      if (response.statusCode == 200) {
+        var body = jsonDecode(response.body);
+
+        final data =  List<SubjectModel>.from((body['data'] as List<dynamic>).map<SubjectModel>((x) => SubjectModel.fromMap(x as Map<String,dynamic>),),);
+        return data;
+      } 
+      else {
+        return [];
+      }
+    } catch (e) {
+      print(e);
+      return [];
     }
   }
 

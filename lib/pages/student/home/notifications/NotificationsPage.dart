@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_student_manager/components/student/bottom_navbar_student.dart';
+import 'package:flutter_student_manager/controllers/student/CodeScanController.dart';
 import 'package:go_router/go_router.dart';
 
 class NotificationsPage extends ConsumerStatefulWidget {
@@ -15,6 +16,7 @@ class _NotificationsPageState extends ConsumerState<NotificationsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final codeScan = ref.watch(codeScanStreamProvider);
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: Container(
@@ -27,7 +29,31 @@ class _NotificationsPageState extends ConsumerState<NotificationsPage> {
         ),
         title: const Text("Bản tin"),
       ),
-      body: const Text("Notifications")
+      body: Container(
+        width: double.infinity,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              codeScan.when(
+                loading: () => const CircularProgressIndicator(),
+                error: (error, stackTrace) => Text(error.toString()),
+                data: (data) {
+                  // Display all the messages in a scrollable list view.
+                  print(data);
+                  return Container();
+                },
+              ),
+              // StreamBuilder(
+              //   stream: ref.read(codeScanProvider).codeScanStream,
+              //   builder: (context, snapshot) {
+              //     print(snapshot);
+              //     return Container();
+              //   }
+              // )
+            ],
+          ),
+        ),
+      )
     );
   }
 }

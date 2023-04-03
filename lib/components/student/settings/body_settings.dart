@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_student_manager/controllers/AuthController.dart';
+import 'package:flutter_student_manager/controllers/student/ClassroomController.dart';
 import 'package:flutter_student_manager/models/StudentModel.dart';
+import 'package:flutter_student_manager/pages/student/settings/SettingsPage.dart';
 import 'package:flutter_student_manager/utils/utils.dart';
 import 'package:intl/intl.dart';
 
@@ -14,31 +16,28 @@ class StudentBodySettings extends ConsumerStatefulWidget {
 }
 
 class _StudentBodySettingsState extends ConsumerState<StudentBodySettings> {
-bool isSwitched = false;  
-  var textValue = 'Switch is OFF';  
+  bool isSwitched = false;
   
-  void toggleSwitch(bool value) {  
+  void toggleSwitch(bool value) {
   
-    if(isSwitched == false)  
-    {  
-      setState(() {  
-        isSwitched = true;  
-        textValue = 'Switch Button is ON';  
-      });  
-      print('Switch Button is ON');  
-    }  
-    else  
-    {  
-      setState(() {  
-        isSwitched = false;  
-        textValue = 'Switch Button is OFF';  
-      });  
-      print('Switch Button is OFF');  
-    }  
-  } 
+    if(isSwitched == false)
+    {
+      setState(() {
+        isSwitched = true;
+      });
+    }
+    else
+    {
+      setState(() {
+        isSwitched = false;
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(authControllerProvider).user as StudentModel;
+    final subjects = ref.watch(subjectsFutureProvider).whenData((value) => value).value ?? [];
+    final classroom = ref.watch(classroomFutureProvider).whenData((value) => value).value;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -123,7 +122,7 @@ bool isSwitched = false;
                 color: Colors.blue,
                 icon: CupertinoIcons.home,
                 label: "Lớp học",
-                value: "12A3",
+                value: classroom != null ? classroom.name : "Chưa cập nhập",
               ),
 
               InfoWidget(
@@ -137,7 +136,7 @@ bool isSwitched = false;
                 color: Colors.purple,
                 icon: CupertinoIcons.suit_club,
                 label: "Các môn theo học",
-                value: "Toán 2, Ngữ Văn 3, Địa lý 2",
+                value: subjects.fold("",(value, element, ) => value! + "${element.name} "),
                 border: false,
               ),
             ],

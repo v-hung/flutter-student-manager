@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_student_manager/models/ClassroomModel.dart';
 import 'package:flutter_student_manager/pages/ErrorPage.dart';
-import 'package:flutter_student_manager/pages/HomePage.dart';
 import 'package:flutter_student_manager/pages/YouArePage.dart';
 import 'package:flutter_student_manager/pages/student/home/HomeStudentPage.dart';
 import 'package:flutter_student_manager/pages/student/home/breakschool/BreakSchoolPage.dart';
@@ -12,6 +10,7 @@ import 'package:flutter_student_manager/pages/student/home/classroom/ClassroomPa
 import 'package:flutter_student_manager/pages/student/home/notifications/NotificationsPage.dart';
 import 'package:flutter_student_manager/pages/student/home/tuition/TuitionPage.dart';
 import 'package:flutter_student_manager/pages/student/settings/SettingsPage.dart';
+import 'package:flutter_student_manager/pages/student/settings/edit/EditProfilePage.dart';
 import 'package:flutter_student_manager/pages/student/study/StudyPage.dart';
 import 'package:flutter_student_manager/pages/student/study/year/StudyYearPage.dart';
 import 'package:go_router/go_router.dart';
@@ -145,6 +144,13 @@ class RouterNotifier extends ChangeNotifier {
             state: state, 
             child: const SettingsPage(),
           ),
+          routes: [
+            GoRoute(
+              name: "edit-profile",
+              path: "edit",
+              builder: (context, state) => const EditProfilePage()
+            ),
+          ]
         ),
       ]
     ),

@@ -8,6 +8,7 @@ import 'package:flutter_student_manager/components/home/list_icon.dart';
 import 'package:flutter_student_manager/components/home/list_notification.dart';
 import 'package:flutter_student_manager/components/student/list_icon_student.dart';
 import 'package:flutter_student_manager/controllers/AuthController.dart';
+import 'package:flutter_student_manager/controllers/student/ClassroomController.dart';
 import 'package:flutter_student_manager/models/StudentModel.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -38,6 +39,7 @@ class _HomeStudentPageState extends ConsumerState<HomeStudentPage> with TickerPr
 
   @override
   Widget build(BuildContext context) {
+    final classroom = ref.watch(classroomFutureProvider).whenData((value) => value).value;
     final size = MediaQuery.of(context).size;
     return Stack(
       children: [
@@ -84,7 +86,24 @@ class _HomeStudentPageState extends ConsumerState<HomeStudentPage> with TickerPr
                                   ),
                                 ),
                                 placeholder: (context, url) => const CircularProgressIndicator(),
-                                errorWidget: (context, url, error) => const Icon(Icons.error),
+                                errorWidget: (context, url, error) => Center(
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      gradient: LinearGradient(
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                        colors: [
+                                          Colors.green,
+                                          Colors.orange,
+                                        ],
+                                      ),
+                                    ),
+                                    child: Icon(CupertinoIcons.person_fill, color: Colors.green[50], size: 40,)
+                                  )
+                                ),
                               ),
                             ),
                             const SizedBox(width: 15,),
@@ -100,11 +119,8 @@ class _HomeStudentPageState extends ConsumerState<HomeStudentPage> with TickerPr
                                       fontWeight: FontWeight.w500
                                     ),),
                                     const SizedBox(height: 5,),
-                                    Text("Trường THPT Thái Nguyên | Lớp 11A3", style: const TextStyle(
-                                      // color: Colors.grey[700]!,
-                                      // // fontSize: 18,
-                                      // fontWeight: FontWeight.w500
-                                    ),),
+                                    Text(classroom?.name ?? (user.date_of_birth != null ? DateFormat("dd/MM/yyy").format(user.date_of_birth!) : 
+                                      user.entrance_exam_score != null ? "Điểm đầu vào: ${user.entrance_exam_score}" : "Đang học")),
                                   ],
                                 ),
                               ),

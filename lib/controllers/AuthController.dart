@@ -42,6 +42,10 @@ class AuthNotifier extends StateNotifier<AuthModel> {
     }
   }
 
+  void updateUserInfo(dynamic user) async {
+    state = state.changeUser(user);
+  }
+
   Future<void> logout() async {
     ref.read(authRepositoryProvider).logout();
     state = AuthModel(user: null, token: null, authState: AuthState.notLogin, type: null);

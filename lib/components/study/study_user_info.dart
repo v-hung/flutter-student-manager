@@ -3,7 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_student_manager/controllers/AuthController.dart';
+import 'package:flutter_student_manager/controllers/student/ClassroomController.dart';
+import 'package:flutter_student_manager/models/StudentInfoModel.dart';
+import 'package:flutter_student_manager/models/StudentModel.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 class StudyUserInfoWidget extends ConsumerWidget {
   final bool moveInfo;
@@ -11,9 +15,10 @@ class StudyUserInfoWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final classroom = ref.watch(classroomFutureProvider).whenData((value) => value).value;
     return Consumer(
       builder: (context, ref, child) {
-        final auth = ref.watch(authControllerProvider);
+        final user = ref.watch(authControllerProvider).user as StudentModel;
         return InkWell(
           onTap: () => moveInfo ? context.go('/student/study/year') : null,
           child: Container(
@@ -33,7 +38,7 @@ class StudyUserInfoWidget extends ConsumerWidget {
                   width: 55,
                   height: 55,
                   child: CachedNetworkImage(
-                    imageUrl: auth.user?.getImage() ?? "",
+                    imageUrl: user.getImage(),
                     imageBuilder: (context, imageProvider) => Container(
                       width: double.infinity,
                       height: double.infinity,
@@ -45,7 +50,24 @@ class StudyUserInfoWidget extends ConsumerWidget {
                       ),
                     ),
                     placeholder: (context, url) => const CircularProgressIndicator(),
-                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                    errorWidget: (context, url, error) => Center(
+                      child: Container(
+                        width: double.infinity,
+                        height: double.infinity,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            colors: [
+                              Colors.green,
+                              Colors.orange,
+                            ],
+                          ),
+                        ),
+                        child: Icon(CupertinoIcons.person_fill, color: Colors.green[50]!, size: 40,)
+                      )
+                    ),
                   ),
                 ),
                 const SizedBox(width: 15,),
@@ -56,12 +78,13 @@ class StudyUserInfoWidget extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text(auth.user?.name ?? "...", style: const TextStyle(
+                        Text(user.name ?? "...", style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w500
                         ),),
                         const SizedBox(height: 5,),
-                        const Text("Trường THPT Thái Nguyên | Lớp 11A3"),
+                        Text(classroom?.name ?? (user.date_of_birth != null ? DateFormat("dd/MM/yyy").format(user.date_of_birth!) : 
+                        user.entrance_exam_score != null ? "Điểm đầu vào: ${user.entrance_exam_score}" : "Học sinh")),
                       ],
                     ),
                   ),
