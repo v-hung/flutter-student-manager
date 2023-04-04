@@ -39,6 +39,6 @@ class TeacherModel {
   factory TeacherModel.fromJson(String source) => TeacherModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   String getImage() {
-    return "$BASE_URL/storage/$avatar";
+    return "https://$BASE_URL/storage/$avatar";
   }
 }

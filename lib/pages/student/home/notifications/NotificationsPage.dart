@@ -66,11 +66,13 @@ class _NotificationsPageState extends ConsumerState<NotificationsPage> {
                           children: [
                             Expanded(
                               child: Text(codeScan.action == "in" ? "Đến Trường" : "Về nhà", style: TextStyle(
+                                fontSize: 12,
                                 color: codeScan.action == "in" ? Colors.green[700] : Colors.orange[700]
                               ),),
                             ),
                             const SizedBox(width: 5,),
                             Text(DateFormat("dd/MM/yyy").format(codeScan.date_time), style: TextStyle(
+                              fontSize: 12,
                               color: Colors.grey[800]
                             ),),
                           ],
@@ -78,7 +80,7 @@ class _NotificationsPageState extends ConsumerState<NotificationsPage> {
                         const SizedBox(height: 5,),
                         Text(codeScan.title, style: const TextStyle(
                           // color: Colors.grey[800],
-                          fontSize: 16,
+                          // fontSize: 16,
                           fontWeight: FontWeight.w500
                         ),),
                       ],

@@ -2,25 +2,22 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_student_manager/components/student/notifications/list_notification.dart';
-import 'package:flutter_student_manager/components/student/list_icon_student.dart';
+import 'package:flutter_student_manager/components/teacher/bottom_navbar_teacher.dart';
+import 'package:flutter_student_manager/components/teacher/list_icon_teacher.dart';
+import 'package:flutter_student_manager/components/teacher/notifications/list_notification.dart';
 import 'package:flutter_student_manager/controllers/AuthController.dart';
-import 'package:flutter_student_manager/controllers/student/ClassroomController.dart';
-import 'package:flutter_student_manager/models/StudentModel.dart';
+import 'package:flutter_student_manager/models/TeacherModel.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_student_manager/components/student/bottom_navbar_student.dart';
-import 'package:flutter_student_manager/components/logo.dart';
 
-class HomeStudentPage extends ConsumerStatefulWidget {
-  const HomeStudentPage({super.key});
+class HomeTeacherPage extends ConsumerStatefulWidget {
+  const HomeTeacherPage({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _HomeStudentPageState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _HomeTeacherPageState();
 }
 
-class _HomeStudentPageState extends ConsumerState<HomeStudentPage> with TickerProviderStateMixin {
+class _HomeTeacherPageState extends ConsumerState<HomeTeacherPage> with TickerProviderStateMixin {
   late TabController tabController;
 
   @override
@@ -37,17 +34,17 @@ class _HomeStudentPageState extends ConsumerState<HomeStudentPage> with TickerPr
 
   @override
   Widget build(BuildContext context) {
-    final classroom = ref.watch(classroomFutureProvider).whenData((value) => value).value;
+    // final classroom = ref.watch(classroomFutureProvider).whenData((value) => value).value;
     final size = MediaQuery.of(context).size;
     return Stack(
       children: [
         Image.asset(
-          "assets/img/home_bg3.jpg",
+          "assets/img/home_bg2.jpg",
           height: size.height,
           width: size.width,
           fit: BoxFit.cover,
         ),
-        // Container(color: Colors.black.withOpacity(0.3),),
+        Container(color: Colors.black.withOpacity(0.3),),
         Scaffold(
           extendBodyBehindAppBar: true,
           backgroundColor: Colors.transparent,
@@ -58,7 +55,7 @@ class _HomeStudentPageState extends ConsumerState<HomeStudentPage> with TickerPr
                 children: [
                   Consumer(
                     builder: (context, ref, child) {
-                      final user = ref.watch(authControllerProvider).user as StudentModel;
+                      final user = ref.watch(authControllerProvider).user as TeacherModel;
                       return Container(
                         // height: 70,
                         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -133,7 +130,7 @@ class _HomeStudentPageState extends ConsumerState<HomeStudentPage> with TickerPr
                   ),
           
                   const SizedBox(height: 20,),
-                  const HomeListIconStudent(),
+                  const HomeListIconTeacher(),
           
                   const SizedBox(height: 20,),
                   const Expanded(child: HomeListNotification())
@@ -141,7 +138,7 @@ class _HomeStudentPageState extends ConsumerState<HomeStudentPage> with TickerPr
               ),
             ),
           ),
-          bottomNavigationBar: const BottomNavBarStudent(),
+          bottomNavigationBar: const BottomNavBarTeacher(),
         ),
       ],
     );

@@ -22,7 +22,7 @@ class AuthNotifier extends StateNotifier<AuthModel> {
     var data = await ref.read(authRepositoryProvider).getCurrentUserData();
 
     if (data != null) {
-      state = AuthModel(user: data.user, token: data.token, authState: AuthState.login, type: AuthType.student);
+      state = AuthModel(user: data.user, token: data.token, authState: AuthState.login, type: data.type == "student" ? AuthType.student : AuthType.teacher);
     }
     else {
       state = AuthModel(user: null, token: null, authState: AuthState.notLogin, type: null);
@@ -33,7 +33,7 @@ class AuthNotifier extends StateNotifier<AuthModel> {
     var data = await ref.read(authRepositoryProvider).signInWithPassword(identity, password, type);
 
     if (data != null) {
-      state = AuthModel(user: data.user, token: data.token, authState: AuthState.login, type: AuthType.student);
+      state = AuthModel(user: data.user, token: data.token, authState: AuthState.login, type: data.type == "student" ? AuthType.student : AuthType.teacher);
       if (context.mounted) {
         context.go("/$type");
       }

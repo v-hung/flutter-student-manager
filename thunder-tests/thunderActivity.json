@@ -4,11 +4,11 @@
     "colId": "history",
     "containerId": "",
     "name": "https://trungtam.headbull.site/api/classrooms/5",
-    "url": "https://trungtam.headbull.site/api/student/student/edit",
-    "method": "POST",
+    "url": "https://trungtam.headbull.site/api/student/test-marks-subject/12",
+    "method": "GET",
     "sortNum": 0,
     "created": "2023-03-31T10:42:40.595Z",
-    "modified": "2023-04-03T09:29:23.783Z",
+    "modified": "2023-04-04T01:31:21.862Z",
     "headers": [],
     "params": [],
     "body": {
@@ -91,6 +91,35 @@
         {
           "name": "date",
           "value": "2023-04-02 00:00:00.000"
+        }
+      ]
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "46|EsbsfnMKKrqD4EALNGnbGZiEaHHMvZq4wLiVHmwE"
+    },
+    "tests": []
+  },
+  {
+    "_id": "a57e4f7b-ce49-4c8a-9ad1-0f50d66d8d45",
+    "colId": "history",
+    "containerId": "",
+    "name": "https://trungtam.headbull.site/api/classrooms/5 Copy",
+    "url": "https://trungtam.headbull.site/api/student/student/edit",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-03-31T10:42:40.595Z",
+    "modified": "2023-04-03T09:29:23.783Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "formdata",
+      "raw": "",
+      "form": [],
+      "files": [
+        {
+          "name": "avatar",
+          "value": "c:\\Users\\Viet Hung\\Downloads\\y-s-9Ukw2zmbXPc-unsplash.jpg"
         }
       ]
     },

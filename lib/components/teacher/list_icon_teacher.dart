@@ -3,29 +3,29 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
 
-class HomeListIconStudent extends ConsumerWidget {
-  const HomeListIconStudent({super.key});
+class HomeListIconTeacher extends ConsumerWidget {
+  const HomeListIconTeacher({super.key});
 
   static const icons = [
     {
-      "asset": "assets/img/icons/classroom.png",
+      "asset": "assets/img/icons/teaching.png",
       "label": "Lớp học",
-      "path": "/student/classroom",
+      "path": "/teacher/classrooms",
     },
     {
-      "asset": "assets/img/icons/calendar.png",
-      "label": "Lịch học",
-      "path": "/student/calendar",
+      "asset": "assets/img/icons/student.png",
+      "label": "Học sinh",
+      "path": "/teacher/students",
     },
     {
-      "asset": "assets/img/icons/note.png",
-      "label": "Xin nghỉ",
-      "path": "/student/break-school",
+      "asset": "assets/img/icons/qr-code-in.png",
+      "label": "Vào lớp",
+      "path": "/teacher/qrcode?type=in",
     },
     {
-      "asset": "assets/img/icons/tuition.png",
-      "label": "Học phí",
-      "path": "/student/tuition",
+      "asset": "assets/img/icons/qr-code-out.png",
+      "label": "Học về",
+      "path": "/teacher/qrcode?type=out",
     },
   ];
 
@@ -51,7 +51,7 @@ class HomeListIconStudent extends ConsumerWidget {
                   child: Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: Colors.grey[100],
+                      color: Colors.white.withOpacity(.9),
                       borderRadius: BorderRadius.circular(10),
                       // boxShadow: [
                       //   BoxShadow(

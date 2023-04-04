@@ -259,6 +259,29 @@ class StudentRepository {
       return null;
     }
   }
+
+  Future<List<SubjectModel>> getTestMarks(int id) async {
+    try {
+      final auth = ref.watch(authControllerProvider);
+      var url = Uri.https(BASE_URL, '/api/${auth.type.toString().split('.').last}/test-marks-subject/$id');
+      var response = await http.get(url, headers: {
+        'authorization': "Bearer ${auth.token}",
+      });
+
+      if (response.statusCode == 200) {
+        var body = jsonDecode(response.body);
+
+        final data =  List<SubjectModel>.from((body['data'] as List<dynamic>).map<SubjectModel>((x) => SubjectModel.fromMap(x as Map<String,dynamic>),),);
+        return data;
+      } 
+      else {
+        return [];
+      }
+    } catch (e) {
+      print(e);
+      return [];
+    }
+  }
 }
 
 final studentRepositoryProvider = Provider((ref) {

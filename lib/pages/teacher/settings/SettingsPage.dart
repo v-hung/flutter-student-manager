@@ -1,29 +1,22 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_student_manager/components/student/bottom_navbar_student.dart';
-import 'package:flutter_student_manager/components/student/settings/body_settings.dart';
-import 'package:flutter_student_manager/components/student/settings/qrcode.dart';
+import 'package:flutter_student_manager/components/teacher/bottom_navbar_teacher.dart';
+import 'package:flutter_student_manager/components/teacher/settings/body_settings.dart';
 import 'package:flutter_student_manager/controllers/AuthController.dart';
-import 'package:flutter_student_manager/models/StudentModel.dart';
-import 'package:flutter_student_manager/repositories/StudentRepository.dart';
-import 'package:flutter_student_manager/utils/utils.dart';
+import 'package:flutter_student_manager/models/TeacherModel.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 
-final subjectsFutureProvider = FutureProvider((ref) async {
-  return await ref.read(studentRepositoryProvider).getSubjects();
-});
-
-class SettingsPage extends ConsumerStatefulWidget {
-  const SettingsPage({super.key});
+class TeacherSettingsPage extends ConsumerStatefulWidget {
+  const TeacherSettingsPage({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _SettingsPageState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _TeacherSettingsPageState();
 }
 
-class _SettingsPageState extends ConsumerState<SettingsPage> {
+class _TeacherSettingsPageState extends ConsumerState<TeacherSettingsPage> {
   var top = 144.0;
   var opacity = 1.0;
   var opacity2 = 1.0;
@@ -43,7 +36,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(authControllerProvider).user as StudentModel?;
+    final user = ref.watch(authControllerProvider).user as TeacherModel?;
     return Scaffold(
       body: Stack(
         children: [
@@ -51,25 +44,11 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             controller: scrollController,
             slivers: [
               SliverAppBar(
-                leading: IconButton(
-                  onPressed: () {
-                    if (user?.qrcode != null) {
-                      showModalQrCode(context, user?.getImage() ?? "", user!.getQrCode(), user.name);
-                    }
-                    else {
-                      showSnackBar(context: context, content: "Tài khoản chưa cập nhập qrcode");
-                    }
-                  },
-                  icon: const Icon(
-                    CupertinoIcons.qrcode,
-                    color: Colors.green
-                  ),
-                ),
                 backgroundColor: Colors.white.withOpacity(opacity2 > 1 ? 0 : opacity2 < 0 ? 1 :  1 - opacity2),
                 shape: opacity2 < 0.3 ? Border(bottom: BorderSide(color: Colors.grey[300]!)) : null,
                 actions: [
                   TextButton(
-                    onPressed: () => context.go('/student/settings/edit'),
+                    onPressed: () => context.go('/teacher/settings/edit'),
                     child: const Text("Chỉnh sửa", style: TextStyle(
                       color: Colors.green
                     ),)
@@ -147,13 +126,13 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                       children: [
                         Transform.translate(
                           offset: const Offset(0,-30),
-                          child: Text(user?.username ?? "Chưa tạo tài khoản", style: TextStyle(
+                          child: Text(user?.email ?? "Chưa tạo tài khoản", style: TextStyle(
                             color: Colors.black.withOpacity(opacity > 1 ? 1 : opacity < 0 ? 0 : opacity)
                           ),),
                         ),
                   
                         // Text("data")
-                        const Expanded(child: StudentBodySettings()),
+                        const Expanded(child: TeacherBodySettings()),
                       ],
                     ),
                   ),
@@ -165,7 +144,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
           // _buildFab()
         ],
       ),
-      bottomNavigationBar: const BottomNavBarStudent(),
+      bottomNavigationBar: const BottomNavBarTeacher(),
     );
   }
 }

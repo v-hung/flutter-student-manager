@@ -13,6 +13,12 @@ import 'package:flutter_student_manager/pages/student/settings/SettingsPage.dart
 import 'package:flutter_student_manager/pages/student/settings/edit/EditProfilePage.dart';
 import 'package:flutter_student_manager/pages/student/study/StudyPage.dart';
 import 'package:flutter_student_manager/pages/student/study/year/StudyYearPage.dart';
+import 'package:flutter_student_manager/pages/teacher/classrooms/ClassroomPage.dart';
+import 'package:flutter_student_manager/pages/teacher/home/HomeTeacherPage.dart';
+import 'package:flutter_student_manager/pages/teacher/qrcode/QrCodePage.dart';
+import 'package:flutter_student_manager/pages/teacher/settings/SettingsPage.dart';
+import 'package:flutter_student_manager/pages/teacher/students/StudentsPage.dart';
+import 'package:flutter_student_manager/pages/teacher/study/StudyPage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_student_manager/components/page_transition.dart';
 import 'package:flutter_student_manager/controllers/AuthController.dart';
@@ -22,7 +28,7 @@ import 'package:flutter_student_manager/pages/LoginPage.dart';
 
 class RouterNotifier extends ChangeNotifier {
   final Ref _ref;
-  final List<String> loginPages = ["/you-are", "/login"];
+  final List<String> loginPages = ["/", "/login"];
 
   RouterNotifier(this._ref) {
     _ref.listen(authControllerProvider, 
@@ -44,8 +50,11 @@ class RouterNotifier extends ChangeNotifier {
       if (auth.type == AuthType.student) {
         return '/student';
       }
-      else {
+      else if (auth.type == AuthType.teacher) {
         return '/teacher';
+      }
+      else {
+        return '/';
       }
 
     }
@@ -61,13 +70,15 @@ class RouterNotifier extends ChangeNotifier {
     ),
     GoRoute(
       name: "you-are",
-      path: "/you-are",
+      path: "/",
       builder: (context, state) => const YouArePage(),
-    ),
-    GoRoute(
-      name: "login",
-      path: "/login",
-      builder: (context, state) => LoginPage(type: state.queryParams['type'] ?? "parents"),
+      routes: [
+        GoRoute(
+          name: "login",
+          path: "login",
+          builder: (context, state) => LoginPage(type: state.queryParams['type'] ?? "parents"),
+        ),
+      ]
     ),
 
     // student
@@ -82,7 +93,7 @@ class RouterNotifier extends ChangeNotifier {
       // ),
       routes: [
         GoRoute(
-          name: "home-student",
+          name: "student-home",
           path: "/student",
           // builder: (context, state) => const HomeStudentPage(),
           pageBuilder: (context, state) => buildPageWithDefaultTransition(
@@ -92,34 +103,28 @@ class RouterNotifier extends ChangeNotifier {
           ),
           routes: [
             GoRoute(
-              name: "notifications",
               path: "notifications",
               builder: (context, state) => const NotificationsPage(),
             ),
             GoRoute(
-              name: "classroom",
               path: "classroom",
               builder: (context, state) => const ClassroomPage(),
             ),
             GoRoute(
-              name: "calendar",
               path: "calendar",
               builder: (context, state) => const CalendarPage(),
             ),
             GoRoute(
-              name: "break-school",
               path: "break-school",
               builder: (context, state) => const BreakSchoolPage(),
             ),
             GoRoute(
-              name: "tuition",
               path: "tuition",
               builder: (context, state) => const TuitionPage(),
             ),
           ]
         ),
         GoRoute(
-          name: "study",
           path: "/student/study",
           // builder: (context, state) => const StudyPage(),
           pageBuilder: (context, state) => buildPageWithDefaultTransition(
@@ -129,14 +134,12 @@ class RouterNotifier extends ChangeNotifier {
           ),
           routes: [
             GoRoute(
-              name: "study-year",
               path: "year",
               builder: (context, state) => const StudyYearPage()
             ),
           ]
         ),
         GoRoute(
-          name: "settings",
           path: "/student/settings",
           // builder: (context, state) => const SettingsPage(),
           pageBuilder: (context, state) => buildPageWithDefaultTransition(
@@ -146,12 +149,62 @@ class RouterNotifier extends ChangeNotifier {
           ),
           routes: [
             GoRoute(
-              name: "edit-profile",
               path: "edit",
               builder: (context, state) => const EditProfilePage()
             ),
           ]
         ),
+      ]
+    ),
+
+    // teacher
+    ShellRoute(
+      // name: "teacher",
+      // path: "/teacher",
+      builder: (context, state, child) => child,
+      routes: [
+        GoRoute(
+          name: "home-teacher",
+          path: "/teacher",
+          // builder: (context, state) => const HomeStudentPage(),
+          pageBuilder: (context, state) => buildPageWithDefaultTransition(
+            context: context, 
+            state: state, 
+            child: const HomeTeacherPage(),
+          ),
+          routes: [
+            GoRoute(
+              path: "classrooms",
+              builder: (context, state) => const TeacherClassroomPage()
+            ),
+            GoRoute(
+              path: "students",
+              builder: (context, state) => const TeacherStudentsPage()
+            ),
+            GoRoute(
+              path: "qrcode",
+              builder: (context, state) => TeacherQrCodePage(type: state.queryParams['type'] ?? "in")
+            ),
+          ]
+        ),
+        GoRoute(
+          path: "/teacher/study",
+          // builder: (context, state) => const HomeStudentPage(),
+          pageBuilder: (context, state) => buildPageWithDefaultTransition(
+            context: context, 
+            state: state, 
+            child: const TeacherStudyPage(),
+          ),
+        ),
+        GoRoute(
+          path: "/teacher/settings",
+          // builder: (context, state) => const HomeStudentPage(),
+          pageBuilder: (context, state) => buildPageWithDefaultTransition(
+            context: context, 
+            state: state, 
+            child: const TeacherSettingsPage(),
+          ),
+        )
       ]
     ),
   ];

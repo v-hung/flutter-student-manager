@@ -3,9 +3,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_student_manager/components/student/bottom_navbar_student.dart';
-import 'package:flutter_student_manager/components/study/main_info.dart';
-import 'package:flutter_student_manager/components/study/study_user_info.dart';
+import 'package:flutter_student_manager/components/student/study/study_user_info.dart';
+import 'package:flutter_student_manager/components/student/study/test_mark_widget.dart';
 import 'package:flutter_student_manager/controllers/AuthController.dart';
+import 'package:flutter_student_manager/models/StudentModel.dart';
+import 'package:flutter_student_manager/models/SubjectModel.dart';
+import 'package:flutter_student_manager/repositories/StudentRepository.dart';
+import 'package:fl_chart/fl_chart.dart';
+
+final testMarksProvider = FutureProvider<List<SubjectModel>>((ref) async {
+  final user = ref.watch(authControllerProvider).user as StudentModel;
+  return await ref.read(studentRepositoryProvider).getTestMarks(user.id);
+});
 
 class StudyPage extends ConsumerStatefulWidget {
   const StudyPage({super.key});
@@ -14,23 +23,19 @@ class StudyPage extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _StudyPageState();
 }
 
-class _StudyPageState extends ConsumerState<StudyPage> with TickerProviderStateMixin {
-  late TabController tabController;
-
-  @override
-  void initState() {
-    tabController = TabController(length: 3, vsync: this);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    tabController.dispose();
-  }
+class _StudyPageState extends ConsumerState<StudyPage> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
+    final heightSafeArea = size.height -
+      AppBar().preferredSize.height -
+      MediaQuery.of(context).padding.top -
+      MediaQuery.of(context).padding.bottom;
+
+    final testMarks = ref.watch(testMarksProvider);
+
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
@@ -46,50 +51,41 @@ class _StudyPageState extends ConsumerState<StudyPage> with TickerProviderStateM
       ),
       body: Column(
         children: [
-          const StudyUserInfoWidget(),
-
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            padding: const EdgeInsets.all(3),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              color: Colors.black12
-              // color: Color.fromARGB(255, 202, 202, 202)
-            ),
-            child: TabBar(
-              controller: tabController,
-              tabs: [
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(vertical: 5),
-                  alignment: Alignment.center,
-                  child: Text("Học kỳ I", style: TextStyle(fontWeight: FontWeight.w600),),
-                ),
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(vertical: 5),
-                  alignment: Alignment.center,
-                  child: Text("Học kỳ II", style: TextStyle(fontWeight: FontWeight.w600),),
-                ),
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(vertical: 5),
-                  alignment: Alignment.center,
-                  child: Text("Cả năm", style: TextStyle(fontWeight: FontWeight.w600),),
-                ),
-              ],
-            ),
-          ),
+          const StudyUserInfoWidget(moveInfo: false,),
           
           Expanded(
-            child: TabBarView(
-              physics: const NeverScrollableScrollPhysics(),
-              controller: tabController,
-              children: const [
-                const StudyMainInfo(),
-                Center(child: Text("Sử dụng")),
-                Center(child: Text("Còn trống")),
-              ],
+            child: RefreshIndicator(
+              onRefresh: () => ref.refresh(testMarksProvider.future),
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: testMarks.when(
+                  data: (data) {
+                    if (data.length == 0) {
+                      return const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        child: Center(child: Text("Chưa có dữ liệu học tập"),),
+                      );
+                    }
+            
+                    return Column(
+                      children: [
+                        const SizedBox(height: 5,),
+                        for(var i = 0; i < data.length; i++) ...[
+                          TestMarkWidget(index: i, testMark: data[i],)
+                        ]
+                      ],
+                    );
+                  },
+                  error: (e,__) => Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: Center(child: Text(e.toString()))
+                  ), 
+                  loading: () => Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: const Center(child: CircularProgressIndicator())
+                  )
+                ),
+              ),
             ),
           ),
         ],

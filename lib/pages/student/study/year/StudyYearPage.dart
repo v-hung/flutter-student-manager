@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_student_manager/components/student/bottom_navbar_student.dart';
-import 'package:flutter_student_manager/components/study/main_info.dart';
-import 'package:flutter_student_manager/components/study/study_user_info.dart';
+import 'package:flutter_student_manager/components/student/study/main_info.dart';
+import 'package:flutter_student_manager/components/student/study/study_user_info.dart';
 import 'package:flutter_student_manager/controllers/AuthController.dart';
 import 'package:go_router/go_router.dart';
 
