@@ -65,10 +65,10 @@ final appThemeProvider = Provider<AppTheme>((ref) {
     // ),
     inputDecorationTheme: InputDecorationTheme(
       border: OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.grey[400]!),
+        borderSide: BorderSide(color: Colors.grey[500]!),
       ),
       enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.grey[400]!),
+        borderSide: BorderSide(color: Colors.grey[500]!),
       ),
       errorBorder: OutlineInputBorder(
         borderSide: BorderSide(color: Colors.red),

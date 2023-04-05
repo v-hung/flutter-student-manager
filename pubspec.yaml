@@ -59,6 +59,7 @@ dependencies:
   mime: ^1.0.4
   http_parser: ^4.0.2
   fl_chart: ^0.61.0
+  flutter_slidable: ^2.0.0
 
 dev_dependencies:
   flutter_test:

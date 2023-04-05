@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_student_manager/controllers/teacher/StudentController.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class TeacherStudentsPage extends ConsumerStatefulWidget {
   const TeacherStudentsPage({super.key});
@@ -25,6 +27,8 @@ class _TeacherStudentsPageState extends ConsumerState<TeacherStudentsPage> {
       AppBar().preferredSize.height -
       MediaQuery.of(context).padding.top -
       MediaQuery.of(context).padding.bottom;
+
+    final studentsData = ref.watch(studentControllerProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -82,64 +86,155 @@ class _TeacherStudentsPageState extends ConsumerState<TeacherStudentsPage> {
           )
         ],
       ),
-      body: Container(
-        constraints: BoxConstraints(
-          minHeight: heightSafeArea
-        ),
-        child: RefreshIndicator(
-          onRefresh: () => ref.read(studentControllerProvider.notifier).refresh(),
-          child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            child: Column(
+      body: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border(
+                bottom: BorderSide(color: Colors.grey[300]!)
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const SizedBox(height: 10,),
-                
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Học sinh", style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500
-                          ),),
-                          Text("Tổng số: 20", style: TextStyle(
-                            fontSize: 12,
-                          ),),
-                        ],
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
-                        decoration: BoxDecoration(
-                          color: Colors.green,
-                          borderRadius: BorderRadius.circular(7)
-                        ),
-                        child: Text("Thêm mới", style: TextStyle(color: Colors.white),),
-                      )
-                    ],
-                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Học sinh", style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500
+                    ),),
+                    Text("Tổng số: 20", style: TextStyle(
+                      fontSize: 12,
+                    ),),
+                  ],
                 ),
-                const SizedBox(height: 10,),
-                Consumer(
-                  builder: (context, ref, child) {
-                    final students = ref.watch(studentControllerProvider);
-                    return Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
-                      margin: const EdgeInsets.symmetric(horizontal: 15),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(7)
-                        ),
-                    );
-                  },
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+                  decoration: BoxDecoration(
+                    color: Colors.green,
+                    borderRadius: BorderRadius.circular(7)
+                  ),
+                  child: Text("Thêm mới", style: TextStyle(color: Colors.white),),
                 )
               ],
             ),
+          ),
+          // const SizedBox(height: 10,),
+          Expanded(
+            child: SlidableAutoCloseBehavior(
+              closeWhenTapped: true,
+              child: ListView.builder(
+                itemCount: 20,
+                itemBuilder: (context, item) {
+                  return Container(
+                    margin: EdgeInsets.only(left: 10, right: 10, bottom: 10, top: item == 0 ? 10 : 0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(3),
+                    ),
+                    clipBehavior: Clip.hardEdge,
+                    child: Slidable(
+                      key: Key("$item"),
+                      closeOnScroll: false,
+                      endActionPane: ActionPane(
+                        motion: const StretchMotion(),
+                        dragDismissible: true,
+                        dismissible: DismissiblePane(
+                          closeOnCancel: true,
+                          dismissThreshold: 0.9,
+                          onDismissed: () {
+                            print('object');
+                          }, 
+                          confirmDismiss: () async {
+                            return await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return const AlertDialog(
+                                  title: const Text("Confirm"),
+                                  content: const Text("Are you sure you wish to delete this item?"),
+                                  actions: <Widget>[
+                                    
+                                  ],
+                                );
+                              },
+                            ) != null;
+                            return false;
+                          }
+                        ),
+                        children: [
+                          SlidableAction(
+                            backgroundColor: Colors.green,
+                            icon: CupertinoIcons.pen,
+                            label: 'Sửa',
+                            onPressed: (context) {},
+                          ),
+                          SlidableAction(
+                            backgroundColor: Colors.red,
+                            icon: CupertinoIcons.trash,
+                            label: 'Xóa',
+                            onPressed: (context) {},
+                          )
+                        ],
+                      ),
+                      child: Center(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 50,
+                                height: 50,
+                                child: CachedNetworkImage(
+                                  imageUrl: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHw%3D&w=1000&q=80",
+                                  imageBuilder: (context, imageProvider) => Container(
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                    decoration: BoxDecoration(
+                                      // shape: BoxShape.circle,
+                                      borderRadius: BorderRadius.circular(30),
+                                      color: Colors.green,
+                                      image: DecorationImage(
+                                        image: imageProvider, fit: BoxFit.cover),
+                                    ),
+                                  ),
+                                  placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                                  errorWidget: (_, __, ___) => const Center(child: Icon(CupertinoIcons.exclamationmark_circle,)),
+                                )
+                              ),
+                              const SizedBox(height: 5,),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Nguyen viet Hung", style: const TextStyle(
+                                      fontWeight: FontWeight.w500
+                                    ),),
+                                    const SizedBox(height: 5,),
+                                    Text("28/08/1998"),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 5,),
+                              Spacer(),
+                              IconButton(
+                                onPressed: () {},
+                                icon: Icon(CupertinoIcons.info, color: Colors.blue,),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }
+              ),
+            ),
           )
-        )
+        ],
       ),
     );
   }

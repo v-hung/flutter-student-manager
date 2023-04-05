@@ -36,7 +36,9 @@ class _StudentBodySettingsState extends ConsumerState<StudentBodySettings> {
   }
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(authControllerProvider).user as TeacherModel;
+    final user = ref.watch(authControllerProvider).user as StudentModel?;
+    final subjects = ref.watch(subjectsFutureProvider).whenData((value) => value).value ?? [];
+    final classroom = ref.watch(classroomFutureProvider).whenData((value) => value).value;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -66,28 +68,28 @@ class _StudentBodySettingsState extends ConsumerState<StudentBodySettings> {
                 color: Colors.red,
                 icon: CupertinoIcons.person_fill,
                 label: "Họ tên",
-                value: user.name,
+                value: user?.name,
               ),
 
               InfoWidget(
                 color: Colors.orange,
                 icon: CupertinoIcons.time_solid,
                 label: "Ngày sinh",
-                value: null != null ? DateFormat("dd/MM,yyyy").format(null!) : "",
+                value: user?.date_of_birth != null ? DateFormat("dd/MM,yyyy").format(user!.date_of_birth!) : "",
               ),
 
               InfoWidget(
                 color: Colors.green,
                 icon: CupertinoIcons.location_fill,
                 label: "Địa chỉ",
-                value: "",
+                value: user?.address,
               ),
 
               InfoWidget(
                 color: Colors.brown,
                 icon: CupertinoIcons.phone_fill,
                 label: "Số điện thoại liên hệ",
-                value: "",
+                value: user?.contact_info,
                 border: false,
               )
             ],
@@ -121,21 +123,21 @@ class _StudentBodySettingsState extends ConsumerState<StudentBodySettings> {
                 color: Colors.blue,
                 icon: CupertinoIcons.home,
                 label: "Lớp học",
-                value: "Chưa cập nhập",
+                value: classroom != null ? classroom.name : "Chưa cập nhập",
               ),
 
               InfoWidget(
                 color: Colors.cyan,
                 icon: CupertinoIcons.money_dollar,
                 label: "Học phí",
-                value: null,
+                value: user?.tuition != null ? formatCurrencyDouble(user!.tuition!) : null,
               ),
 
               InfoWidget(
                 color: Colors.purple,
                 icon: CupertinoIcons.suit_club,
                 label: "Các môn theo học",
-                value: "",
+                value: subjects.fold("",(value, element, ) => value! + "${element.name} "),
                 border: false,
               ),
             ],
