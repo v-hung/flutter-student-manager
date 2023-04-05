@@ -13,11 +13,12 @@ import 'package:flutter_student_manager/pages/student/settings/SettingsPage.dart
 import 'package:flutter_student_manager/pages/student/settings/edit/EditProfilePage.dart';
 import 'package:flutter_student_manager/pages/student/study/StudyPage.dart';
 import 'package:flutter_student_manager/pages/student/study/year/StudyYearPage.dart';
-import 'package:flutter_student_manager/pages/teacher/classrooms/ClassroomPage.dart';
+import 'package:flutter_student_manager/pages/teacher/home/classrooms/TeacherClassroomPage.dart';
+import 'package:flutter_student_manager/pages/teacher/home/classrooms/details/ClassroomDetailsPage.dart';
 import 'package:flutter_student_manager/pages/teacher/home/HomeTeacherPage.dart';
-import 'package:flutter_student_manager/pages/teacher/qrcode/QrCodePage.dart';
+import 'package:flutter_student_manager/pages/teacher/home/qrcode/QrCodePage.dart';
 import 'package:flutter_student_manager/pages/teacher/settings/SettingsPage.dart';
-import 'package:flutter_student_manager/pages/teacher/students/StudentsPage.dart';
+import 'package:flutter_student_manager/pages/teacher/home/students/StudentsPage.dart';
 import 'package:flutter_student_manager/pages/teacher/study/StudyPage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_student_manager/components/page_transition.dart';
@@ -175,7 +176,13 @@ class RouterNotifier extends ChangeNotifier {
           routes: [
             GoRoute(
               path: "classrooms",
-              builder: (context, state) => const TeacherClassroomPage()
+              builder: (context, state) => const TeacherClassroomPage(),
+              routes: [
+                 GoRoute(
+                  path: ":id",
+                  builder: (context, state) => ClassroomDetailsPage(id: state.params['id'] ?? "")
+                ),
+              ]
             ),
             GoRoute(
               path: "students",

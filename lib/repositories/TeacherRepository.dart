@@ -92,6 +92,57 @@ class TeacherRepository {
       return Future.error("Không thể tải danh sách lớp học");
     }
   }
+
+  Future<ClassroomModel> getClassroomById(String id) async {
+    try {
+      final auth = ref.watch(authControllerProvider);
+      var url = Uri.https(BASE_URL, '/api/${auth.type.toString().split('.').last}/classrooms/$id');
+      var response = await http.get(url, headers: {
+        'authorization': "Bearer ${auth.token}",
+      });
+
+      if (response.statusCode == 200) {
+        var body = jsonDecode(response.body);
+
+        final data =  ClassroomModel.fromMap(body['data']);
+        return data;
+      } 
+      else {
+        return Future.error("Không thể tải lớp học");
+      }
+    } catch (e) {
+      print(e);
+      return Future.error("Không thể tải lớp học");
+    }
+  }
+
+  Future<Map> getStudents() async {
+    try {
+      final auth = ref.watch(authControllerProvider);
+      var url = Uri.https(BASE_URL, '/api/${auth.type.toString().split('.').last}/students');
+      var response = await http.get(url, headers: {
+        'authorization': "Bearer ${auth.token}",
+      });
+
+      if (response.statusCode == 200) {
+        var body = jsonDecode(response.body)['data'];
+
+        final data =  List<StudentModel>.from((body['data'] as List<dynamic>).map<StudentModel>((x) => StudentModel.fromMap(x as Map<String,dynamic>),),);
+        return {
+          "data": data,
+          "current_page": body['current_page'],
+          "per_page": body['per_page'],
+          "last_page": body['last_page'],
+        };
+      } 
+      else {
+        return Future.error("Không thể tải danh sách lớp học");
+      }
+    } catch (e) {
+      print(e);
+      return Future.error("Không thể tải danh sách lớp học");
+    }
+  }
 }
 
 final teacherRepositoryProvider = Provider((ref) {

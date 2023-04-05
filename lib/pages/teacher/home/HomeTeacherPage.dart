@@ -60,7 +60,7 @@ class _HomeTeacherPageState extends ConsumerState<HomeTeacherPage> with TickerPr
                         // height: 70,
                         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(.6),
+                          color: Colors.white.withOpacity(.8),
                           borderRadius: BorderRadius.circular(10)
                         ),
                         child: Row(

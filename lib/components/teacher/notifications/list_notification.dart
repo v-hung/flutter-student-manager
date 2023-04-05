@@ -23,7 +23,7 @@ class _HomeListNotificationState extends ConsumerState<HomeListNotification> {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           decoration: BoxDecoration(
-            color: Colors.grey[200]!.withOpacity(.8),
+            color: Colors.white.withOpacity(.8),
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(10),
               topRight: Radius.circular(10)
@@ -52,7 +52,7 @@ class _HomeListNotificationState extends ConsumerState<HomeListNotification> {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             decoration: BoxDecoration(
-              color: Colors.grey[200]!.withOpacity(.6),
+              color: Colors.grey[200]!.withOpacity(.8),
               borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(10),
                 bottomRight: Radius.circular(10)

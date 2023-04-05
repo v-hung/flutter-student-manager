@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_student_manager/config/app.dart';
+import 'package:flutter_student_manager/models/StudentModel.dart';
 
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class ClassroomModel {
@@ -10,6 +11,8 @@ class ClassroomModel {
   final String? schedule;
   final String? images;
   final String? description;
+  final int? students_count;
+  final List<StudentModel> students;
 
   ClassroomModel({
     required this.id,
@@ -18,6 +21,8 @@ class ClassroomModel {
     required this.schedule,
     required this.images,
     required this.description,
+    required this.students_count,
+    required this.students,
   });
 
   Map<String, dynamic> toMap() {
@@ -28,6 +33,8 @@ class ClassroomModel {
       'schedule': schedule,
       'images': images,
       'description': description,
+      'students_count': students_count,
+      'students': students.map((x) => x.toMap()).toList(),
     };
   }
 
@@ -39,6 +46,8 @@ class ClassroomModel {
       schedule: map['schedule'] != null ? map['schedule'] as String : null,
       images: map['images'] != null ? map['images'] as String : null,
       description: map['description'] != null ? map['description'] as String : null,
+      students_count: map['students_count'] != null ? map['students_count'] as int : null,
+      students: map['students'] != null ? List<StudentModel>.from((map['students'] as List<dynamic>).map<StudentModel>((x) => StudentModel.fromMap(x as Map<String,dynamic>),),) : [],
     );
   }
 
