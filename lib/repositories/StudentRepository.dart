@@ -59,7 +59,7 @@ class StudentRepository {
   Future<StudentModel?> updateStudentInfoById(XFile? avatar, String name, String date, String address, String phone) async {
     try {
       final auth = ref.watch(authControllerProvider);
-      var url = Uri.https(BASE_URL, '/api/${auth.type.toString().split('.').last}/student/edit');
+      var url = Uri.https(BASE_URL, '/api/${auth.type.toString().split('.').last}/student/${auth.user.id}');
 
       var request = http.MultipartRequest("POST", url);
       request.headers['authorization'] = "Bearer ${auth.token}";

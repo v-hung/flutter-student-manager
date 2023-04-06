@@ -17,6 +17,8 @@ import 'package:flutter_student_manager/pages/teacher/home/classrooms/TeacherCla
 import 'package:flutter_student_manager/pages/teacher/home/classrooms/details/ClassroomDetailsPage.dart';
 import 'package:flutter_student_manager/pages/teacher/home/HomeTeacherPage.dart';
 import 'package:flutter_student_manager/pages/teacher/home/qrcode/QrCodePage.dart';
+import 'package:flutter_student_manager/pages/teacher/home/students/details/TeacherStudentDetailsPage.dart';
+import 'package:flutter_student_manager/pages/teacher/home/students/edit-add/TeacherStudentEditAddPage.dart';
 import 'package:flutter_student_manager/pages/teacher/settings/SettingsPage.dart';
 import 'package:flutter_student_manager/pages/teacher/home/students/StudentsPage.dart';
 import 'package:flutter_student_manager/pages/teacher/study/StudyPage.dart';
@@ -178,7 +180,7 @@ class RouterNotifier extends ChangeNotifier {
               path: "classrooms",
               builder: (context, state) => const TeacherClassroomPage(),
               routes: [
-                 GoRoute(
+                GoRoute(
                   path: ":id",
                   builder: (context, state) => ClassroomDetailsPage(id: state.params['id'] ?? "")
                 ),
@@ -186,7 +188,19 @@ class RouterNotifier extends ChangeNotifier {
             ),
             GoRoute(
               path: "students",
-              builder: (context, state) => const TeacherStudentsPage()
+              builder: (context, state) => const TeacherStudentsPage(),
+              routes: [
+                GoRoute(
+                  name: "teacher-student-edit-add",
+                  path: "edit-add",
+                  builder: (context, state) => TeacherStudentEditAddPage(id: state.queryParams['id'] ?? "")
+                ),
+                GoRoute(
+                  name: "teacher-student-info",
+                  path: ":id",
+                  builder: (context, state) => TeacherStudentDetailsPage(id: state.params['id'] ?? "")
+                ),
+              ]
             ),
             GoRoute(
               path: "qrcode",

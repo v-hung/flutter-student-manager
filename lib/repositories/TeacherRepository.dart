@@ -116,10 +116,14 @@ class TeacherRepository {
     }
   }
 
-  Future<Map> getStudents() async {
+  Future<Map> getStudents({int per_page = 20, int page = 1, String search = ""}) async {
     try {
       final auth = ref.watch(authControllerProvider);
-      var url = Uri.https(BASE_URL, '/api/${auth.type.toString().split('.').last}/students');
+      var url = Uri.https(BASE_URL, '/api/${auth.type.toString().split('.').last}/students', {
+        "per_page": per_page.toString(),
+        "page": page.toString(),
+        "search": search.toString()
+      });
       var response = await http.get(url, headers: {
         'authorization': "Bearer ${auth.token}",
       });
@@ -136,11 +140,44 @@ class TeacherRepository {
         };
       } 
       else {
-        return Future.error("Không thể tải danh sách lớp học");
+        return {
+          "data": [],
+          "current_page": 1,
+          "per_page": 1,
+          "last_page": 1,
+        };
       }
     } catch (e) {
       print(e);
-      return Future.error("Không thể tải danh sách lớp học");
+      return {
+        "data": [],
+        "current_page": 1,
+        "per_page": 1,
+        "last_page": 1,
+      };
+    }
+  }
+
+  Future<StudentModel> getStudentById(String id) async {
+    try {
+      final auth = ref.watch(authControllerProvider);
+      var url = Uri.https(BASE_URL, '/api/${auth.type.toString().split('.').last}/students/$id');
+      var response = await http.get(url, headers: {
+        'authorization': "Bearer ${auth.token}",
+      });
+
+      if (response.statusCode == 200) {
+        var body = jsonDecode(response.body);
+
+        final data =  StudentModel.fromMap(body['data']);
+        return data;
+      } 
+      else {
+        return Future.error("Không thể tải học sinh");
+      }
+    } catch (e) {
+      print(e);
+      return Future.error("Không thể tải học sinh");
     }
   }
 }

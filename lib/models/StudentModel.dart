@@ -19,6 +19,8 @@ class StudentModel {
   final String? username;
   final ClassroomModel? classroom;
   final List<SubjectModel> subjects;
+  final String? gender;
+  final DateTime created_at;
   
   StudentModel({
     required this.id,
@@ -35,6 +37,8 @@ class StudentModel {
     required this.username,
     this.classroom,
     required this.subjects,
+    required this.gender,
+    required this.created_at,
   });
   
 
@@ -54,6 +58,8 @@ class StudentModel {
       'username': username,
       'classroom': classroom?.toMap(),
       'subjects': subjects.map((x) => x.toMap()).toList(),
+      'gender': gender,
+      'created_at': created_at.toString(),
     };
   }
 
@@ -73,6 +79,8 @@ class StudentModel {
       username: map['username'] == null ? null : map['username'] as String,
       classroom: map['classroom'] != null ? ClassroomModel.fromMap(map['classroom'] as Map<String,dynamic>) : null,
       subjects: map['subjects'] != null ? List<SubjectModel>.from((map['subjects'] as List<dynamic>).map<SubjectModel>((x) => SubjectModel.fromMap(x as Map<String,dynamic>),),) : [],
+      gender: map['gender'] == null ? null : map['gender'] as String,
+      created_at: DateTime.parse(map['created_at'])
     );
   }
 
