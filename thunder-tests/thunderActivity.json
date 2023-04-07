@@ -33,11 +33,11 @@
     "colId": "history",
     "containerId": "",
     "name": "https://trungtam.headbull.site/api/classrooms/5 Copy",
-    "url": "https://trungtam.headbull.site/api/student/student/12",
-    "method": "GET",
+    "url": "https://trungtam.headbull.site/api/teacher/student/49",
+    "method": "POST",
     "sortNum": 0,
     "created": "2023-03-31T10:42:40.595Z",
-    "modified": "2023-04-03T02:13:11.437Z",
+    "modified": "2023-04-07T08:56:24.067Z",
     "headers": [],
     "params": [],
     "body": {
@@ -45,22 +45,19 @@
       "raw": "",
       "form": [
         {
-          "name": "student_id",
-          "value": "12"
+          "name": "name",
+          "value": "Nguyen viet hung1 23"
         },
         {
-          "name": "raeson",
-          "value": "f"
-        },
-        {
-          "name": "date",
-          "value": "2023-04-02 00:00:00.000"
+          "name": "password",
+          "value": "fsdaf sdfas",
+          "isDisabled": true
         }
       ]
     },
     "auth": {
       "type": "bearer",
-      "bearer": "46|EsbsfnMKKrqD4EALNGnbGZiEaHHMvZq4wLiVHmwE"
+      "bearer": "56|mSkrQEgdsjnhiw1W6ULOlMWq8iyZKRXCqfkqMUGL"
     },
     "tests": []
   },
@@ -134,16 +131,16 @@
     "colId": "history",
     "containerId": "",
     "name": "https://trungtam.headbull.site/api/classrooms/5",
-    "url": "https://trungtam.headbull.site/api/login?type=student",
+    "url": "https://trungtam.headbull.site/api/login?type=teacher",
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-31T10:42:44.856Z",
-    "modified": "2023-03-31T10:44:03.341Z",
+    "modified": "2023-04-07T02:40:40.911Z",
     "headers": [],
     "params": [
       {
         "name": "type",
-        "value": "student",
+        "value": "teacher",
         "isPath": false
       }
     ],

@@ -43,43 +43,45 @@ class _TeacherClassroomInfoState extends ConsumerState<TeacherClassroomInfo> {
               return Column(
                 children: [
                   const SizedBox(height: 10,),
-                  CarouselSlider(
-                    options: CarouselOptions(
-                      // height: 400,
-                      aspectRatio: 4/3,
-                      viewportFraction: .95,
-                      initialPage: 0,
-                      enableInfiniteScroll: true,
-                      reverse: false,
-                      autoPlay: true,
-                      autoPlayInterval: const Duration(seconds: 5),
-                      autoPlayAnimationDuration: const Duration(milliseconds: 800),
-                      autoPlayCurve: Curves.fastOutSlowIn,
-                      enlargeCenterPage: true,
-                      enlargeFactor: 0.3,
-                      // onPageChanged: callbackFunction,
-                      scrollDirection: Axis.horizontal,
-                    ),
-                    items: images.map((e) {
-                      return CachedNetworkImage(
-                        imageUrl: e,
-                        imageBuilder: (context, imageProvider) => Container(
-                          width: double.infinity,
-                          height: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: Colors.grey,
-                            image: DecorationImage(
-                              image: imageProvider, fit: BoxFit.cover),
+                  if (images.length > 0) ...[
+                    CarouselSlider(
+                      options: CarouselOptions(
+                        // height: 400,
+                        aspectRatio: 4/3,
+                        viewportFraction: .95,
+                        initialPage: 0,
+                        enableInfiniteScroll: true,
+                        reverse: false,
+                        autoPlay: true,
+                        autoPlayInterval: const Duration(seconds: 5),
+                        autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                        autoPlayCurve: Curves.fastOutSlowIn,
+                        enlargeCenterPage: true,
+                        enlargeFactor: 0.3,
+                        // onPageChanged: callbackFunction,
+                        scrollDirection: Axis.horizontal,
+                      ),
+                      items: images.map((e) {
+                        return CachedNetworkImage(
+                          imageUrl: e,
+                          imageBuilder: (context, imageProvider) => Container(
+                            width: double.infinity,
+                            height: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.grey,
+                              image: DecorationImage(
+                                image: imageProvider, fit: BoxFit.cover),
+                            ),
                           ),
-                        ),
-                        placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-                        errorWidget: (context, url, error) => const Icon(Icons.error),
-                      );
-                    }).toList(),
-                  ),
-          
-                  const SizedBox(height: 20,),
+                          placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                          errorWidget: (context, url, error) => const Icon(Icons.error),
+                        );
+                      }).toList(),
+                    ),
+
+                    const SizedBox(height: 20,),
+                  ],
           
                   // Expanded(
                     Container(
@@ -92,10 +94,11 @@ class _TeacherClassroomInfoState extends ConsumerState<TeacherClassroomInfo> {
                             fontSize: 16,
                             fontWeight: FontWeight.w700
                           ),),
-          
-                          const SizedBox(height: 10,),
-          
-                          Text(data.description ?? ""),
+
+                          if (data.description != null) ...[
+                            const SizedBox(height: 10,),
+                            Text(data.description ?? ""),
+                          ],
           
                           const SizedBox(height: 20,),
           

@@ -5,13 +5,20 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_student_manager/controllers/teacher/ClassroomsController.dart';
+import 'package:flutter_student_manager/controllers/teacher/SubjectController.dart';
 import 'package:flutter_student_manager/controllers/teacher/StudentController.dart';
+import 'package:flutter_student_manager/models/ClassroomModel.dart';
 import 'package:flutter_student_manager/models/StudentModel.dart';
+import 'package:flutter_student_manager/models/SubjectModel.dart';
+import 'package:flutter_student_manager/repositories/TeacherRepository.dart';
 import 'package:flutter_student_manager/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 class TeacherStudentEditAddPage extends ConsumerStatefulWidget {
   final String id;
@@ -24,13 +31,16 @@ class TeacherStudentEditAddPage extends ConsumerStatefulWidget {
 class _TeacherStudentEditAddPageState extends ConsumerState<TeacherStudentEditAddPage> {
   String? imageUrl;
   final nameController = TextEditingController(); 
-  final genderController = TextEditingController();
+  // final genderController = TextEditingController();
   final dateController = TextEditingController();
   final addressController = TextEditingController();
   final phoneController = TextEditingController();
   final emailController = TextEditingController();
   final scoreController = TextEditingController();
   final tuitionController = TextEditingController();
+  int? classroomValue = null;
+  String genderValue = "nam";
+  List<int> subjectsValue = [];
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   bool showPassword = false;
@@ -38,6 +48,8 @@ class _TeacherStudentEditAddPageState extends ConsumerState<TeacherStudentEditAd
   late BuildContext dialogContext;
   final ImagePicker picker = ImagePicker();
   XFile? file;
+  List<ClassroomModel> classrooms = [];
+  List<SubjectModel> subjects = [];
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -54,7 +66,16 @@ class _TeacherStudentEditAddPageState extends ConsumerState<TeacherStudentEditAd
       loading = true;
     });
 
-    StudentModel? student = null;
+    StudentModel? student = widget.id == "" ? await ref.read(teacherRepositoryProvider).createStudent(
+      nameController.text, dateController.text, addressController.text, phoneController.text, 
+      scoreController.text, tuitionController.text, classroomValue.toString(), 
+      genderValue, usernameController.text, passwordController.text, subjectsValue.toString(), file
+    )
+    : await ref.read(teacherRepositoryProvider).updateStudentInfoById(
+      widget.id, nameController.text, dateController.text, addressController.text, phoneController.text, 
+      scoreController.text, tuitionController.text, classroomValue.toString(), 
+      genderValue, usernameController.text, passwordController.text, subjectsValue.toString(), file
+    );
 
     setState(() {
       loading = false;
@@ -62,6 +83,11 @@ class _TeacherStudentEditAddPageState extends ConsumerState<TeacherStudentEditAd
 
     if (student != null) {
       // ref.read(authControllerProvider.notifier).updateUserInfo(student);
+      if (widget.id != "") {
+        ref.refresh(studentFutureProvider(widget.id).future);
+      }
+      ref.read(studentControllerProvider.notifier).refresh();
+
       if (context.mounted) {
         late Timer _timer;
 
@@ -80,7 +106,7 @@ class _TeacherStudentEditAddPageState extends ConsumerState<TeacherStudentEditAd
         }
 
         await Future.delayed(const Duration(milliseconds: 300));
-        if (context.mounted) context.go('/student/settings');
+        if (context.mounted) context.go('/teacher/students');
       }
     }
     else {
@@ -102,31 +128,46 @@ class _TeacherStudentEditAddPageState extends ConsumerState<TeacherStudentEditAd
   @override
   void initState() {
     super.initState();
-    if (widget.id != "") {
-      loadData();
-    }
-    else {
-      setState(() {
-        loading = false;
-      });
-    }
+    loadData();
   }
 
   void loadData() async {
     StudentModel? student = null;
-    student = await ref.read(studentFutureProvider(widget.id).future);
+    classrooms = await ref.read(classroomsFutureProvider.future).onError((error, stackTrace) => []);
+    subjects = await ref.read(subjectsFutureProvider.future).onError((error, stackTrace) => []);
 
-    imageUrl = student?.avatar;
+    if (widget.id != "") {
+      student = await (ref.read(studentFutureProvider(widget.id).future) as Future<StudentModel?>).onError((error, stackTrace) => null);
 
-    nameController.text = student?.name ?? "";
-    if (student?.date_of_birth != null) {
-      dateController.text = student?.date_of_birth != null ? DateFormat("yyyy-MM-dd").format(student!.date_of_birth!) : "";
-    }
-    if (student?.contact_info != null) {
-      phoneController.text = student?.contact_info ?? "";
-    }
-    if (student?.address != null) {
-      addressController.text = student?.address ?? "";
+      imageUrl = student?.avatar;
+
+      nameController.text = student?.name ?? "";
+      if (student?.date_of_birth != null) {
+        dateController.text = student?.date_of_birth != null ? DateFormat("yyyy-MM-dd").format(student!.date_of_birth!) : "";
+      }
+      if (student?.gender != null) {
+        genderValue = student?.gender ?? "";
+      }
+      if (student?.contact_info != null) {
+        phoneController.text = student?.contact_info ?? "";
+      }
+      if (student?.address != null) {
+        addressController.text = student?.address ?? "";
+      }
+      if (student?.entrance_exam_score != null) {
+        scoreController.text = student?.entrance_exam_score.toString() ?? "";
+      }
+      if (student?.tuition != null) {
+        tuitionController.text = student?.tuition.toString() ?? "";
+      }
+
+      if (student?.username != null) {
+        usernameController.text = student?.username ?? "";
+      }
+
+      subjectsValue = student?.subjects.map((e) => e.id).toList() ?? [];
+
+      classroomValue = student?.class_id ?? null;
     }
 
     setState(() {
@@ -148,6 +189,7 @@ class _TeacherStudentEditAddPageState extends ConsumerState<TeacherStudentEditAd
             color: Colors.grey[300]!,
           )
         ),
+        title: Text(widget.id == "" ? "Thêm học sinh" : "Sửa học sinh", style: const TextStyle(color: Colors.green),),
         actions: [
           TextButton(
             onPressed: save,
@@ -196,7 +238,7 @@ class _TeacherStudentEditAddPageState extends ConsumerState<TeacherStudentEditAd
                     ),),
                     const SizedBox(height: 5,),
                     Container(
-                      padding: const EdgeInsets.only(left: 15),
+                      // padding: const EdgeInsets.only(left: 15),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(9),
@@ -220,7 +262,7 @@ class _TeacherStudentEditAddPageState extends ConsumerState<TeacherStudentEditAd
                               hintText: 'Họ tên',
                               border: InputBorder.none,
                               enabledBorder: InputBorder.none,
-                              contentPadding: EdgeInsets.only(top: 13, bottom: 13, right: 15),
+                              contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 13),
                             ),
                             validator: (value) =>
                               value!.isEmpty ? 'Họ tên không được để trống' : null,
@@ -230,13 +272,25 @@ class _TeacherStudentEditAddPageState extends ConsumerState<TeacherStudentEditAd
                           decoration: BoxDecoration(border: Border(
                             bottom: BorderSide(color: Colors.grey[300]!)
                           )),
-                          child: TextField(
-                            controller: genderController,
-                            decoration: const InputDecoration(
-                              hintText: 'Giới tính',
-                              border: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              contentPadding: EdgeInsets.only(top: 13, bottom: 13, right: 15),
+                          child: Container(
+                            width: double.infinity,
+                            child: DropdownButtonFormField(
+                              decoration: const InputDecoration(
+                                hintText: 'Giới tính',
+                                border: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 13),
+                              ),
+                              items: const [
+                                DropdownMenuItem(value: "nam",child: Text("Nam")),
+                                DropdownMenuItem(value: "nu",child: Text("Nữ")),
+                              ],
+                              value: genderValue,
+                              onChanged: (value) {
+                                setState(() {
+                                  genderValue = value.toString();
+                                });
+                              },
                             ),
                           ),
                         ),
@@ -252,7 +306,7 @@ class _TeacherStudentEditAddPageState extends ConsumerState<TeacherStudentEditAd
                               hintText: 'Ngày sinh',
                               border: InputBorder.none,
                               enabledBorder: InputBorder.none,
-                              contentPadding: EdgeInsets.only(top: 13, bottom: 13, right: 15),
+                              contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 13),
                             ),
                           ),
                         ),
@@ -266,7 +320,7 @@ class _TeacherStudentEditAddPageState extends ConsumerState<TeacherStudentEditAd
                               hintText: 'Địa chỉ',
                               border: InputBorder.none,
                               enabledBorder: InputBorder.none,
-                              contentPadding: EdgeInsets.only(top: 13, bottom: 13, right: 15),
+                              contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 13),
                             ),
                           ),
                         ),
@@ -280,7 +334,7 @@ class _TeacherStudentEditAddPageState extends ConsumerState<TeacherStudentEditAd
                               hintText: 'Số điện thoại',
                               border: InputBorder.none,
                               enabledBorder: InputBorder.none,
-                              contentPadding: EdgeInsets.only(top: 13, bottom: 13, right: 15),
+                              contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 13),
                             ),
                           ),
                         ),
@@ -290,12 +344,15 @@ class _TeacherStudentEditAddPageState extends ConsumerState<TeacherStudentEditAd
                           )),
                           child: TextField(
                             controller: scoreController,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
                             keyboardType: TextInputType.number,
                             decoration: const InputDecoration(
                               hintText: 'Điểm đầu vào',
                               border: InputBorder.none,
                               enabledBorder: InputBorder.none,
-                              contentPadding: EdgeInsets.only(top: 13, bottom: 13, right: 15),
+                              contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 13),
                             ),
                           ),
                         ),
@@ -305,12 +362,15 @@ class _TeacherStudentEditAddPageState extends ConsumerState<TeacherStudentEditAd
                           )),
                           child: TextField(
                             controller: tuitionController,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
                             keyboardType: TextInputType.number,
                             decoration: const InputDecoration(
                               hintText: 'Học phí',
                               border: InputBorder.none,
                               enabledBorder: InputBorder.none,
-                              contentPadding: EdgeInsets.only(top: 13, bottom: 13, right: 15),
+                              contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 13),
                             ),
                           ),
                         ),
@@ -318,46 +378,55 @@ class _TeacherStudentEditAddPageState extends ConsumerState<TeacherStudentEditAd
                           decoration: BoxDecoration(border: Border(
                             bottom: BorderSide(color: Colors.grey[300]!)
                           )),
-                          // child: TextField(
-                          //   controller: phoneController,
-                          //   decoration: const InputDecoration(
-                          //     hintText: 'Lớp',
-                          //     border: InputBorder.none,
-                          //     enabledBorder: InputBorder.none,
-                          //     contentPadding: EdgeInsets.only(top: 13, bottom: 13, right: 15),
-                          //   ),
-                          // ),
                           child: Container(
                             width: double.infinity,
-                            child: ButtonTheme(
-                              alignedDropdown: true,
-                              child: DropdownButtonFormField(
-                                decoration: InputDecoration(
-                                  hintText: 'Lớp',
-                                  border: InputBorder.none,
-                                  enabledBorder: InputBorder.none,
-                                  contentPadding: EdgeInsets.only(top: 13, bottom: 13, right: 15),
-                                ),
-                                items: [1,2,3].map((e) => 
-                                  DropdownMenuItem(child: Text("$e"), value: e,)
-                                ).toList(),
-                                value: null,
-                                onChanged: (value) {},
+                            child: DropdownButtonFormField(
+                              decoration: const InputDecoration(
+                                hintText: 'Lớp',
+                                border: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 13),
                               ),
+                              items: [
+                                const DropdownMenuItem(value: 0,child: Text("Không chọn", style: TextStyle(
+                                  color: Colors.grey
+                                ),)),
+                                for(var i = 0; i < classrooms.length; i++) ...[
+                                  DropdownMenuItem(value: classrooms[i].id,child: Text(classrooms[i].name),)
+                                ]
+                              ],
+                              value: classroomValue,
+                              onChanged: (value) {
+                                setState(() {
+                                  classroomValue = value == 0 ? null : value;
+                                });
+                              },
                             ),
                           ),
                         ),
                         Container(
-                          child: TextField(
-                            controller: phoneController,
-                            decoration: const InputDecoration(
-                              hintText: 'Môn',
-                              border: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              contentPadding: EdgeInsets.only(top: 13, bottom: 13, right: 15),
-                            ),
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: MultiSelectDialogField(
+                            title: const Text("Chọn môn"),
+                            buttonText: Text("Môn học", style: TextStyle(
+                              color: Colors.grey[700]!,
+                              fontWeight: FontWeight.w500
+                            ),),
+                            confirmText: const Text("Chọn"),
+                            cancelText: const Text("Hủy"),
+                            buttonIcon: const Icon(CupertinoIcons.book),
+                            decoration: const BoxDecoration(border: Border()),
+                            items: subjects.map((e) => MultiSelectItem(e.id, e.name)).toList(),
+                            listType: MultiSelectListType.LIST,
+                            initialValue: subjectsValue,
+                            onConfirm: (values) {
+                              setState(() {
+                                subjectsValue = values;
+                              });
+                            },
                           ),
-                        )
+                        ),
+                        const SizedBox(height: 5,)
                       ]),
                     ),
               

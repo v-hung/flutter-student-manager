@@ -50,6 +50,15 @@ class StudentNotifier extends StateNotifier<StudentData> {
 
   Future deleteStudent(int id) async {
     state = state.delStudent(id);
+    ref.read(teacherRepositoryProvider).deleteStudentInfoById("$id");
+  }
+
+  Future refresh() async {
+    state = StudentData.first();
+    final user = ref.watch(authControllerProvider).user as TeacherModel;
+    var data = await ref.read(teacherRepositoryProvider).getStudents();
+    state = StudentData(loading: false, current_page: data['current_page'], 
+      per_page: data['per_page'], last_page: data['last_page'], students: data['data']);
   }
 }
 
@@ -82,6 +91,15 @@ class StudentData {
 
   StudentData.unknown()
     : loading = false,
+      moreLoading = false,
+      students = [],
+      search = "",
+      current_page = 1,
+      per_page = 1,
+      last_page = 1;
+  
+  StudentData.first()
+    : loading = true,
       moreLoading = false,
       students = [],
       search = "",

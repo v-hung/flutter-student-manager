@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
+
 import 'package:flutter_student_manager/config/app.dart';
 import 'package:flutter_student_manager/models/StudentModel.dart';
 
@@ -67,4 +69,7 @@ class ClassroomModel {
       return images!.split(",").map((e) => "https://$BASE_URL/storage/$e").toList();
     }
   }
+
+  bool operator ==(o) => o is ClassroomModel && name == o.name && id == o.id;
+  int get hashCode => Object.hash(id, name);
 }

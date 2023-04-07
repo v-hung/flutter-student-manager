@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter_student_manager/config/app.dart';
 import 'package:flutter_student_manager/models/ClassroomModel.dart';
@@ -72,10 +73,14 @@ class StudentModel {
       address: map['address'] == null ? null : map['address'] as String,
       contact_info: map['contact_info'] == null ? null : map['contact_info'] as String,
       qrcode: map['qrcode'] == null ? null : map['qrcode'] as String,
-      entrance_exam_score: map['entrance_exam_score'] == null ? null : double.parse(map['entrance_exam_score'] as String),
-      tuition: map['tuition'] == null ? null : double.parse(map['tuition'] as String),
+      entrance_exam_score: map['entrance_exam_score'] == null ? null 
+        : map['entrance_exam_score'] is int ? (map['entrance_exam_score'] as int).toDouble()
+        : double.parse(map['entrance_exam_score'] as String),
+      tuition: map['tuition'] == null ? null 
+        : map['tuition'] is int ? (map['tuition'] as int).toDouble()
+        : double.parse(map['tuition'] as String),
       avatar: map['avatar'] == null ? null : map['avatar'] as String,
-      class_id: map['class_id'] == null ? null : map['class_id'] as int,
+      class_id: map['class_id'] == null ? null : map['class_id'] is int ? map['class_id'] : int.parse(map['class_id'] as String),
       username: map['username'] == null ? null : map['username'] as String,
       classroom: map['classroom'] != null ? ClassroomModel.fromMap(map['classroom'] as Map<String,dynamic>) : null,
       subjects: map['subjects'] != null ? List<SubjectModel>.from((map['subjects'] as List<dynamic>).map<SubjectModel>((x) => SubjectModel.fromMap(x as Map<String,dynamic>),),) : [],

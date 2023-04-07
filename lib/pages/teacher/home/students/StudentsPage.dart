@@ -279,7 +279,7 @@ class _TeacherStudentsPageState extends ConsumerState<TeacherStudentsPage> {
                                       SizedBox(
                                         width: 50,
                                         height: 50,
-                                        child: CachedNetworkImage(
+                                        child: student.avatar != null ? CachedNetworkImage(
                                           imageUrl: student.getImage(),
                                           imageBuilder: (context, imageProvider) => Container(
                                             width: double.infinity,
@@ -310,6 +310,22 @@ class _TeacherStudentsPageState extends ConsumerState<TeacherStudentsPage> {
                                             child: Icon(CupertinoIcons.person_fill, color: Colors.green[50], size: 20,)
                                           )),
                                         )
+                                        : Center(child: Container(
+                                          width: double.infinity,
+                                          height: double.infinity,
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            gradient: LinearGradient(
+                                              begin: Alignment.centerLeft,
+                                              end: Alignment.centerRight,
+                                              colors: [
+                                                Colors.green,
+                                                Colors.orange,
+                                              ],
+                                            ),
+                                          ),
+                                          child: Icon(CupertinoIcons.person_fill, color: Colors.green[50], size: 20,)
+                                        ))
                                       ),
                                       const SizedBox(height: 5,),
                                       Padding(

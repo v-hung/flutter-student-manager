@@ -180,6 +180,141 @@ class TeacherRepository {
       return Future.error("Không thể tải học sinh");
     }
   }
+
+  Future<StudentModel?> createStudent(String name, String date, String address, String phone, String entrance_exam_score,
+  String tuition, String class_id, String gender, String username, String password, String subject_id, XFile? avatar) async {
+    try {
+      final auth = ref.watch(authControllerProvider);
+      var url = Uri.https(BASE_URL, '/api/${auth.type.toString().split('.').last}/students');
+
+      var request = http.MultipartRequest("POST", url);
+      request.headers['authorization'] = "Bearer ${auth.token}";
+      request.fields['name'] = name;
+      request.fields['date_of_birth'] = date;
+      request.fields['address'] = address;
+      request.fields['contact_info'] = phone;
+      request.fields['entrance_exam_score'] = entrance_exam_score;
+      request.fields['tuition'] = tuition;
+      request.fields['class_id'] = class_id;
+      request.fields['gender'] = gender;
+      request.fields['username'] = username;
+      request.fields['password'] = password;
+      request.fields['subject_id'] = subject_id;
+      if (avatar != null) {
+        print(avatar);
+        request.files.add(await http.MultipartFile.fromPath('avatar', avatar.path, 
+          contentType: MediaType.parse(lookupMimeType(avatar.path) ?? "jpg")
+          // contentType: MediaType('image', 'jpeg')
+        ));
+      }
+
+      var streamedResponse = await request.send();
+      var response = await http.Response.fromStream(streamedResponse);
+
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+
+        return StudentModel.fromMap(data['data']);
+      } 
+      else {
+        return null;
+      }
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  Future<StudentModel?> updateStudentInfoById(String id, String name, String date, String address, String phone, String entrance_exam_score,
+  String tuition, String class_id, String gender, String username, String password, String subject_id, XFile? avatar) async {
+    try {
+      final auth = ref.watch(authControllerProvider);
+      var url = Uri.https(BASE_URL, '/api/${auth.type.toString().split('.').last}/student/$id');
+
+      var request = http.MultipartRequest("POST", url);
+      request.headers['authorization'] = "Bearer ${auth.token}";
+      request.fields['name'] = name;
+      request.fields['date_of_birth'] = date;
+      request.fields['address'] = address;
+      request.fields['contact_info'] = phone;
+      request.fields['entrance_exam_score'] = entrance_exam_score;
+      request.fields['tuition'] = tuition;
+      request.fields['class_id'] = class_id;
+      request.fields['gender'] = gender;
+      request.fields['username'] = username;
+      request.fields['password'] = password;
+      request.fields['subject_id'] = subject_id;
+      if (avatar != null) {
+        print(avatar);
+        request.files.add(await http.MultipartFile.fromPath('avatar', avatar.path, 
+          contentType: MediaType.parse(lookupMimeType(avatar.path) ?? "jpg")
+          // contentType: MediaType('image', 'jpeg')
+        ));
+      }
+
+      var streamedResponse = await request.send();
+      var response = await http.Response.fromStream(streamedResponse);
+
+      print(response.body);
+
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        return StudentModel.fromMap(data['data']);
+      } 
+      else {
+        return null;
+      }
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  Future<StudentModel?> deleteStudentInfoById(String id) async {
+    try {
+      final auth = ref.watch(authControllerProvider);
+      var url = Uri.https(BASE_URL, '/api/${auth.type.toString().split('.').last}/student/$id');
+      var response = await http.delete(url, headers: {
+        'authorization': "Bearer ${auth.token}",
+      });
+
+      if (response.statusCode == 200) {
+        var body = jsonDecode(response.body);
+
+        final data =  StudentModel.fromMap(body['data']);
+        return data;
+      } 
+      else {
+        return Future.error("Không thể tải danh sách lớp học");
+      }
+    } catch (e) {
+      print(e);
+      return Future.error("Không thể tải danh sách lớp học");
+    }
+  }
+
+  Future<List<SubjectModel>> getSubjects() async {
+    try {
+      final auth = ref.watch(authControllerProvider);
+      var url = Uri.https(BASE_URL, '/api/${auth.type.toString().split('.').last}/subjects');
+      var response = await http.get(url, headers: {
+        'authorization': "Bearer ${auth.token}",
+      });
+
+      if (response.statusCode == 200) {
+        var body = jsonDecode(response.body);
+
+        final data =  List<SubjectModel>.from((body['data'] as List<dynamic>).map<SubjectModel>((x) => SubjectModel.fromMap(x as Map<String,dynamic>),),);
+        return data;
+      } 
+      else {
+        return Future.error("Không thể tải danh sách lớp học");
+      }
+    } catch (e) {
+      print(e);
+      return Future.error("Không thể tải danh sách lớp học");
+    }
+  }
 }
 
 final teacherRepositoryProvider = Provider((ref) {
