@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_student_manager/controllers/AuthController.dart';
 import 'package:flutter_student_manager/controllers/student/ClassroomController.dart';
-import 'package:flutter_student_manager/models/StudentModel.dart';
+import 'package:flutter_student_manager/models/TeacherModel.dart';
 import 'package:flutter_student_manager/pages/student/settings/SettingsPage.dart';
 import 'package:flutter_student_manager/utils/utils.dart';
 import 'package:intl/intl.dart';
@@ -35,9 +35,7 @@ class _TeacherBodySettingsState extends ConsumerState<TeacherBodySettings> {
   }
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(authControllerProvider).user as StudentModel;
-    final subjects = ref.watch(subjectsFutureProvider).whenData((value) => value).value ?? [];
-    final classroom = ref.watch(classroomFutureProvider).whenData((value) => value).value;
+    final user = ref.watch(authControllerProvider).user as TeacherModel?;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -67,28 +65,35 @@ class _TeacherBodySettingsState extends ConsumerState<TeacherBodySettings> {
                 color: Colors.red,
                 icon: CupertinoIcons.person_fill,
                 label: "Họ tên",
-                value: user.name,
+                value: user?.name,
+              ),
+
+              InfoWidget(
+                color: Colors.blue,
+                icon: CupertinoIcons.person_2_alt,
+                label: "Giới tính",
+                value: user?.sex,
               ),
 
               InfoWidget(
                 color: Colors.orange,
                 icon: CupertinoIcons.time_solid,
                 label: "Ngày sinh",
-                value: user.date_of_birth != null ? DateFormat("dd/MM,yyyy").format(user.date_of_birth!) : "",
+                value: user?.date_of_birth != null ? DateFormat("dd/MM,yyyy").format(user!.date_of_birth!) : "",
               ),
 
               InfoWidget(
                 color: Colors.green,
                 icon: CupertinoIcons.location_fill,
                 label: "Địa chỉ",
-                value: user.address,
+                value: user?.address,
               ),
 
               InfoWidget(
                 color: Colors.brown,
                 icon: CupertinoIcons.phone_fill,
                 label: "Số điện thoại liên hệ",
-                value: user.contact_info,
+                value: user?.phone,
                 border: false,
               )
             ],
@@ -96,7 +101,7 @@ class _TeacherBodySettingsState extends ConsumerState<TeacherBodySettings> {
         ),
 
         const SizedBox(height: 20,),
-        Text("Lớp học", style: TextStyle(
+        Text("Chức vụ", style: TextStyle(
           color: Colors.grey[700],
           fontWeight: FontWeight.w600
         ),),
@@ -119,26 +124,18 @@ class _TeacherBodySettingsState extends ConsumerState<TeacherBodySettings> {
           child: Column(
             children: [
               InfoWidget(
-                color: Colors.blue,
-                icon: CupertinoIcons.home,
-                label: "Lớp học",
-                value: classroom != null ? classroom.name : "Chưa cập nhập",
-              ),
-
-              InfoWidget(
                 color: Colors.cyan,
-                icon: CupertinoIcons.money_dollar,
-                label: "Học phí",
-                value: user.tuition != null ? formatCurrencyDouble(user.tuition!) : null,
+                icon: CupertinoIcons.home,
+                label: "Chức vụ",
+                value: user?.position,
               ),
 
-              InfoWidget(
-                color: Colors.purple,
-                icon: CupertinoIcons.suit_club,
-                label: "Các môn theo học",
-                value: subjects.fold("",(value, element, ) => value! + "${element.name} "),
-                border: false,
-              ),
+              // InfoWidget(
+              //   color: Colors.purple,
+              //   icon: CupertinoIcons.money_dollar,
+              //   label: "Bằng cấp",
+              //   value: user.tuition != null ? formatCurrencyDouble(user.tuition!) : null,
+              // )
             ],
           )
         ),

@@ -39,7 +39,7 @@ class _TeacherStudentEditAddPageState extends ConsumerState<TeacherStudentEditAd
   final scoreController = TextEditingController();
   final tuitionController = TextEditingController();
   int? classroomValue = null;
-  String genderValue = "nam";
+  String? genderValue = null;
   List<int> subjectsValue = [];
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
@@ -69,12 +69,12 @@ class _TeacherStudentEditAddPageState extends ConsumerState<TeacherStudentEditAd
     StudentModel? student = widget.id == "" ? await ref.read(teacherRepositoryProvider).createStudent(
       nameController.text, dateController.text, addressController.text, phoneController.text, 
       scoreController.text, tuitionController.text, classroomValue.toString(), 
-      genderValue, usernameController.text, passwordController.text, subjectsValue.toString(), file
+      genderValue ?? "", usernameController.text, passwordController.text, subjectsValue.toString(), file
     )
     : await ref.read(teacherRepositoryProvider).updateStudentInfoById(
       widget.id, nameController.text, dateController.text, addressController.text, phoneController.text, 
       scoreController.text, tuitionController.text, classroomValue.toString(), 
-      genderValue, usernameController.text, passwordController.text, subjectsValue.toString(), file
+      genderValue ?? "", usernameController.text, passwordController.text, subjectsValue.toString(), file
     );
 
     setState(() {

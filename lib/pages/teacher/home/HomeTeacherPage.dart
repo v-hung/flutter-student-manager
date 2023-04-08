@@ -120,7 +120,7 @@ class _HomeTeacherPageState extends ConsumerState<HomeTeacherPage> with TickerPr
                               ),
                             ),
                             IconButton(
-                              onPressed: () => context.go('/student/notifications'), 
+                              onPressed: () => context.go('/teacher/notifications'), 
                               icon: const Icon(CupertinoIcons.bell_fill), color: Colors.white,
                             )
                           ],

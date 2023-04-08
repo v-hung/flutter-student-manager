@@ -34,17 +34,20 @@ class TeacherRepository {
     required this.ref,
   });
 
-  Future<TeacherModel?> updateTeacherInfoById(XFile? avatar, String name, String date, String address, String phone) async {
+  Future<TeacherModel?> updateTeacherInfoById(XFile? avatar, String name, String sex, String date, String address, String phone, String email, String password) async {
     try {
       final auth = ref.watch(authControllerProvider);
-      var url = Uri.https(BASE_URL, '/api/${auth.type.toString().split('.').last}/student/edit');
+      var url = Uri.https(BASE_URL, '/api/${auth.type.toString().split('.').last}/teacher/${auth.user.id}');
 
       var request = http.MultipartRequest("POST", url);
       request.headers['authorization'] = "Bearer ${auth.token}";
       request.fields['name'] = name;
+      request.fields['sex'] = sex;
       request.fields['date_of_birth'] = date;
       request.fields['address'] = address;
-      request.fields['contact_info'] = phone;
+      request.fields['phone'] = phone;
+      request.fields['email'] = email;
+      request.fields['password'] = password;
       if (avatar != null) {
         print(avatar);
         request.files.add(await http.MultipartFile.fromPath('avatar', avatar.path, 
@@ -313,6 +316,48 @@ class TeacherRepository {
     } catch (e) {
       print(e);
       return Future.error("Không thể tải danh sách lớp học");
+    }
+  }
+
+  Future<Map> getBreakSchools({int per_page = 20, int page = 1}) async {
+    try {
+      final auth = ref.watch(authControllerProvider);
+      var url = Uri.https(BASE_URL, '/api/${auth.type.toString().split('.').last}/askforpermission', {
+        "per_page": per_page.toString(),
+        "page": page.toString(),
+      });
+      var response = await http.get(url, headers: {
+        'authorization': "Bearer ${auth.token}",
+      });
+
+      if (response.statusCode == 200) {
+        var body = jsonDecode(response.body)['data'];
+
+        final data =  List<BreakSchoolModel>.from((body['data'] as List<dynamic>).map<BreakSchoolModel>((x) => BreakSchoolModel.fromMap(x as Map<String,dynamic>),),);
+        // final data2 = List.generate(20, (index) => data[0]);
+        return {
+          "data": data,
+          "current_page": body['current_page'],
+          "per_page": body['per_page'],
+          "last_page": body['last_page'],
+        };
+      } 
+      else {
+        return {
+          "data": [],
+          "current_page": 1,
+          "per_page": per_page,
+          "last_page": 1,
+        };
+      }
+    } catch (e) {
+      print(e);
+      return {
+        "data": [],
+        "current_page": 1,
+        "per_page": per_page,
+        "last_page": 1,
+      };
     }
   }
 }

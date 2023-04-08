@@ -94,7 +94,7 @@ class _TeacherClassroomPageState extends ConsumerState<TeacherClassroomPage> {
                               Container(
                                 width: double.infinity,
                                 height: 100,
-                                child: CachedNetworkImage(
+                                child: images.isNotEmpty ? CachedNetworkImage(
                                   imageUrl: images.length > 0 ? images[0] : "",
                                   imageBuilder: (context, imageProvider) => Container(
                                     width: double.infinity,
@@ -112,6 +112,20 @@ class _TeacherClassroomPageState extends ConsumerState<TeacherClassroomPage> {
                                   ),
                                   placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
                                   errorWidget: (_, __, ___) => const Center(child: Icon(CupertinoIcons.exclamationmark_circle,)),
+                                )
+                                : Container(
+                                  width: double.infinity,
+                                  height: double.infinity,
+                                  decoration: const BoxDecoration(
+                                    // shape: BoxShape.circle,
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(7),
+                                      topRight: Radius.circular(7)
+                                    ),
+                                    color: Colors.green,
+                                    image: DecorationImage(
+                                      image: AssetImage("assets/img/classroom_default2.jpg"), fit: BoxFit.cover),
+                                  ),
                                 )
                               ),
                               const SizedBox(height: 5,),

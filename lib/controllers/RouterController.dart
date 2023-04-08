@@ -16,12 +16,16 @@ import 'package:flutter_student_manager/pages/student/study/year/StudyYearPage.d
 import 'package:flutter_student_manager/pages/teacher/home/classrooms/TeacherClassroomPage.dart';
 import 'package:flutter_student_manager/pages/teacher/home/classrooms/details/ClassroomDetailsPage.dart';
 import 'package:flutter_student_manager/pages/teacher/home/HomeTeacherPage.dart';
+import 'package:flutter_student_manager/pages/teacher/home/notifications/TeacherNotificationsPage.dart';
 import 'package:flutter_student_manager/pages/teacher/home/qrcode/QrCodePage.dart';
 import 'package:flutter_student_manager/pages/teacher/home/students/details/TeacherStudentDetailsPage.dart';
 import 'package:flutter_student_manager/pages/teacher/home/students/edit-add/TeacherStudentEditAddPage.dart';
 import 'package:flutter_student_manager/pages/teacher/settings/SettingsPage.dart';
 import 'package:flutter_student_manager/pages/teacher/home/students/StudentsPage.dart';
+import 'package:flutter_student_manager/pages/teacher/settings/edit/TeacherSettingsEdit.dart';
 import 'package:flutter_student_manager/pages/teacher/study/StudyPage.dart';
+import 'package:flutter_student_manager/pages/teacher/study/classroom/StudyClassroomPage.dart';
+import 'package:flutter_student_manager/pages/teacher/study/student/StudyStudentPage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_student_manager/components/page_transition.dart';
 import 'package:flutter_student_manager/controllers/AuthController.dart';
@@ -177,6 +181,10 @@ class RouterNotifier extends ChangeNotifier {
           ),
           routes: [
             GoRoute(
+              path: "notifications",
+              builder: (context, state) => const TeacherNotificationsPage(),
+            ),
+            GoRoute(
               path: "classrooms",
               builder: (context, state) => const TeacherClassroomPage(),
               routes: [
@@ -208,15 +216,28 @@ class RouterNotifier extends ChangeNotifier {
             ),
           ]
         ),
+        
         GoRoute(
           path: "/teacher/study",
-          // builder: (context, state) => const HomeStudentPage(),
+          builder: (context, state) => const HomeStudentPage(),
           pageBuilder: (context, state) => buildPageWithDefaultTransition(
             context: context, 
             state: state, 
             child: const TeacherStudyPage(),
           ),
+          routes: [
+            GoRoute(
+              path: "classroom",
+              builder: (context, state) => const StudyClassroomPage(),
+            ),
+            GoRoute(
+              path: ":id",
+              builder: (context, state) => StudyStudentPage(id: state.params['id'] ?? ""),
+            ),
+          ]
         ),
+        
+        
         GoRoute(
           path: "/teacher/settings",
           // builder: (context, state) => const HomeStudentPage(),
@@ -225,6 +246,12 @@ class RouterNotifier extends ChangeNotifier {
             state: state, 
             child: const TeacherSettingsPage(),
           ),
+          routes: [
+            GoRoute(
+              path: "edit",
+              builder: (context, state) => const TeacherSettingsEditPage()
+            ),
+          ]
         )
       ]
     ),

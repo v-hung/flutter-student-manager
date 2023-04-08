@@ -37,7 +37,6 @@ class _TeacherStudentsPageState extends ConsumerState<TeacherStudentsPage> {
     super.initState();
 
     scrollController.addListener(() {
-      print('load');
       if (scrollController.position.maxScrollExtent == scrollController.offset) {
         ref.read(studentControllerProvider.notifier).loadMore();
       }

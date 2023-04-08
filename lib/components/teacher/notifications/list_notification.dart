@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_student_manager/controllers/student/CodeScanController.dart';
+import 'package:flutter_student_manager/components/teacher/notifications/notification_widget.dart';
+import 'package:flutter_student_manager/controllers/teacher/BreakSchoolController.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -16,7 +17,6 @@ class _HomeListNotificationState extends ConsumerState<HomeListNotification> {
 
   @override
   Widget build(BuildContext context) {
-    final codeScans = ref.watch(codeScansStreamProvider);
     return Column(
       children: [
         const Spacer(),
@@ -39,7 +39,7 @@ class _HomeListNotificationState extends ConsumerState<HomeListNotification> {
               child: const Icon(CupertinoIcons.news_solid, color: Colors.white, size: 20,)
             ),
             const SizedBox(width: 10,),
-            Expanded(child: Text("LỊCH SỬ ĐI HỌC", style: TextStyle(
+            Expanded(child: Text("LỊCH SỬ XIN NGHỈ", style: TextStyle(
               fontWeight: FontWeight.w500,
               fontSize: 16,
               color: Colors.grey[800]
@@ -50,7 +50,7 @@ class _HomeListNotificationState extends ConsumerState<HomeListNotification> {
           flex: 0,
           child: Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
             decoration: BoxDecoration(
               color: Colors.grey[200]!.withOpacity(.8),
               borderRadius: const BorderRadius.only(
@@ -59,13 +59,20 @@ class _HomeListNotificationState extends ConsumerState<HomeListNotification> {
               )
             ),
             child: SingleChildScrollView(
-              child: codeScans.when(
-                data: (codeScans) {
-                  if (codeScans.length == 0) {
-                    return Text("Lịch trình đi học của con bạn sẽ được hiện thị tại đây");
+              child: Consumer(
+                builder: (context, ref, child) {
+                  final breakSchoolsData = ref.watch(breakSchoolControllerProvider);
+                    if (breakSchoolsData.loading) {
+                    return const Center(child: CircularProgressIndicator(),);
                   }
-                      
-                  final length = codeScans.length >= 3 ? 3 : codeScans.length;
+
+                  final breakSchools = breakSchoolsData.breakSchools;
+
+                  if (breakSchools.isEmpty) {
+                    return Text("Lịch sử xin nghỉ của các con sẽ được hiện thị tại đây");
+                  }
+
+                  final length = breakSchools.length >= 3 ? 3 : breakSchools.length;
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -73,36 +80,12 @@ class _HomeListNotificationState extends ConsumerState<HomeListNotification> {
                         if (i > 0) ...[
                           const SizedBox(height: 10,),
                         ],
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Text(codeScans[i].action == "in" ? "Đến Trường" : "Về nhà", style: TextStyle(
-                                    fontSize: 12,
-                                    color: codeScans[i].action == "in" ? Colors.green[900] : Colors.deepOrange[900]
-                                  ),),
-                                ),
-                                const SizedBox(width: 5,),
-                                Text(DateFormat("dd/MM/yyy").format(codeScans[i].date_time), style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey[800]
-                                ),),
-                              ],
-                            ),
-                            const SizedBox(height: 5,),
-                            Text(codeScans[i].title, style: const TextStyle(
-                              // color: Colors.grey[800],
-                              // fontSize: 16,
-                              fontWeight: FontWeight.w500
-                            ),),
-                          ],
-                        ),
+
+                        NotificationTeacherWidget(breakSchool: breakSchools[i]),
 
                         const SizedBox(height: 10,),
 
-                        if (codeScans.length > 3) ...[
+                        if (i == 2) ...[
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
@@ -120,10 +103,8 @@ class _HomeListNotificationState extends ConsumerState<HomeListNotification> {
                       ]
                     ]
                   );
-                }, 
-                error: (_,__) => const Center(child: Text("error")), 
-                loading: () => const Center(child: CircularProgressIndicator(),)
-              )
+                },
+              ),
             ),
           ),
         ),

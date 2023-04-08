@@ -43,7 +43,7 @@ class _TeacherClassroomInfoState extends ConsumerState<TeacherClassroomInfo> {
               return Column(
                 children: [
                   const SizedBox(height: 10,),
-                  if (images.length > 0) ...[
+                  if (images.isNotEmpty) ...[
                     CarouselSlider(
                       options: CarouselOptions(
                         // height: 400,
@@ -79,10 +79,43 @@ class _TeacherClassroomInfoState extends ConsumerState<TeacherClassroomInfo> {
                         );
                       }).toList(),
                     ),
+                  ],
 
-                    const SizedBox(height: 20,),
+                  if (images.isEmpty) ...[
+                    CarouselSlider(
+                      options: CarouselOptions(
+                        // height: 400,
+                        aspectRatio: 4/3,
+                        viewportFraction: .95,
+                        initialPage: 0,
+                        enableInfiniteScroll: true,
+                        reverse: false,
+                        autoPlay: true,
+                        autoPlayInterval: const Duration(seconds: 5),
+                        autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                        autoPlayCurve: Curves.fastOutSlowIn,
+                        enlargeCenterPage: true,
+                        enlargeFactor: 0.3,
+                        // onPageChanged: callbackFunction,
+                        scrollDirection: Axis.horizontal,
+                      ),
+                      items: ["assets/img/classroom_default2.jpg", "assets/img/classroom_default.jpg"].map((e) {
+                        return Container(
+                          width: double.infinity,
+                          height: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.grey,
+                            image: DecorationImage(
+                              image: AssetImage(e), fit: BoxFit.cover),
+                          ),
+                        );
+                      }).toList(),
+                    ),
                   ],
           
+                  const SizedBox(height: 20,),
+
                   // Expanded(
                     Container(
                       width: double.infinity,
@@ -95,10 +128,8 @@ class _TeacherClassroomInfoState extends ConsumerState<TeacherClassroomInfo> {
                             fontWeight: FontWeight.w700
                           ),),
 
-                          if (data.description != null) ...[
-                            const SizedBox(height: 10,),
-                            Text(data.description ?? ""),
-                          ],
+                          const SizedBox(height: 10,),
+                          Text(data.description ?? "Chưa có mô tả"),
           
                           const SizedBox(height: 20,),
           
@@ -117,7 +148,7 @@ class _TeacherClassroomInfoState extends ConsumerState<TeacherClassroomInfo> {
                                   Container(
                                     width: 40,
                                     height: 40,
-                                    child: CachedNetworkImage(
+                                    child:  data.students[i].avatar != null ? CachedNetworkImage(
                                       imageUrl: data.students[i].getImage(),
                                       imageBuilder: (context, imageProvider) => Container(
                                         width: double.infinity,
@@ -131,6 +162,22 @@ class _TeacherClassroomInfoState extends ConsumerState<TeacherClassroomInfo> {
                                       ),
                                       placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
                                       errorWidget: (context, url, error) => const Icon(Icons.error),
+                                    )
+                                    : Container(
+                                      width: double.infinity,
+                                      height: double.infinity,
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        gradient: LinearGradient(
+                                          begin: Alignment.centerLeft,
+                                          end: Alignment.centerRight,
+                                          colors: [
+                                            Colors.green,
+                                            Colors.orange,
+                                          ],
+                                        ),
+                                      ),
+                                      child: Icon(CupertinoIcons.person_fill, color: Colors.green[50], size: 20,)
                                     ),
                                   ),
                                   const SizedBox(width: 10,),

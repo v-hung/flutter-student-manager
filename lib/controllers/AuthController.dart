@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_student_manager/controllers/student/ClassroomController.dart';
 import 'package:flutter_student_manager/models/StudentModel.dart';
+import 'package:flutter_student_manager/models/TeacherModel.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_student_manager/models/AuthModel.dart';
 import 'package:flutter_student_manager/repositories/AuthRepository.dart';
@@ -64,6 +65,9 @@ final getUserTextStateProvider = Provider<String>((ref) {
   if (user is StudentModel) {
     final classroom = ref.watch(classroomFutureProvider).whenData((value) => value).value;
     return "Sao Thái Nguyên${classroom?.name != null ? " | ${classroom!.name}" : ""}";
+  }
+  else if (user is TeacherModel) {
+    return user.email;
   }
   return "";
 });
