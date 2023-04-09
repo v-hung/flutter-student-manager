@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,6 +15,9 @@ class TeacherStudyPage extends ConsumerStatefulWidget {
 }
 
 class _TeacherStudyPageState extends ConsumerState<TeacherStudyPage> {
+  bool isSearch = false;
+  final searchController = TextEditingController();
+  final searchFocus = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +27,38 @@ class _TeacherStudyPageState extends ConsumerState<TeacherStudyPage> {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [Colors.green[600]!, Colors.green[400]!], 
-              stops: [0.5, 1.0],
+              stops: const [0.5, 1.0],
             ),
           ),
         ),
-        title: const Text("Học tập"),
+        title: isSearch ? TextField(
+          focusNode: searchFocus,
+          controller: searchController,
+          onChanged: (value) => setState(() {}),
+          style: TextStyle(color: Colors.white),
+          decoration: InputDecoration(
+            hintText: "Tìm kiếm",
+            enabledBorder:  UnderlineInputBorder(
+              borderSide: BorderSide(width: 1, color: Colors.white.withOpacity(.7))
+            ),
+            focusedBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(width: 1, color: Colors.white)
+            ),
+            contentPadding: const EdgeInsets.symmetric(vertical: 10,),
+            hintStyle: TextStyle(color: Colors.white.withOpacity(0.7), fontWeight: FontWeight.normal),
+          )
+        ) : const Text("Học tập"),
+        actions: [
+          IconButton(
+            onPressed: () => setState(() {
+              isSearch = !isSearch;  
+              if (isSearch) {
+                searchFocus.requestFocus();
+              }
+            }),
+            icon: Icon(isSearch ? CupertinoIcons.xmark : CupertinoIcons.search)
+          )
+        ],
       ),
       body: Column(
         children: [
@@ -50,7 +81,8 @@ class _TeacherStudyPageState extends ConsumerState<TeacherStudyPage> {
 
                 return classroom.when(
                   data: (data) {
-                    final students = data.students;
+                    final filter = searchController.text;
+                    final students = data.students.where((student) => student.name.toLowerCase().contains(filter.toLowerCase())).toList();
                     
                     return ListView.builder(
                       itemCount: students.length,
@@ -62,7 +94,62 @@ class _TeacherStudyPageState extends ConsumerState<TeacherStudyPage> {
                             margin: const EdgeInsets.all(10),
                             padding: const EdgeInsets.all(10),
                             color: Colors.white ,
-                            child: Text(student.name),
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                  child: student.avatar != null ? CachedNetworkImage(
+                                    imageUrl: student.getImage(),
+                                    imageBuilder: (context, imageProvider) => Container(
+                                      width: double.infinity,
+                                      height: double.infinity,
+                                      decoration: BoxDecoration(
+                                        // shape: BoxShape.circle,
+                                        borderRadius: BorderRadius.circular(30),
+                                        color: Colors.green,
+                                        image: DecorationImage(
+                                          image: imageProvider, fit: BoxFit.cover),
+                                      ),
+                                    ),
+                                    placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                                    errorWidget: (_, __, ___) => Center(child: Container(
+                                      width: double.infinity,
+                                      height: double.infinity,
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        gradient: LinearGradient(
+                                          begin: Alignment.centerLeft,
+                                          end: Alignment.centerRight,
+                                          colors: [
+                                            Colors.green,
+                                            Colors.orange,
+                                          ],
+                                        ),
+                                      ),
+                                      child: Icon(CupertinoIcons.person_fill, color: Colors.green[50], size: 20,)
+                                    )),
+                                  )
+                                  : Center(child: Container(
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      gradient: LinearGradient(
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                        colors: [
+                                          Colors.green,
+                                          Colors.orange,
+                                        ],
+                                      ),
+                                    ),
+                                    child: Icon(CupertinoIcons.person_fill, color: Colors.green[50], size: 20,)
+                                  ))
+                                ),
+                                Text(student.name),
+                              ],
+                            ),
                           ),
                         );
                       },

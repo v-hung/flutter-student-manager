@@ -19,6 +19,30 @@ String toImage(String image) {
   return "https://$BASE_URL/storage/$image";
 }
 
+String normalize(String str) {
+  var AccentsMap = [
+    "aàảãáạăằẳẵắặâầẩẫấậ",
+    "AÀẢÃÁẠĂẰẲẴẮẶÂẦẨẪẤẬ",
+    "dđ", "DĐ",
+    "eèẻẽéẹêềểễếệ",
+    "EÈẺẼÉẸÊỀỂỄẾỆ",
+    "iìỉĩíị",
+    "IÌỈĨÍỊ",
+    "oòỏõóọôồổỗốộơờởỡớợ",
+    "OÒỎÕÓỌÔỒỔỖỐỘƠỜỞỠỚỢ",
+    "uùủũúụưừửữứự",
+    "UÙỦŨÚỤƯỪỬỮỨỰ",
+    "yỳỷỹýỵ",
+    "YỲỶỸÝỴ"    
+  ];
+  for (var i=0; i<AccentsMap.length; i++) {
+    var re = RegExp('[' + AccentsMap[i].indexOf(1).toString() + ']', 'g');
+    var char = AccentsMap[i][0];
+    str = str.replace(re, char);
+  }
+  return str;
+}
+
 String formatCurrency(int price) {
   final currencyFormatter = NumberFormat.currency(locale: 'vi');
   return currencyFormatter.format(price);
