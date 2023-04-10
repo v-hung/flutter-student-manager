@@ -140,6 +140,17 @@ class _TeacherSettingsEditPageState extends ConsumerState<TeacherSettingsEditPag
   }
 
   @override
+  void dispose() {
+    nameController.dispose(); 
+    dateController.dispose();
+    addressController.dispose();
+    phoneController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // final user = ref.watch(authControllerProvider).user as TeacherModel;
     return Scaffold(

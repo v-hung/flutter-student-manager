@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_student_manager/config/app.dart';
 import 'package:intl/intl.dart';
@@ -17,30 +18,6 @@ void showSnackBar({required BuildContext context, required String content}) {
 
 String toImage(String image) {
   return "https://$BASE_URL/storage/$image";
-}
-
-String normalize(String str) {
-  var AccentsMap = [
-    "aàảãáạăằẳẵắặâầẩẫấậ",
-    "AÀẢÃÁẠĂẰẲẴẮẶÂẦẨẪẤẬ",
-    "dđ", "DĐ",
-    "eèẻẽéẹêềểễếệ",
-    "EÈẺẼÉẸÊỀỂỄẾỆ",
-    "iìỉĩíị",
-    "IÌỈĨÍỊ",
-    "oòỏõóọôồổỗốộơờởỡớợ",
-    "OÒỎÕÓỌÔỒỔỖỐỘƠỜỞỠỚỢ",
-    "uùủũúụưừửữứự",
-    "UÙỦŨÚỤƯỪỬỮỨỰ",
-    "yỳỷỹýỵ",
-    "YỲỶỸÝỴ"    
-  ];
-  for (var i=0; i<AccentsMap.length; i++) {
-    var re = RegExp('[' + AccentsMap[i].indexOf(1).toString() + ']', 'g');
-    var char = AccentsMap[i][0];
-    str = str.replace(re, char);
-  }
-  return str;
 }
 
 String formatCurrency(int price) {
@@ -189,5 +166,27 @@ class _AlertWidgetState extends ConsumerState<AlertWidget> with SingleTickerProv
         ),
       ),
     );
+  }
+}
+
+class NumericalRangeFormatter extends TextInputFormatter {
+  final double min;
+  final double max;
+
+  NumericalRangeFormatter({required this.min, required this.max});
+
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+
+    if (newValue.text == '') {
+      return newValue;
+    } else if (double.parse(newValue.text) < min) {
+      return TextEditingValue().copyWith(text: min.toStringAsFixed(2));
+    } else {
+      return double.parse(newValue.text) > max ? oldValue : newValue;
+    }
   }
 }

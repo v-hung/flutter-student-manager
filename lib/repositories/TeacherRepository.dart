@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 import 'package:flutter_student_manager/models/CodeScanModel.dart';
+import 'package:flutter_student_manager/models/TestMarkModel.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -316,6 +317,31 @@ class TeacherRepository {
     } catch (e) {
       print(e);
       return Future.error("Không thể tải danh sách lớp học");
+    }
+  }
+
+  Future<List<TestMarkModel>> getTestMarks(String id) async {
+    try {
+      final auth = ref.watch(authControllerProvider);
+      var url = Uri.https(BASE_URL, '/api/${auth.type.toString().split('.').last}/test-marks-student/$id');
+      var response = await http.get(url, headers: {
+        'authorization': "Bearer ${auth.token}",
+      });
+
+      print(response.body);
+
+      if (response.statusCode == 200) {
+        var body = jsonDecode(response.body);
+
+        final data =  List<TestMarkModel>.from((body['data'] as List<dynamic>).map<TestMarkModel>((x) => TestMarkModel.fromMap(x as Map<String,dynamic>),),);
+        return data;
+      } 
+      else {
+        return [];
+      }
+    } catch (e) {
+      print(e);
+      return [];
     }
   }
 

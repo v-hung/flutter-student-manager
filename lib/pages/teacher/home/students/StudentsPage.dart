@@ -44,6 +44,12 @@ class _TeacherStudentsPageState extends ConsumerState<TeacherStudentsPage> {
   }
 
   @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 

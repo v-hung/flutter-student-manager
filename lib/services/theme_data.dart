@@ -39,7 +39,7 @@ final appThemeProvider = Provider<AppTheme>((ref) {
       ),
     ),
     primaryColor: Colors.green,
-    colorScheme: ColorScheme.light().copyWith(
+    colorScheme: const ColorScheme.light().copyWith(
       primary: Colors.green,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
@@ -64,13 +64,15 @@ final appThemeProvider = Provider<AppTheme>((ref) {
     //   color: Colors.grey[900]
     // ),
     inputDecorationTheme: InputDecorationTheme(
+      labelStyle: TextStyle(color: Colors.grey[700]),
+      floatingLabelStyle: const TextStyle(color: Colors.green),
       border: OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.grey[500]!),
+        borderSide: BorderSide(color: Colors.grey[400]!),
       ),
       enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.grey[500]!),
+        borderSide: BorderSide(color: Colors.grey[400]!),
       ),
-      errorBorder: OutlineInputBorder(
+      errorBorder: const OutlineInputBorder(
         borderSide: BorderSide(color: Colors.red),
       ),
       
@@ -90,7 +92,7 @@ final appThemeProvider = Provider<AppTheme>((ref) {
             color: Colors.black.withOpacity(0.2),
             spreadRadius: 1,
             blurRadius: 5,
-            offset: Offset(0, 1), // changes position of shadow
+            offset: const Offset(0, 1), // changes position of shadow
           ),
         ]
       ),
@@ -100,7 +102,7 @@ final appThemeProvider = Provider<AppTheme>((ref) {
     navigationBarTheme: NavigationBarThemeData(
       indicatorColor: Colors.green,
       labelTextStyle: MaterialStateProperty.all(
-        TextStyle(fontSize: 12, fontWeight: FontWeight.w500)
+        const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)
       ),
       elevation: 0,
     )

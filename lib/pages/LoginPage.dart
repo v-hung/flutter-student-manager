@@ -22,9 +22,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   void dispose() {
-    super.dispose();
     emailController.dispose();
     passwordController.dispose();
+    super.dispose();
   }
 
   void signInWithPassword() async {

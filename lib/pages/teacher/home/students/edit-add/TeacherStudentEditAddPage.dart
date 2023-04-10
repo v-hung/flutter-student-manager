@@ -175,6 +175,19 @@ class _TeacherStudentEditAddPageState extends ConsumerState<TeacherStudentEditAd
     });
   }
 
+  @override void dispose() {
+    nameController.dispose(); 
+    dateController.dispose();
+    addressController.dispose();
+    phoneController.dispose();
+    emailController.dispose();
+    scoreController.dispose();
+    tuitionController.dispose();
+    usernameController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

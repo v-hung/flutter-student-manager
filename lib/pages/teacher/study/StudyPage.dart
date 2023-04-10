@@ -6,6 +6,8 @@ import 'package:flutter_student_manager/components/teacher/bottom_navbar_teacher
 import 'package:flutter_student_manager/components/teacher/study/study_user_info.dart';
 import 'package:flutter_student_manager/controllers/teacher/ClassroomsController.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
+import 'package:tiengviet/tiengviet.dart';
 
 class TeacherStudyPage extends ConsumerStatefulWidget {
   const TeacherStudyPage({super.key});
@@ -18,6 +20,21 @@ class _TeacherStudyPageState extends ConsumerState<TeacherStudyPage> {
   bool isSearch = false;
   final searchController = TextEditingController();
   final searchFocus = FocusNode();
+
+  String titleStudent(String? gender, DateTime? date) {
+    String value = (gender == "nam" ? "Nam" : gender == "nu" ? "Nữ" : "");
+    if (gender != null && date != null) {
+      value += " | ";
+    }
+    value += date != null ? DateFormat("dd/MM/yyyy").format(date) : "";
+    return value;
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,19 +98,25 @@ class _TeacherStudyPageState extends ConsumerState<TeacherStudyPage> {
 
                 return classroom.when(
                   data: (data) {
-                    final filter = searchController.text;
-                    final students = data.students.where((student) => student.name.toLowerCase().contains(filter.toLowerCase())).toList();
+                    final filter = TiengViet.parse(searchController.text).toLowerCase();
+                    final students = data.students.where((student) => TiengViet.parse(student.name).toLowerCase().contains(filter)).toList();
                     
                     return ListView.builder(
                       itemCount: students.length,
+                      padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                       itemBuilder: (context, index) {
                         final student = students[index];
                         return InkWell(
                           onTap: () => context.go('/teacher/study/${student.id}'),
                           child: Container(
-                            margin: const EdgeInsets.all(10),
+                            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                             padding: const EdgeInsets.all(10),
-                            color: Colors.white ,
+                            decoration: BoxDecoration(
+                              color: Colors.white ,
+                              border: Border(
+                                bottom: BorderSide(color: Colors.grey[300]!)
+                              )
+                            ),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -147,7 +170,22 @@ class _TeacherStudyPageState extends ConsumerState<TeacherStudyPage> {
                                     child: Icon(CupertinoIcons.person_fill, color: Colors.green[50], size: 20,)
                                   ))
                                 ),
-                                Text(student.name),
+                                const SizedBox(width: 10,),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(student.name, style: const TextStyle(
+                                      fontWeight: FontWeight.w500
+                                    ),),
+                                    const SizedBox(height: 5,),
+                                    Text(titleStudent(student.gender, student.date_of_birth),
+                                      style: TextStyle(fontSize: 13, color: Colors.grey[800]),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(width: 10,),
+                                const Spacer(),
+                                const Icon(CupertinoIcons.info, color: Colors.blue,)
                               ],
                             ),
                           ),

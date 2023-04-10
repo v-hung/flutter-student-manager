@@ -215,8 +215,9 @@ class BreakSchoolPageState extends ConsumerState<BreakSchoolPage> {
                           fontWeight: FontWeight.w700
                         ),),
                         const SizedBox(height: 20,),
-                        TextField(
-                          controller: TextEditingController(text: user.name),
+                        TextFormField(
+                          initialValue: user.name,
+                          // controller: TextEditingController(text: user.name),
                           readOnly: true,
                           decoration: const InputDecoration(
                             labelText: 'Học sinh',
