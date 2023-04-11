@@ -48,7 +48,7 @@ class _TeacherQrCodePageState extends ConsumerState<TeacherQrCodePage> {
               builder: (context, state, child) {
                 switch (state as TorchState) {
                   case TorchState.off:
-                    return const Icon(CupertinoIcons.lightbulb, color: Colors.grey);
+                    return const Icon(CupertinoIcons.lightbulb, color: Colors.white);
                   case TorchState.on:
                     return const Icon(CupertinoIcons.lightbulb_fill, color: Colors.yellow);
                 }

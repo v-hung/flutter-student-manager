@@ -102,6 +102,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           decoration: const InputDecoration(
                             labelText: 'Tài khoản',
                             border: OutlineInputBorder(),
+                            filled: true,
+                            fillColor: Colors.white,
                             prefixIcon: Icon(CupertinoIcons.mail),
                           ),
                         ),
@@ -112,6 +114,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           decoration: InputDecoration(
                             labelText: 'Mặt khẩu',
                             border: const OutlineInputBorder(),
+                            filled: true,
+                            fillColor: Colors.white,
                             prefixIcon: IconButton(
                               onPressed: () => setState(() {showPassword = !showPassword;}),
                               icon: Icon(showPassword ? CupertinoIcons.lock_open : CupertinoIcons.lock)

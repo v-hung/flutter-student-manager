@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_student_manager/services/firebase_cloud_messaging.dart';
 import 'package:flutter_student_manager/services/theme_data.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter_student_manager/controllers/RouterController.dart';
@@ -11,11 +12,20 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
 void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
-  runApp(const ProviderScope(child: MyApp()));
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  final container = ProviderContainer();
+  // 2. Use it to read the provider 
+  container.read(firebaseCloudMessagingRepositoryProvider);
+
+  runApp(UncontrolledProviderScope(
+    container: container,
+    child: const MyApp(),
+  ));
+
+  // runApp(const ProviderScope(child: MyApp()));
   // initializeDateFormatting()
   //   .then((value) => runApp(const ProviderScope(child: MyApp())));
 }
