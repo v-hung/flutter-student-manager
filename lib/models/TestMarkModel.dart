@@ -58,7 +58,7 @@ class TestMarkModel {
   factory TestMarkModel.fromMap(Map<String, dynamic> map) {
     return TestMarkModel(
       id: map['id'] as int,
-      point: map['point'].toDouble(),
+      point: map['point'] is int ? map['point'].toDouble() : double.parse(map['point'] as String),
       date: DateTime.parse(map['date'] as String),
       node: map['node'] != null ? map['node'] as String : null,
       subject: map['subject'] != null ? SubjectModel.fromMap(map['subject'] as Map<String,dynamic>) : null,

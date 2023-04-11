@@ -18,6 +18,7 @@ import 'package:flutter_student_manager/pages/teacher/home/classrooms/details/Cl
 import 'package:flutter_student_manager/pages/teacher/home/HomeTeacherPage.dart';
 import 'package:flutter_student_manager/pages/teacher/home/notifications/TeacherNotificationsPage.dart';
 import 'package:flutter_student_manager/pages/teacher/home/qrcode/QrCodePage.dart';
+import 'package:flutter_student_manager/pages/teacher/home/qrcode/details/QrCodeDetailsPage.dart';
 import 'package:flutter_student_manager/pages/teacher/home/students/details/TeacherStudentDetailsPage.dart';
 import 'package:flutter_student_manager/pages/teacher/home/students/edit-add/TeacherStudentEditAddPage.dart';
 import 'package:flutter_student_manager/pages/teacher/settings/SettingsPage.dart';
@@ -212,7 +213,13 @@ class RouterNotifier extends ChangeNotifier {
             ),
             GoRoute(
               path: "qrcode",
-              builder: (context, state) => TeacherQrCodePage(type: state.queryParams['type'] ?? "in")
+              builder: (context, state) => TeacherQrCodePage(type: state.queryParams['type'] ?? "in"),
+              routes: [
+                GoRoute(
+                  path: ":value",
+                  builder: (context, state) => TeacherQrCodeDetailsPage(value: state.params['value'] ?? "", type: state.queryParams['type'] ?? "",)
+                )
+              ]
             ),
           ]
         ),

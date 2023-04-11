@@ -328,8 +328,6 @@ class TeacherRepository {
         'authorization': "Bearer ${auth.token}",
       });
 
-      print(response.body);
-
       if (response.statusCode == 200) {
         var body = jsonDecode(response.body);
 
@@ -342,6 +340,86 @@ class TeacherRepository {
     } catch (e) {
       print(e);
       return [];
+    }
+  }
+
+  Future<TestMarkModel?> addTestMarks(String student_id, String subject_id, String point, String exercise) async {
+    try {
+      final auth = ref.watch(authControllerProvider);
+      var url = Uri.https(BASE_URL, '/api/${auth.type.toString().split('.').last}/test-marks');
+      var response = await http.post(url, headers: {
+        'authorization': "Bearer ${auth.token}",
+      }, body: {
+        "student_id": student_id,
+        "subject_id": subject_id,
+        "point": point,
+        "exercise": exercise,
+        "date": DateTime.now().toString(),
+      });
+
+      print({student_id});
+
+      if (response.statusCode == 200) {
+        var body = jsonDecode(response.body);
+
+        final data =  TestMarkModel.fromMap(body['data']);
+        return data;
+      } 
+      else {
+        return null;
+      }
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  Future<TestMarkModel?> updateTestMarks(String id, String student_id, String subject_id, String point, String exercise, String date) async {
+    try {
+      final auth = ref.watch(authControllerProvider);
+      var url = Uri.https(BASE_URL, '/api/${auth.type.toString().split('.').last}/test-marks/$id');
+      var response = await http.post(url, headers: {
+        'authorization': "Bearer ${auth.token}",
+      }, body: {
+        "student_id": student_id,
+        "subject_id": subject_id,
+        "point": point,
+        "exercise": exercise,
+        "date": date,
+      });
+
+      if (response.statusCode == 200) {
+        var body = jsonDecode(response.body);
+
+        final data =  TestMarkModel.fromMap(body['data']);
+        return data;
+      } 
+      else {
+        return null;
+      }
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  Future<bool> deleteTestMarks(String id) async {
+    try {
+      final auth = ref.watch(authControllerProvider);
+      var url = Uri.https(BASE_URL, '/api/${auth.type.toString().split('.').last}/test-marks/$id');
+      var response = await http.delete(url, headers: {
+        'authorization': "Bearer ${auth.token}",
+      });
+
+      if (response.statusCode == 200) {
+        return true;
+      } 
+      else {
+        return false;
+      }
+    } catch (e) {
+      print(e);
+      return false;
     }
   }
 
