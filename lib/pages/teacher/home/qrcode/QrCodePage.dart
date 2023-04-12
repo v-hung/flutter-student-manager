@@ -6,6 +6,10 @@ import 'package:go_router/go_router.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'dart:typed_data';
 
+final isScanCompletedProvider = StateProvider<bool>((ref) {
+  return false;
+});
+
 class TeacherQrCodePage extends ConsumerStatefulWidget {
   final String type;
   const TeacherQrCodePage({required this.type, super.key});
@@ -16,7 +20,6 @@ class TeacherQrCodePage extends ConsumerStatefulWidget {
 
 class _TeacherQrCodePageState extends ConsumerState<TeacherQrCodePage> {
   MobileScannerController cameraController = MobileScannerController();
-  // bool isScanCompleted = false;
   
   @override
   void dispose() {
@@ -26,6 +29,7 @@ class _TeacherQrCodePageState extends ConsumerState<TeacherQrCodePage> {
 
   @override
   Widget build(BuildContext context) {
+    bool isScanCompleted = ref.watch(isScanCompletedProvider);
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: Container(
@@ -79,6 +83,10 @@ class _TeacherQrCodePageState extends ConsumerState<TeacherQrCodePage> {
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Column(
           children: [
+            Text(isScanCompleted.toString()),
+            TextButton(onPressed: () {
+              ref.read(isScanCompletedProvider.notifier).state = !isScanCompleted;
+            }, child: Text("click")),
             Expanded(child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: const [
@@ -98,7 +106,7 @@ class _TeacherQrCodePageState extends ConsumerState<TeacherQrCodePage> {
             Expanded(
               flex: 4,
               child: Container(
-                decoration: BoxDecoration(
+                decoration: BoxDecoration( 
                   color: Colors.black87,
                   borderRadius: BorderRadius.circular(3)
                 ),
@@ -108,11 +116,11 @@ class _TeacherQrCodePageState extends ConsumerState<TeacherQrCodePage> {
                   controller: cameraController,
                   onDetect: (capture) {
                     final List<Barcode> barcodes = capture.barcodes;
-                    // if (!isScanCompleted) {
+                    if (!isScanCompleted) {
+                      ref.read(isScanCompletedProvider.notifier).state = true;
                       String code = barcodes[0].rawValue ?? "";
-                      // isScanCompleted = true;
                       context.go('/teacher/qrcode/$code?type=${widget.type}');
-                    // }
+                    }
                   },
                 ),
               ),

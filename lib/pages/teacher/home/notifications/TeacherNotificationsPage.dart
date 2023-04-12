@@ -70,35 +70,39 @@ class _TeacherNotificationsPageState extends ConsumerState<TeacherNotificationsP
               return const Center(child: Text("Không có xin nghỉ nào"),);
             }
 
-            return ListView.builder(
-              controller: scrollController,
-              itemCount: breakSchools.length + 1,
-              itemBuilder: (context, index) {
-                if (index == breakSchools.length) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0),
-                    child: Center(
-                      child: breakSchoolsData.current_page < breakSchoolsData.last_page 
-                        ? const CircularProgressIndicator()
-                        : const Text("Không còn xin nghỉ"),
+            return RefreshIndicator(
+              onRefresh: () => ref.read(breakSchoolControllerProvider.notifier).loadData(),
+              child: ListView.builder(
+                physics: const AlwaysScrollableScrollPhysics(),
+                controller: scrollController,
+                itemCount: breakSchools.length + 1,
+                itemBuilder: (context, index) {
+                  if (index == breakSchools.length) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10.0),
+                      child: Center(
+                        child: breakSchoolsData.current_page < breakSchoolsData.last_page 
+                          ? const CircularProgressIndicator()
+                          : const Text("Không còn xin nghỉ"),
+                      ),
+                    );
+                  }
+            
+                  final breakSchool = breakSchools[index];
+                  return Container(
+                    // margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      // borderRadius: BorderRadius.circular(7),
+                      border: Border(
+                        bottom: BorderSide(color: Colors.grey[300]!)
+                      )
                     ),
+                    child: NotificationTeacherWidget(breakSchool: breakSchool),
                   );
-                }
-
-                final breakSchool = breakSchools[index];
-                return Container(
-                  // margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    // borderRadius: BorderRadius.circular(7),
-                    border: Border(
-                      bottom: BorderSide(color: Colors.grey[300]!)
-                    )
-                  ),
-                  child: NotificationTeacherWidget(breakSchool: breakSchool),
-                );
-              },
+                },
+              ),
             );
           }
         ),

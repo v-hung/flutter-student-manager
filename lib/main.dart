@@ -10,6 +10,7 @@ import 'package:flutter_student_manager/utils/color.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +19,7 @@ void main() async {
   );
   final container = ProviderContainer();
   // 2. Use it to read the provider 
-  container.read(firebaseCloudMessagingRepositoryProvider);
+  container.read(firebaseCloudMessagingServiceProvider);
 
   runApp(UncontrolledProviderScope(
     container: container,

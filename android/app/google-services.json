@@ -29,6 +29,13 @@
             {
               "client_id": "273383696499-1egj7lbfnso83sr0unv89asb2p76is9h.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "273383696499-elamtpa2a83hn7r3llu5et2ugeo366ld.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.flutterStudentManager"
+              }
             }
           ]
         }

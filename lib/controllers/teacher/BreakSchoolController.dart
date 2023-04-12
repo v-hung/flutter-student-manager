@@ -33,6 +33,10 @@ class BreakSchoolsNotifier extends StateNotifier<BreakSchoolData> {
     state = state.addBreakSchools(data['data'], data['current_page']);
   }
 
+  Future refresh() async {
+    
+  }
+
   void dispose() {
     _breakSchoolsController.close();
   }

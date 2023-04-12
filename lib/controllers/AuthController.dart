@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_student_manager/controllers/student/ClassroomController.dart';
 import 'package:flutter_student_manager/models/StudentModel.dart';
 import 'package:flutter_student_manager/models/TeacherModel.dart';
+import 'package:flutter_student_manager/services/firebase_cloud_messaging.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_student_manager/models/AuthModel.dart';
 import 'package:flutter_student_manager/repositories/AuthRepository.dart';
@@ -24,6 +25,7 @@ class AuthNotifier extends StateNotifier<AuthModel> {
 
     if (data != null) {
       state = AuthModel(user: data.user, token: data.token, authState: AuthState.login, type: data.type == "student" ? AuthType.student : AuthType.teacher);
+      ref.read(firebaseCloudMessagingServiceProvider).subscribeToTopic();
     }
     else {
       state = AuthModel(user: null, token: null, authState: AuthState.notLogin, type: null);
@@ -35,6 +37,7 @@ class AuthNotifier extends StateNotifier<AuthModel> {
 
     if (data != null) {
       state = AuthModel(user: data.user, token: data.token, authState: AuthState.login, type: data.type == "student" ? AuthType.student : AuthType.teacher);
+      ref.read(firebaseCloudMessagingServiceProvider).subscribeToTopic();
       if (context.mounted) {
         context.go("/$type");
       }
@@ -52,6 +55,7 @@ class AuthNotifier extends StateNotifier<AuthModel> {
 
   Future<void> logout() async {
     ref.read(authRepositoryProvider).logout();
+    ref.read(firebaseCloudMessagingServiceProvider).unsubscribeFromTopic();
     state = AuthModel(user: null, token: null, authState: AuthState.notLogin, type: null);
   }
 }

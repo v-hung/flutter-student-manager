@@ -166,5 +166,51 @@
       ]
     },
     "tests": []
+  },
+  {
+    "_id": "5ac4204f-d0ad-4b2b-9e5e-8b0f2436eb67",
+    "colId": "history",
+    "containerId": "",
+    "name": "https://fcm.googleapis.com/fcm/send",
+    "url": "https://fcm.googleapis.com/fcm/send",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-04-12T07:50:27.608Z",
+    "modified": "2023-04-12T07:50:27.608Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"to\": \"teachers\",\n  \"notification\": {\n    \"title\": \"hi\",\n    \"body\": \"hello\"\n  },\n  \"data\": {\n    \"slug\": \"fsadf\"\n  }\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "c3XpnlbmSK-diyYxK1D2JG:APA91bFo3If_DrkEyMMlZglYHsWkPaWGlVdthMztRekngMzVg0gWIjScwD7v-u-op1GNWYf1Yz_rSnLdDPA94tbMltAYEB80BVDB1Zt2XqvaEaI-X7ScmA0JCjSWwBPijNVmp0KAdL6I"
+    },
+    "tests": []
+  },
+  {
+    "_id": "68297751-4f02-40e0-a31c-68623728b7c1",
+    "colId": "history",
+    "containerId": "",
+    "name": "https://fcm.googleapis.com/fcm/send",
+    "url": "https://fcm.googleapis.com/fcm/send",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-04-12T07:50:33.748Z",
+    "modified": "2023-04-12T08:07:30.638Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"to\": \"/topics/teachers\",\n  \"notification\": {\n    \"title\": \"hi\",\n    \"body\": \"hello\"\n  },\n  \"data\": {\n    \"slug\": \"fsadf\"\n  }\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "AAAAP6bwKHM:APA91bFlfp-FLflwWXoGmseQtqO6BkomE7Uan72oTI5p2KoZp-hwz0cQxauAJiW41LAl2WFy3ZFgwfakr4KM_TQSeo3Pyj0LkDdyMkd5bJ0bgdFovqOg4T17YJgyy-_g1Cb0Qv4_hAgG"
+    },
+    "tests": []
   }
 ]

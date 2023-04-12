@@ -28,9 +28,10 @@ class _TeacherQrCodeDetailsPageState extends ConsumerState<TeacherQrCodeDetailsP
             ),
           ),
         ),
-        // leading: IconButton(onPressed: () {
-        //   context.go('/teacher/qrcode?type=${widget.type}');
-        // }, icon: const Icon(CupertinoIcons.back)),
+        leading: IconButton(onPressed: () {
+          context.go('/teacher/qrcode?type=${widget.type}');
+          // ref.read(isScanCompletedProvider.notifier).state = false;
+        }, icon: const Icon(CupertinoIcons.back)),
         title: Text(widget.type == "in" ? "Quét giờ vào" : "Quét giờ ra"),
       ),
       body: Container(
