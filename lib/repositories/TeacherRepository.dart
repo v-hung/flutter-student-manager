@@ -464,6 +464,31 @@ class TeacherRepository {
       };
     }
   }
+
+  Future<CodeScanModel?> createQrCode(String id) async {
+    try {
+      final auth = ref.watch(authControllerProvider);
+      var url = Uri.https(BASE_URL, '/api/${auth.type.toString().split('.').last}/qr-code/$id');
+      var response = await http.post(url, headers: {
+        'authorization': "Bearer ${auth.token}",
+      });
+
+      print(response.body);
+
+      if (response.statusCode == 200) {
+        var body = jsonDecode(response.body);
+
+        final data =  CodeScanModel.fromMap(body['data']);
+        return data;
+      } 
+      else {
+        return null;
+      }
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
 }
 
 final teacherRepositoryProvider = Provider((ref) {
