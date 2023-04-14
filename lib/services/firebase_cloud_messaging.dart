@@ -5,10 +5,11 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_student_manager/controllers/AuthController.dart';
 import 'package:flutter_student_manager/controllers/RouterController.dart';
-import 'package:flutter_student_manager/controllers/student/BreakSchoolController.dart';
+import 'package:flutter_student_manager/controllers/teacher/BreakSchoolController.dart';
 import 'package:flutter_student_manager/models/StudentModel.dart';
 import 'package:flutter_student_manager/models/TeacherModel.dart';
 import 'package:flutter_student_manager/services/local_notifications.dart';
+import 'package:go_router/go_router.dart';
 
 class FirebaseCloudMessagingService {
   final Ref ref;
@@ -20,6 +21,15 @@ class FirebaseCloudMessagingService {
     required this.fcm,
   }) {
     init();
+    ref.listen(authControllerProvider, 
+    (oldValue, newValue) {
+      if (oldValue?.user == null && newValue.user != null) {
+        subscribeToTopic(newValue.user);
+      }
+      else if (oldValue?.user != null && newValue.user == null) {
+        unsubscribeFromTopic(oldValue?.user);
+      }
+    });
   }
 
   Future init() async {
@@ -55,8 +65,9 @@ class FirebaseCloudMessagingService {
     ref.read(localNotificationServiceProvider).openedNotification(null);
   }
 
-  Future subscribeToTopic() async {
-    final user = ref.watch(authControllerProvider).user;
+  Future subscribeToTopic(dynamic user) async {
+    // final user = ref.watch(authControllerProvider).user;
+    print("${user.runtimeType} subscribe");
     if (user is StudentModel) {
       await fcm.subscribeToTopic("student-${user.id}");
     }
@@ -65,8 +76,9 @@ class FirebaseCloudMessagingService {
     }
   }
 
-  Future unsubscribeFromTopic() async {
-    final user = ref.watch(authControllerProvider).user;
+  Future unsubscribeFromTopic(dynamic user) async {
+    // final user = ref.watch(authControllerProvider).user;
+    print("${user.runtimeType} unsubscribe");
     if (user is StudentModel) {
       await fcm.unsubscribeFromTopic("student-${user.id}");
     }

@@ -3,18 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_student_manager/components/teacher/bottom_navbar_teacher.dart';
+import 'package:flutter_student_manager/models/StudentModel.dart';
 import 'package:flutter_student_manager/repositories/TeacherRepository.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'dart:typed_data';
-
-final isScanCompletedProvider = StateProvider<bool>((ref) {
-  return false;
-});
-
-Future createCodeScan(String uid) async {
-  return await Future.delayed(const Duration(milliseconds: 100));
-}
 
 class TeacherQrCodePage extends ConsumerStatefulWidget {
   final String type;
@@ -28,7 +21,7 @@ class _TeacherQrCodePageState extends ConsumerState<TeacherQrCodePage> {
   MobileScannerController cameraController = MobileScannerController();
   bool isScanCompleted = false;
 
-  Future send(String uid) async {
+  Future send(String uid, ) async {
     if (isScanCompleted) {
       return;
     }
@@ -36,11 +29,19 @@ class _TeacherQrCodePageState extends ConsumerState<TeacherQrCodePage> {
     setState(() {
       isScanCompleted = true;
     });
-    final data = await ref.read(teacherRepositoryProvider).createQrCode(uid);
 
-    print(data);
+    final data = await ref.read(teacherRepositoryProvider).createQrCode(uid, widget.type, DateTime.now().toString());
 
-    await showAlert(context);
+    if (data != null) {
+      if (context.mounted) {
+        await showAlertSuccess(context, data.student!, widget.type);
+      }
+    }
+    else {
+      if (context.mounted) {
+        await showAlertFailed(context);
+      }
+    }
 
     setState(() {
       isScanCompleted = false;
@@ -78,9 +79,9 @@ class _TeacherQrCodePageState extends ConsumerState<TeacherQrCodePage> {
               builder: (context, state, child) {
                 switch (state as TorchState) {
                   case TorchState.off:
-                    return const Icon(CupertinoIcons.lightbulb, color: Colors.white);
+                    return const Icon(CupertinoIcons.bolt, color: Colors.white);
                   case TorchState.on:
-                    return const Icon(CupertinoIcons.lightbulb_fill, color: Colors.yellow);
+                    return const Icon(CupertinoIcons.bolt_fill, color: Colors.yellow);
                 }
               },
             ),
@@ -111,8 +112,6 @@ class _TeacherQrCodePageState extends ConsumerState<TeacherQrCodePage> {
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Column(
               children: [
-                Text(isScanCompleted.toString()),
-                TextButton(onPressed: () => send("s5s108dfc"), child: Text("click")),
                 Expanded(child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
@@ -143,10 +142,9 @@ class _TeacherQrCodePageState extends ConsumerState<TeacherQrCodePage> {
                       onDetect: (capture) {
                         final List<Barcode> barcodes = capture.barcodes;
                         if (!isScanCompleted) {
-                          // ref.read(isScanCompletedProvider.notifier).state = true;
-                          isScanCompleted = true;
                           String code = barcodes[0].rawValue ?? "";
-                          context.go('/teacher/qrcode/$code?type=${widget.type}');
+                          print('send');
+                          send(code);
                         }
                       },
                     ),
@@ -175,7 +173,7 @@ class _TeacherQrCodePageState extends ConsumerState<TeacherQrCodePage> {
   }
 }
 
-Future showAlert(BuildContext context) async {
+Future showAlertSuccess(BuildContext context, StudentModel student, String type) async {
   return showDialog(context: context, builder: (BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(
@@ -189,12 +187,12 @@ Future showAlert(BuildContext context) async {
             child: Column(
               children: [
                 const SizedBox(height: 50,),
-                Text("Nguyễn Việt Hùng", style: TextStyle(
+                Text(student.name, style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold
                 ),),
                 const SizedBox(height: 5,),
-                Text("Con đã đến lớp"),
+                type == "in" ? const Text("Con đã đến lớp") : const Text("Con đã ra về"),
                 const SizedBox(height: 20,),
               ],
             ),
@@ -243,6 +241,48 @@ Future showAlert(BuildContext context) async {
                   )
                 ),
               )
+            ),
+          )
+        ],
+      ),
+    );
+  });
+}
+
+Future showAlertFailed(BuildContext context) async {
+  return showDialog(context: context, builder: (BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(4)
+      ),
+      child: Stack(
+        alignment: Alignment.topCenter,
+        clipBehavior: Clip.none,
+        children: [
+          IntrinsicHeight(
+            child: Column(
+              children: const [
+                SizedBox(height: 50,),
+                Text("Thất bại", style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold
+                ),),
+                SizedBox(height: 5,),
+                Text("Không thể quét mã, vui lòng thử lại"),
+                SizedBox(height: 20,),
+              ],
+            ),
+          ),
+          Positioned(
+            top: -40,
+            child: Container(
+              height: 80,
+              width: 80,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.red
+              ),
+              child: const Icon(CupertinoIcons.exclamationmark, color: Colors.white, size: 30,)
             ),
           )
         ],

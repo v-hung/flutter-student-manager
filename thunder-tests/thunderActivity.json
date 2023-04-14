@@ -37,7 +37,7 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-31T10:42:40.595Z",
-    "modified": "2023-04-13T10:07:57.587Z",
+    "modified": "2023-04-14T03:07:12.420Z",
     "headers": [],
     "params": [],
     "body": {
@@ -59,7 +59,7 @@
           "isDisabled": true
         },
         {
-          "name": "date",
+          "name": "date_time",
           "value": "2023-04-13"
         }
       ]
@@ -178,12 +178,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-04-12T07:50:33.748Z",
-    "modified": "2023-04-12T08:07:30.638Z",
+    "modified": "2023-04-14T04:19:49.654Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"to\": \"/topics/teachers\",\n  \"notification\": {\n    \"title\": \"hi\",\n    \"body\": \"hello\"\n  },\n  \"data\": {\n    \"slug\": \"fsadf\"\n  }\n}",
+      "raw": "{\n  \"to\": \"/topics/student-12\",\n  \"notification\": {\n    \"title\": \"hi\",\n    \"body\": \"hello teachers\"\n  },\n  \"data\": {\n    \"slug\": \"fsadf\"\n  }\n}",
       "form": []
     },
     "auth": {

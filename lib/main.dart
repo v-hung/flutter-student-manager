@@ -13,20 +13,20 @@ import 'firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
-  // final container = ProviderContainer();
-  // // 2. Use it to read the provider 
-  // container.read(firebaseCloudMessagingServiceProvider);
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  final container = ProviderContainer();
+  // 2. Use it to read the provider 
+  container.read(firebaseCloudMessagingServiceProvider);
 
-  // runApp(UncontrolledProviderScope(
-  //   container: container,
-  //   child: const MyApp(),
-  // ));
+  runApp(UncontrolledProviderScope(
+    container: container,
+    child: const MyApp(),
+  ));
 
-  runApp(const ProviderScope(child: MyApp()));
+  // runApp(const ProviderScope(child: MyApp()));
   // initializeDateFormatting()
   //   .then((value) => runApp(const ProviderScope(child: MyApp())));
 }

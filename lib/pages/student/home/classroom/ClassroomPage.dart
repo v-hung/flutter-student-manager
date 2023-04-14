@@ -61,15 +61,15 @@ class ClassroomPageState extends ConsumerState<ClassroomPage> with TickerProvide
                 tabs: [
                   Container(
                     width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 5),
+                    padding: const EdgeInsets.symmetric(vertical: 5),
                     alignment: Alignment.center,
-                    child: Text("Lớp học", style: TextStyle(fontWeight: FontWeight.w600),),
+                    child: const Text("Lớp học", style: TextStyle(fontWeight: FontWeight.w600),),
                   ),
                   Container(
                     width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 5),
+                    padding: const EdgeInsets.symmetric(vertical: 5),
                     alignment: Alignment.center,
-                    child: Text("Giáo viên", style: TextStyle(fontWeight: FontWeight.w600),),
+                    child: const Text("Giáo viên", style: TextStyle(fontWeight: FontWeight.w600),),
                   ),
                 ],
               ),

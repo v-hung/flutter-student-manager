@@ -25,7 +25,7 @@ class AuthNotifier extends StateNotifier<AuthModel> {
 
     if (data != null) {
       state = AuthModel(user: data.user, token: data.token, authState: AuthState.login, type: data.type == "student" ? AuthType.student : AuthType.teacher);
-      ref.read(firebaseCloudMessagingServiceProvider).subscribeToTopic();
+      // ref.read(firebaseCloudMessagingServiceProvider).subscribeToTopic();
     }
     else {
       state = AuthModel(user: null, token: null, authState: AuthState.notLogin, type: null);
@@ -37,7 +37,7 @@ class AuthNotifier extends StateNotifier<AuthModel> {
 
     if (data != null) {
       state = AuthModel(user: data.user, token: data.token, authState: AuthState.login, type: data.type == "student" ? AuthType.student : AuthType.teacher);
-      ref.read(firebaseCloudMessagingServiceProvider).subscribeToTopic();
+      // ref.read(firebaseCloudMessagingServiceProvider).subscribeToTopic();
       if (context.mounted) {
         context.go("/$type");
       }
@@ -55,7 +55,7 @@ class AuthNotifier extends StateNotifier<AuthModel> {
 
   Future<void> logout() async {
     ref.read(authRepositoryProvider).logout();
-    ref.read(firebaseCloudMessagingServiceProvider).unsubscribeFromTopic();
+    // ref.read(firebaseCloudMessagingServiceProvider).unsubscribeFromTopic(state.user);
     state = AuthModel(user: null, token: null, authState: AuthState.notLogin, type: null);
   }
 }

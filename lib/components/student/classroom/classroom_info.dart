@@ -96,48 +96,48 @@ class _ClassroomInfoState extends ConsumerState<ClassroomInfo> {
           
                           const SizedBox(height: 20,),
           
-                          Text("Thông tin liên hệ", style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500
-                          ),),
+                          // Text("Thông tin liên hệ", style: TextStyle(
+                          //   fontSize: 14,
+                          //   color: Colors.black,
+                          //   fontWeight: FontWeight.w500
+                          // ),),
           
-                          const SizedBox(height: 10,),
+                          // const SizedBox(height: 10,),
           
-                          Container(
-                            width: double.infinity,
-                            child: DataTable(
-                              // columnSpacing: 83,
-                              border: TableBorder.all(color: Colors.white),
-                              dividerThickness: 0,
-                              headingRowHeight: 0,
-                              // dataRowHeight: 30,
-                              columns: const <DataColumn>[
-                                DataColumn(label: Text('')),
-                                DataColumn(label: Text('')),
-                              ],
-                              rows: const <DataRow>[
-                                DataRow(
-                                  cells: <DataCell>[
-                                    DataCell(Text("Email", style: TextStyle(fontWeight: FontWeight.w500),maxLines: 1,)),
-                                    DataCell(Text('viet.hung.2898@gmail.com')),
-                                  ],
-                                ),
-                                DataRow(
-                                  cells: <DataCell>[
-                                    DataCell(Text("Địa chỉ", style: TextStyle(fontWeight: FontWeight.w500),maxLines: 1,)),
-                                    DataCell(Text('Sớn Tiến - Quyết Thắng - Thái Nguyên')),
-                                  ],
-                                ),
-                                DataRow(
-                                  cells: <DataCell>[
-                                    DataCell(Text("Số điện thoại", style: TextStyle(fontWeight: FontWeight.w500), maxLines: 1,)),
-                                    DataCell(Text('0399 633 237')),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
+                          // Container(
+                          //   width: double.infinity,
+                          //   child: DataTable(
+                          //     // columnSpacing: 83,
+                          //     border: TableBorder.all(color: Colors.white),
+                          //     dividerThickness: 0,
+                          //     headingRowHeight: 0,
+                          //     // dataRowHeight: 30,
+                          //     columns: const <DataColumn>[
+                          //       DataColumn(label: Text('')),
+                          //       DataColumn(label: Text('')),
+                          //     ],
+                          //     rows: const <DataRow>[
+                          //       DataRow(
+                          //         cells: <DataCell>[
+                          //           DataCell(Text("Email", style: TextStyle(fontWeight: FontWeight.w500),maxLines: 1,)),
+                          //           DataCell(Text('viet.hung.2898@gmail.com')),
+                          //         ],
+                          //       ),
+                          //       DataRow(
+                          //         cells: <DataCell>[
+                          //           DataCell(Text("Địa chỉ", style: TextStyle(fontWeight: FontWeight.w500),maxLines: 1,)),
+                          //           DataCell(Text('Sớn Tiến - Quyết Thắng - Thái Nguyên')),
+                          //         ],
+                          //       ),
+                          //       DataRow(
+                          //         cells: <DataCell>[
+                          //           DataCell(Text("Số điện thoại", style: TextStyle(fontWeight: FontWeight.w500), maxLines: 1,)),
+                          //           DataCell(Text('0399 633 237')),
+                          //         ],
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),

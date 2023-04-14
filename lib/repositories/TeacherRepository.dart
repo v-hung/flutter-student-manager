@@ -465,15 +465,16 @@ class TeacherRepository {
     }
   }
 
-  Future<CodeScanModel?> createQrCode(String id) async {
+  Future<CodeScanModel?> createQrCode(String id, String action, String date_time) async {
     try {
       final auth = ref.watch(authControllerProvider);
       var url = Uri.https(BASE_URL, '/api/${auth.type.toString().split('.').last}/qr-code/$id');
       var response = await http.post(url, headers: {
         'authorization': "Bearer ${auth.token}",
+      }, body: {
+        "action": action,
+        "date_time": date_time
       });
-
-      print(response.body);
 
       if (response.statusCode == 200) {
         var body = jsonDecode(response.body);

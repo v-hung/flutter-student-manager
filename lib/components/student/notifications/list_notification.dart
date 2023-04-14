@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_student_manager/components/student/notifications/notification_widget.dart';
 import 'package:flutter_student_manager/controllers/student/CodeScanController.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -16,7 +17,6 @@ class _HomeListNotificationState extends ConsumerState<HomeListNotification> {
 
   @override
   Widget build(BuildContext context) {
-    final codeScans = ref.watch(codeScansStreamProvider);
     return Column(
       children: [
         const Spacer(),
@@ -59,13 +59,21 @@ class _HomeListNotificationState extends ConsumerState<HomeListNotification> {
               )
             ),
             child: SingleChildScrollView(
-              child: codeScans.when(
-                data: (codeScans) {
-                  if (codeScans.length == 0) {
-                    return Text("Lịch trình đi học của con bạn sẽ được hiện thị tại đây");
+              child: Consumer(
+                builder: (context, ref, child) {
+                  final codeScansData = ref.watch(codeScanControllerProvider);
+                  if (codeScansData.loading) {
+                    return const Center(child: CircularProgressIndicator(),);
                   }
-                      
+
+                  final codeScans = codeScansData.codeScans;
+
+                  if (codeScans.isEmpty) {
+                    return const Text("Lịch trình đi học của con bạn sẽ được hiện thị tại đây");
+                  }
+
                   final length = codeScans.length >= 3 ? 3 : codeScans.length;
+
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -73,36 +81,12 @@ class _HomeListNotificationState extends ConsumerState<HomeListNotification> {
                         if (i > 0) ...[
                           const SizedBox(height: 10,),
                         ],
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Text(codeScans[i].action == "in" ? "Đến Trường" : "Về nhà", style: TextStyle(
-                                    fontSize: 12,
-                                    color: codeScans[i].action == "in" ? Colors.green[900] : Colors.deepOrange[900]
-                                  ),),
-                                ),
-                                const SizedBox(width: 5,),
-                                Text(DateFormat("dd/MM/yyy").format(codeScans[i].date_time), style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey[800]
-                                ),),
-                              ],
-                            ),
-                            const SizedBox(height: 5,),
-                            Text(codeScans[i].title, style: const TextStyle(
-                              // color: Colors.grey[800],
-                              // fontSize: 16,
-                              fontWeight: FontWeight.w500
-                            ),),
-                          ],
-                        ),
+
+                        StudentNotificationWidget(codeScan: codeScans[i]),
 
                         const SizedBox(height: 10,),
 
-                        if (codeScans.length > 3) ...[
+                        if (i == 2) ...[
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
@@ -120,9 +104,7 @@ class _HomeListNotificationState extends ConsumerState<HomeListNotification> {
                       ]
                     ]
                   );
-                }, 
-                error: (_,__) => const Center(child: Text("error")), 
-                loading: () => const Center(child: CircularProgressIndicator(),)
+                }
               )
             ),
           ),

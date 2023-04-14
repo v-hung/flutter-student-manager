@@ -80,9 +80,9 @@ class _StudyPageState extends ConsumerState<StudyPage> {
                     padding: const EdgeInsets.symmetric(vertical: 20),
                     child: Center(child: Text(e.toString()))
                   ), 
-                  loading: () => Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: const Center(child: CircularProgressIndicator())
+                  loading: () => const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    child: Center(child: CircularProgressIndicator())
                   )
                 ),
               ),

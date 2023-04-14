@@ -17,19 +17,24 @@ class HomeTeacherPage extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _HomeTeacherPageState();
 }
 
-class _HomeTeacherPageState extends ConsumerState<HomeTeacherPage> with TickerProviderStateMixin {
-  late TabController tabController;
+class _HomeTeacherPageState extends ConsumerState<HomeTeacherPage> with WidgetsBindingObserver {
 
   @override
-  void initState() {
-    tabController = TabController(length: 3, vsync: this);
+  void initState(){
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
-  void dispose() {
+  void dispose(){
     super.dispose();
-    tabController.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    print("App Lifecycle State : $state");
   }
 
   @override

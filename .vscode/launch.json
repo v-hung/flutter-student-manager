@@ -11,8 +11,9 @@
       "args": [
         "run",
         "-d",
-        "window",
+        // "window",
         // "emulator-5554",
+        "2db4d3d2",
       ]
     },
     {

@@ -214,12 +214,12 @@ class RouterNotifier extends ChangeNotifier {
             GoRoute(
               path: "qrcode",
               builder: (context, state) => TeacherQrCodePage(type: state.queryParams['type'] ?? "in"),
-              routes: [
-                GoRoute(
-                  path: ":value",
-                  builder: (context, state) => TeacherQrCodeDetailsPage(value: state.params['value'] ?? "", type: state.queryParams['type'] ?? "",)
-                )
-              ]
+              // routes: [
+              //   GoRoute(
+              //     path: ":value",
+              //     builder: (context, state) => TeacherQrCodeDetailsPage(value: state.params['value'] ?? "", type: state.queryParams['type'] ?? "",)
+              //   )
+              // ]
             ),
           ]
         ),

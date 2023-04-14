@@ -54,7 +54,7 @@ class _TestMarkWidgetState extends ConsumerState<TestMarkWidget> {
                   decoration: BoxDecoration(
                     color: char == false ? Colors.green : Colors.grey
                   ),
-                  child: Text("Danh sách", style: TextStyle(
+                  child: const Text("Danh sách", style: TextStyle(
                     fontSize: 12,
                     color: Colors.white
                   ),),
@@ -67,7 +67,7 @@ class _TestMarkWidgetState extends ConsumerState<TestMarkWidget> {
                   decoration: BoxDecoration(
                     color: char == true ? Colors.green : Colors.grey
                   ),
-                  child: Text("Biểu đồ", style: TextStyle(
+                  child: const Text("Biểu đồ", style: TextStyle(
                     fontSize: 12,
                     color: Colors.white
                   ),),
@@ -83,7 +83,7 @@ class _TestMarkWidgetState extends ConsumerState<TestMarkWidget> {
             child: LineBar(test_marks: widget.testMark.test_marks),
           )
           : Container(
-            constraints: BoxConstraints(
+            constraints: const BoxConstraints(
               maxHeight: 200
             ),
             child: SingleChildScrollView(
@@ -92,7 +92,7 @@ class _TestMarkWidgetState extends ConsumerState<TestMarkWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 10,),
-                      for(var i = widget.testMark.test_marks.length - 1; i >= 0; i--) ...[
+                      for(var i = 0; i < widget.testMark.test_marks.length; i++) ...[
                         Container(
                           width: double.infinity,
                           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -104,17 +104,18 @@ class _TestMarkWidgetState extends ConsumerState<TestMarkWidget> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(widget.testMark.test_marks[i].node ?? "Điểm kiểm tra", style: TextStyle(
-                                fontWeight: FontWeight.w500,
+                              const Text("Điểm / Bài tập", style: TextStyle(
+                                // fontWeight: FontWeight.w500,
+                                // color: Colors.grey
+                              ),),
+                              const SizedBox(width: 10,),
+                              Text("${widget.testMark.test_marks[i].point} | ${widget.testMark.test_marks[i].getExercise()}", style: const TextStyle(
+                                fontWeight: FontWeight.w500
+                              ),),
+                              const SizedBox(width: 10,),
+                              Text(DateFormat("dd/MM/yyyy").format(widget.testMark.test_marks[i].date), style: const TextStyle(
+                                // fontWeight: FontWeight.w500,
                                 color: Colors.grey
-                              ),),
-                              const SizedBox(width: 10,),
-                              Text(widget.testMark.test_marks[i].point.toString(), style: TextStyle(
-                                fontWeight: FontWeight.w500
-                              ),),
-                              const SizedBox(width: 10,),
-                              Text(DateFormat("dd/MM").format(widget.testMark.test_marks[i].date), style: TextStyle(
-                                fontWeight: FontWeight.w500
                               ),),
                             ],
                           ),

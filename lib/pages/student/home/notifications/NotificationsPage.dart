@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_student_manager/components/student/bottom_navbar_student.dart';
+import 'package:flutter_student_manager/components/student/notifications/notification_widget.dart';
 import 'package:flutter_student_manager/controllers/student/CodeScanController.dart';
 import 'package:flutter_student_manager/models/CodeScanModel.dart';
 import 'package:go_router/go_router.dart';
@@ -15,6 +16,18 @@ class NotificationsPage extends ConsumerStatefulWidget {
 }
 
 class _NotificationsPageState extends ConsumerState<NotificationsPage> {
+  final scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    scrollController.addListener(() {
+      if (scrollController.position.maxScrollExtent == scrollController.offset) {
+        ref.read(codeScanControllerProvider.notifier).loadMore();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +38,6 @@ class _NotificationsPageState extends ConsumerState<NotificationsPage> {
       MediaQuery.of(context).padding.top -
       MediaQuery.of(context).padding.bottom;
 
-    final codeScans = ref.watch(codeScansStreamProvider);
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: Container(
@@ -38,18 +50,45 @@ class _NotificationsPageState extends ConsumerState<NotificationsPage> {
         ),
         title: const Text("Bản tin"),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          width: double.infinity,
-          constraints: BoxConstraints(
-            minHeight: heightSafeArea
-          ),
-          child: codeScans.when(
-            data: (codeScans) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: codeScans.map((codeScan) => 
-                  Container(
+      body: Container(
+        width: double.infinity,
+        constraints: BoxConstraints(
+          minHeight: heightSafeArea
+        ),
+        child: Consumer(
+          builder: (context, ref, child) {
+            final codeScansData = ref.watch(codeScanControllerProvider);
+            if (codeScansData.loading) {
+              return const Center(child: CircularProgressIndicator(),);
+            }
+
+            final codeScans = codeScansData.codeScans;
+
+            if (codeScans.isEmpty) {
+              return const Center(child: Text("Không có xin nghỉ nào"),);
+            }
+
+            return RefreshIndicator(
+              onRefresh: () => ref.read(codeScanControllerProvider.notifier).loadData(),
+              child: ListView.builder(
+                physics: const AlwaysScrollableScrollPhysics(),
+                controller: scrollController,
+                itemCount: codeScans.length + 1,
+                itemBuilder: (context, index) {
+                  if (index == codeScans.length) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10.0),
+                      child: Center(
+                        child: codeScansData.current_page < codeScansData.last_page 
+                          ? const CircularProgressIndicator()
+                          : const Text("Không còn xin nghỉ"),
+                      ),
+                    );
+                  }
+
+                  final codeScan = codeScans[index];
+                  
+                  return Container(
                     // margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                     padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                     decoration: BoxDecoration(
@@ -59,39 +98,12 @@ class _NotificationsPageState extends ConsumerState<NotificationsPage> {
                         bottom: BorderSide(color: Colors.grey[300]!)
                       )
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Text(codeScan.action == "in" ? "Đến Trường" : "Về nhà", style: TextStyle(
-                                fontSize: 12,
-                                color: codeScan.action == "in" ? Colors.green[700] : Colors.orange[700]
-                              ),),
-                            ),
-                            const SizedBox(width: 5,),
-                            Text(DateFormat("dd/MM/yyy").format(codeScan.date_time), style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey[800]
-                            ),),
-                          ],
-                        ),
-                        const SizedBox(height: 5,),
-                        Text(codeScan.title, style: const TextStyle(
-                          // color: Colors.grey[800],
-                          // fontSize: 16,
-                          fontWeight: FontWeight.w500
-                        ),),
-                      ],
-                    ),
-                  )
-                ).toList(),
-              );
-            }, 
-            error: (_,__) => const Center(child: Text("error")), 
-            loading: () => const Center(child: CircularProgressIndicator(),)
-          ),
+                    child: StudentNotificationWidget(codeScan: codeScan),
+                  );
+                }
+              )
+            );
+          }
         ),
       )
     );

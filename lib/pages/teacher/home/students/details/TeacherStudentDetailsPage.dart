@@ -62,56 +62,51 @@ class _TeacherStudentDetailsPageState extends ConsumerState<TeacherStudentDetail
                 pinned: true,
                 expandedHeight: 200,
                 flexibleSpace: FlexibleSpaceBar(
-                  background: Container(
-                    color: Colors.transparent,
-                    child: Center(
-                      child: Stack(
-                        children: [
-                          Container(
+                  background: Stack(
+                    children: [
+                      SizedBox(
+                        width: double.infinity,
+                        height: 250,
+                        child: CachedNetworkImage(
+                          imageUrl: data.getImage(),
+                          imageBuilder: (context, imageProvider) => Container(
                             width: double.infinity,
-                            height: 200,
-                            child: CachedNetworkImage(
-                              imageUrl: data.getImage(),
-                              imageBuilder: (context, imageProvider) => Container(
-                                width: double.infinity,
-                                height: double.infinity,
-                                decoration: BoxDecoration(
-                                  gradient: const LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    colors: [
-                                      Colors.green,
-                                      Colors.orange,
-                                    ],
-                                  ),
-                                  image: DecorationImage(
-                                    image: imageProvider, fit: BoxFit.cover),
-                                ),
+                            height: double.infinity,
+                            decoration: BoxDecoration(
+                              gradient: const LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [
+                                  Colors.green,
+                                  Colors.orange,
+                                ],
                               ),
-                              placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-                              errorWidget: (context, url, error) => Center(
-                                child: Container(
-                                  width: double.infinity,
-                                  height: double.infinity,
-                                  decoration: const BoxDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                      colors: [
-                                        Colors.green,
-                                        Colors.orange,
-                                      ],
-                                    ),
-                                  ),
-                                  child: Icon(CupertinoIcons.person_fill, color: Colors.green[50], size: 50,)
-                                )
-                              ),
+                              image: DecorationImage(
+                                image: imageProvider, fit: BoxFit.cover),
                             ),
                           ),
-                          Positioned.fill(child: Container(color: Colors.black.withOpacity(0.3),))
-                        ],
+                          placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                          errorWidget: (context, url, error) => Center(
+                            child: Container(
+                              width: double.infinity,
+                              height: double.infinity,
+                              decoration: const BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                  colors: [
+                                    Colors.green,
+                                    Colors.orange,
+                                  ],
+                                ),
+                              ),
+                              child: Icon(CupertinoIcons.person_fill, color: Colors.green[50], size: 50,)
+                            )
+                          ),
+                        ),
                       ),
-                    ),
+                      Positioned.fill(child: Container(color: Colors.black.withOpacity(0.3),))
+                    ],
                   ),
                   title: Text(data.name, style: const TextStyle(
                     fontSize: 14,

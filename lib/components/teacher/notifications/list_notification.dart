@@ -69,7 +69,7 @@ class _HomeListNotificationState extends ConsumerState<HomeListNotification> {
                   final breakSchools = breakSchoolsData.breakSchools;
 
                   if (breakSchools.isEmpty) {
-                    return Text("Lịch sử xin nghỉ của các con sẽ được hiện thị tại đây");
+                    return const Text("Lịch sử xin nghỉ của các con sẽ được hiện thị tại đây");
                   }
 
                   final length = breakSchools.length >= 3 ? 3 : breakSchools.length;
@@ -90,7 +90,7 @@ class _HomeListNotificationState extends ConsumerState<HomeListNotification> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               InkWell(
-                                onTap: () => context.go('/student/notifications'),
+                                onTap: () => context.go('/teacher/notifications'),
                                 child: Text("Xem thêm", style: TextStyle(
                                   color: Colors.green[900],
                                   decoration: TextDecoration.underline,

@@ -293,6 +293,11 @@ class BreakSchoolPageState extends ConsumerState<BreakSchoolPage> {
                                   final breakSchool = data.breakSchools[index];
                                   return Container(
                                     padding: const EdgeInsets.symmetric(vertical: 10),
+                                    decoration: index < data.breakSchools.length - 1 ? BoxDecoration(
+                                      border: Border(
+                                        bottom: BorderSide(color: Colors.grey[300]!)
+                                      )
+                                    ) : null,
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
