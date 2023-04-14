@@ -128,6 +128,7 @@ class _TeacherBodySettingsState extends ConsumerState<TeacherBodySettings> {
                 icon: CupertinoIcons.home,
                 label: "Chức vụ",
                 value: user?.position,
+                border: false,
               ),
 
               // InfoWidget(

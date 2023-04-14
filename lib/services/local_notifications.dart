@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_student_manager/controllers/AuthController.dart';
@@ -16,7 +17,7 @@ class LocalNotificationService {
   }
 
   Future init() async {
-    const androidSettings = AndroidInitializationSettings("mipmap/launcher_icon");
+    const androidSettings = AndroidInitializationSettings("drawable/icon_notification");
     const iosSettings = DarwinInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
@@ -40,7 +41,9 @@ class LocalNotificationService {
       "local",
       priority: Priority.max,
       importance: Importance.max,
-      icon: "mipmap/launcher_icon",
+      icon: "drawable/icon_notification",
+      playSound: true,
+      color: Color(0xFF22c55e),
       enableVibration: true,
     );
 
