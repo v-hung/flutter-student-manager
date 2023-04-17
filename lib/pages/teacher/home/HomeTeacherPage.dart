@@ -6,6 +6,7 @@ import 'package:flutter_student_manager/components/teacher/bottom_navbar_teacher
 import 'package:flutter_student_manager/components/teacher/list_icon_teacher.dart';
 import 'package:flutter_student_manager/components/teacher/notifications/list_notification.dart';
 import 'package:flutter_student_manager/controllers/AuthController.dart';
+import 'package:flutter_student_manager/controllers/student/BreakSchoolController.dart';
 import 'package:flutter_student_manager/models/TeacherModel.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -35,6 +36,9 @@ class _HomeTeacherPageState extends ConsumerState<HomeTeacherPage> with WidgetsB
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     print("App Lifecycle State : $state");
+    if (state == AppLifecycleState.resumed) {
+      ref.read(breakSchoolControllerProvider.notifier).loadData();
+    }
   }
 
   @override

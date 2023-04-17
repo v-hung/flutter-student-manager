@@ -21,9 +21,13 @@ class _StudentNotificationWidgetState extends ConsumerState<StudentNotificationW
         Row(
           children: [
             Expanded(
-              child: Text(widget.codeScan.action == "in" ? "Đến Trường" : "Về nhà", style: TextStyle(
+              child: Text(widget.codeScan.action == ActionEnum.goIn ? "Đến Trường" 
+              : widget.codeScan.action == ActionEnum.goOut ? "Về nhà"
+              : widget.codeScan.action == ActionEnum.diemKiemTra ? "Điểm kiểm tra"
+              : widget.codeScan.action == ActionEnum.baiTap ? "Điểm bài tập" : "Thông báo", style: TextStyle(
                 fontSize: 12,
-                color: widget.codeScan.action == "in" ? Colors.green[900] : Colors.deepOrange[900]
+                color: widget.codeScan.action == ActionEnum.goIn ? Colors.green[900] 
+                : widget.codeScan.action == ActionEnum.goOut ? Colors.deepOrange[900] : Colors.cyanAccent[900]
               ),),
             ),
             const SizedBox(width: 5,),

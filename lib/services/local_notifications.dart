@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_student_manager/controllers/AuthController.dart';
 import 'package:flutter_student_manager/controllers/RouterController.dart';
+import 'package:flutter_student_manager/controllers/student/CodeScanController.dart';
 import 'package:flutter_student_manager/controllers/teacher/BreakSchoolController.dart';
 
 class LocalNotificationService {
@@ -63,7 +64,12 @@ class LocalNotificationService {
 
   void openedNotification(NotificationResponse? details) async {
     final type = ref.watch(authControllerProvider).type.toString().split('.').last;
-    ref.read(breakSchoolControllerProvider.notifier).loadData();
+    if (type == "teacher") {
+      ref.read(breakSchoolControllerProvider.notifier).loadData();
+    }
+    else if (type == "student") {
+      ref.read(codeScanControllerProvider.notifier).loadData();
+    }
     ref.read(routerProvider).go('/$type/notifications');
   }
 }

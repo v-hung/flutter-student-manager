@@ -92,6 +92,7 @@ class _HomeListNotificationState extends ConsumerState<HomeListNotification> {
                               InkWell(
                                 onTap: () => context.go('/teacher/notifications'),
                                 child: Text("Xem thêm", style: TextStyle(
+                                  fontSize: 12,
                                   color: Colors.green[900],
                                   decoration: TextDecoration.underline,
                                   decorationColor: Colors.green[900]

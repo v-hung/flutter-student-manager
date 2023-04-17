@@ -13,6 +13,8 @@ class TeacherModel {
   final String? phone;
   final String? position;
   final DateTime? date_of_birth;
+  final int? role_id;
+  final String? qrcode;
   
   TeacherModel({
     required this.id,
@@ -24,6 +26,8 @@ class TeacherModel {
     this.phone,
     this.position,
     this.date_of_birth,
+    this.role_id,
+    this.qrcode,
   });
   
 
@@ -38,6 +42,8 @@ class TeacherModel {
       'phone': phone,
       'position': position,
       'date_of_birth': date_of_birth?.toString(),
+      'role_id': role_id,
+      'qrcode': qrcode,
     };
   }
 
@@ -52,6 +58,8 @@ class TeacherModel {
       phone: map['phone'] != null ? map['phone'] as String : null,
       position: map['position'] != null ? map['position'] as String : null,
       date_of_birth: map['date_of_birth'] != null ? DateTime.parse(map['date_of_birth'] as String) : null,
+      role_id: map['role_id'] != null ? map['role_id'] as int : null,
+      qrcode: map['qrcode'] != null ? map['qrcode'] as String : null,
     );
   }
 
@@ -61,5 +69,13 @@ class TeacherModel {
 
   String getImage() {
     return "https://$BASE_URL/storage/$avatar";
+  }
+
+  String getQrCode() {
+    return "https://$BASE_URL/storage/$qrcode";
+  }
+
+  bool isAdmin() {
+    return role_id == 5;
   }
 }

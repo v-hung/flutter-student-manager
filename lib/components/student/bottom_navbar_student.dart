@@ -26,7 +26,7 @@ class _BottomNavBarStudentState extends ConsumerState<BottomNavBarStudent>{
     },
     {
       "icon": CupertinoIcons.settings,
-      "label": "Khác",
+      "label": "Tài khoản",
       "path": "/settings",
     }
   ];

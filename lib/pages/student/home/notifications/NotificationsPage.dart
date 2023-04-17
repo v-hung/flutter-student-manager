@@ -61,47 +61,55 @@ class _NotificationsPageState extends ConsumerState<NotificationsPage> {
             if (codeScansData.loading) {
               return const Center(child: CircularProgressIndicator(),);
             }
-
+      
             final codeScans = codeScansData.codeScans;
-
+      
             if (codeScans.isEmpty) {
               return const Center(child: Text("Không có xin nghỉ nào"),);
             }
-
-            return RefreshIndicator(
-              onRefresh: () => ref.read(codeScanControllerProvider.notifier).loadData(),
-              child: ListView.builder(
-                physics: const AlwaysScrollableScrollPhysics(),
-                controller: scrollController,
-                itemCount: codeScans.length + 1,
-                itemBuilder: (context, index) {
-                  if (index == codeScans.length) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10.0),
-                      child: Center(
-                        child: codeScansData.current_page < codeScansData.last_page 
-                          ? const CircularProgressIndicator()
-                          : const Text("Không còn xin nghỉ"),
-                      ),
-                    );
-                  }
-
-                  final codeScan = codeScans[index];
-                  
-                  return Container(
-                    // margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      // borderRadius: BorderRadius.circular(7),
-                      border: Border(
-                        bottom: BorderSide(color: Colors.grey[300]!)
-                      )
-                    ),
-                    child: StudentNotificationWidget(codeScan: codeScan),
-                  );
-                }
-              )
+      
+            return Container(
+              height: heightSafeArea,
+              child: RefreshIndicator(
+                onRefresh: () => ref.read(codeScanControllerProvider.notifier).loadData(),
+                child: Container(
+                   constraints: BoxConstraints(
+                    minHeight: heightSafeArea
+                  ),
+                  child: ListView.builder(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    controller: scrollController,
+                    itemCount: codeScans.length + 1,
+                    itemBuilder: (context, index) {
+                      if (index == codeScans.length) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10.0),
+                          child: Center(
+                            child: codeScansData.current_page < codeScansData.last_page 
+                              ? const CircularProgressIndicator()
+                              : const Text("Không còn xin nghỉ"),
+                          ),
+                        );
+                      }
+                            
+                      final codeScan = codeScans[index];
+                      
+                      return Container(
+                        // margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          // borderRadius: BorderRadius.circular(7),
+                          border: Border(
+                            bottom: BorderSide(color: Colors.grey[300]!)
+                          )
+                        ),
+                        child: StudentNotificationWidget(codeScan: codeScan),
+                      );
+                    }
+                  ),
+                )
+              ),
             );
           }
         ),

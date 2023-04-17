@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' hide ModalBottomSheetRoute;
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
@@ -88,7 +89,22 @@ void showModalQrCode(BuildContext context, String avatar, String qrcode, String 
                         ),
                       ),
                       placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                      errorWidget: (context, url, error) => Container(
+                        width: double.infinity,
+                        height: double.infinity,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            colors: [
+                              Colors.green,
+                              Colors.orange,
+                            ],
+                          ),
+                        ),
+                        child: const Icon(CupertinoIcons.person_fill, size: 30,),
+                      ),
                     ),
                   ),
                 ),

@@ -7,6 +7,7 @@ import 'package:flutter_student_manager/components/student/notifications/list_no
 import 'package:flutter_student_manager/components/student/list_icon_student.dart';
 import 'package:flutter_student_manager/controllers/AuthController.dart';
 import 'package:flutter_student_manager/controllers/student/ClassroomController.dart';
+import 'package:flutter_student_manager/controllers/student/CodeScanController.dart';
 import 'package:flutter_student_manager/models/StudentModel.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -20,19 +21,27 @@ class HomeStudentPage extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _HomeStudentPageState();
 }
 
-class _HomeStudentPageState extends ConsumerState<HomeStudentPage> with TickerProviderStateMixin {
-  late TabController tabController;
-
+class _HomeStudentPageState extends ConsumerState<HomeStudentPage> with WidgetsBindingObserver {
+  
   @override
-  void initState() {
-    tabController = TabController(length: 3, vsync: this);
+  void initState(){
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
-  void dispose() {
+  void dispose(){
     super.dispose();
-    tabController.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    print("App Lifecycle State : $state");
+    if (state == AppLifecycleState.resumed) {
+      ref.read(codeScanControllerProvider.notifier).loadData();
+    }
   }
 
   @override

@@ -3,7 +3,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_student_manager/controllers/teacher/BreakSchoolController.dart';
 import 'package:flutter_student_manager/controllers/student/ClassroomController.dart';
+import 'package:flutter_student_manager/controllers/student/CodeScanController.dart';
 import 'package:flutter_student_manager/models/StudentModel.dart';
 import 'package:flutter_student_manager/models/TeacherModel.dart';
 import 'package:flutter_student_manager/services/firebase_cloud_messaging.dart';
@@ -53,8 +55,14 @@ class AuthNotifier extends StateNotifier<AuthModel> {
     state = state.changeUser(user);
   }
 
-  Future<void> logout() async {
+  void logout() {
     ref.read(authRepositoryProvider).logout();
+    if (state.user is TeacherModel) {
+      ref.invalidate(breakSchoolControllerProvider);
+    }
+    else if (state.user is StudentModel) {
+      ref.invalidate(codeScanControllerProvider);
+    }
     // ref.read(firebaseCloudMessagingServiceProvider).unsubscribeFromTopic(state.user);
     state = AuthModel(user: null, token: null, authState: AuthState.notLogin, type: null);
   }

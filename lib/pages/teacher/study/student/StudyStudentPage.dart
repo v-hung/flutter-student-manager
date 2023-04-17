@@ -182,7 +182,7 @@ class _StudyStudentPageState extends ConsumerState<StudyStudentPage> {
                               fontWeight: FontWeight.w500
                             ),),
                               
-                            ExpandedSection(expand: expandAdd, child: Form(
+                            Form(
                               key: formKey,
                               child: Column(
                                 children: [
@@ -247,36 +247,9 @@ class _StudyStudentPageState extends ConsumerState<StudyStudentPage> {
                                   ),
                                 ],
                               ),
-                            )),
+                            ),
                               
                             const SizedBox(height: 15,),
-                              
-                            InkWell(
-                              onTap: () => setState(() {
-                                expandAdd = !expandAdd;
-                              }),
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(vertical: 5),
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    top: BorderSide(color: Colors.grey[300]!)
-                                  )
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: expandAdd ? const [
-                                    Center(child: Text("Thu nhỏ chấm điểm")),
-                                    SizedBox(width: 5,),
-                                    Icon(CupertinoIcons.chevron_up, size: 18,)
-                                  ] : const [
-                                    Center(child: Text("Hiện chấm điểm")),
-                                    SizedBox(width: 5,),
-                                    Icon(CupertinoIcons.chevron_down, size: 18,)
-                                  ],
-                                ),
-                              ),
-                            ),
                           ],
                         ),
                       ),

@@ -3,10 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_student_manager/components/student/bottom_navbar_student.dart';
+import 'package:flutter_student_manager/components/student/settings/qrcode.dart';
 import 'package:flutter_student_manager/components/teacher/bottom_navbar_teacher.dart';
 import 'package:flutter_student_manager/components/teacher/settings/body_settings.dart';
 import 'package:flutter_student_manager/controllers/AuthController.dart';
 import 'package:flutter_student_manager/models/TeacherModel.dart';
+import 'package:flutter_student_manager/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class TeacherSettingsPage extends ConsumerStatefulWidget {
@@ -44,6 +46,20 @@ class _TeacherSettingsPageState extends ConsumerState<TeacherSettingsPage> {
             controller: scrollController,
             slivers: [
               SliverAppBar(
+                leading: IconButton(
+                  onPressed: () {
+                    if (user?.qrcode != null) {
+                      showModalQrCode(context, user?.getImage() ?? "", user!.getQrCode(), user.name);
+                    }
+                    else {
+                      showSnackBar(context: context, content: "Tài khoản chưa cập nhập qrcode");
+                    }
+                  },
+                  icon: const Icon(
+                    CupertinoIcons.qrcode,
+                    color: Colors.green
+                  ),
+                ),
                 backgroundColor: Colors.white.withOpacity(opacity2 > 1 ? 0 : opacity2 < 0 ? 1 :  1 - opacity2),
                 shape: opacity2 < 0.3 ? Border(bottom: BorderSide(color: Colors.grey[300]!)) : null,
                 actions: [

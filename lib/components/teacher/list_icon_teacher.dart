@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_student_manager/controllers/AuthController.dart';
 import 'package:go_router/go_router.dart';
 
-class HomeListIconTeacher extends ConsumerWidget {
+class HomeListIconTeacher extends ConsumerStatefulWidget {
   const HomeListIconTeacher({super.key});
 
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _HomeListIconTeacherState();
+}
+
+class _HomeListIconTeacherState extends ConsumerState<HomeListIconTeacher> {
   static const icons = [
     {
       "asset": "assets/img/icons/teaching.png",
@@ -30,7 +36,17 @@ class HomeListIconTeacher extends ConsumerWidget {
   ];
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  void initState() {
+    super.initState();
+    load();
+  }
+
+  Future load() async {
+    // final teacher = ref.read(authControllerProvider)
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: AlignedGridView.count(
