@@ -33,11 +33,11 @@
     "colId": "history",
     "containerId": "",
     "name": "https://trungtam.headbull.site/api/classrooms/5 Copy",
-    "url": "https://trungtam.headbull.site/api/teacher/qr-code/s5s108dfc",
-    "method": "POST",
+    "url": "https://trungtam.headbull.site/api/teacher/askforpermission",
+    "method": "GET",
     "sortNum": 0,
     "created": "2023-03-31T10:42:40.595Z",
-    "modified": "2023-04-14T03:07:12.420Z",
+    "modified": "2023-04-18T08:40:46.334Z",
     "headers": [],
     "params": [],
     "body": {
@@ -45,28 +45,18 @@
       "raw": "",
       "form": [
         {
-          "name": "action",
-          "value": "in"
+          "name": "per_page",
+          "value": "20"
         },
         {
-          "name": "student_id",
-          "value": "1",
-          "isDisabled": true
-        },
-        {
-          "name": "subject_id",
-          "value": "1",
-          "isDisabled": true
-        },
-        {
-          "name": "date_time",
-          "value": "2023-04-13"
+          "name": "page",
+          "value": "1"
         }
       ]
     },
     "auth": {
       "type": "bearer",
-      "bearer": "56|mSkrQEgdsjnhiw1W6ULOlMWq8iyZKRXCqfkqMUGL"
+      "bearer": "83|GPBet9ZIDhCidQlmSpQGhcLa32dTwKY7V0AvYvdo"
     },
     "tests": []
   },

@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'package:flutter_student_manager/models/CodeScanModel.dart';
 import 'package:flutter_student_manager/models/TestMarkModel.dart';
+import 'package:flutter_student_manager/models/TimeKeeping.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -480,6 +481,35 @@ class TeacherRepository {
         var body = jsonDecode(response.body);
 
         final data =  CodeScanModel.fromMap(body['data']);
+        return data;
+      } 
+      else {
+        return null;
+      }
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  Future<TimeKeeping?> createQrCode2(String teacher_id, String type, String date_time) async {
+    try {
+      final auth = ref.watch(authControllerProvider);
+      var url = Uri.https(BASE_URL, '/api/${auth.type.toString().split('.').last}/timekeeping');
+      var response = await http.post(url, headers: {
+        'authorization': "Bearer ${auth.token}",
+      }, body: {
+        "type": type,
+        "teacher_id": teacher_id,
+        "date": date_time
+      });
+
+      print(response.body);
+
+      if (response.statusCode == 200) {
+        var body = jsonDecode(response.body);
+
+        final data =  TimeKeeping.fromMap(body['data']);
         return data;
       } 
       else {

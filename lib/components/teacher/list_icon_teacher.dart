@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_student_manager/controllers/AuthController.dart';
+import 'package:flutter_student_manager/models/TeacherModel.dart';
 import 'package:go_router/go_router.dart';
 
 class HomeListIconTeacher extends ConsumerStatefulWidget {
@@ -12,7 +13,7 @@ class HomeListIconTeacher extends ConsumerStatefulWidget {
 }
 
 class _HomeListIconTeacherState extends ConsumerState<HomeListIconTeacher> {
-  static const icons = [
+  List<Map> icons = [
     {
       "asset": "assets/img/icons/teaching.png",
       "label": "Lớp học",
@@ -41,8 +42,23 @@ class _HomeListIconTeacherState extends ConsumerState<HomeListIconTeacher> {
     load();
   }
 
-  Future load() async {
-    // final teacher = ref.read(authControllerProvider)
+  void load() {
+    final teacher = ref.read(authControllerProvider).user as TeacherModel;
+
+    if (teacher.role_id != null && teacher.role_id != 5) {
+      icons.addAll([
+        {
+          "asset": "assets/img/icons/pay.png",
+          "label": "Điểm danh đến",
+          "path": "/teacher/qrcode2?type=in",
+        },
+        {
+          "asset": "assets/img/icons/qr-code-scan.png",
+          "label": "Điểm danh về",
+          "path": "/teacher/qrcode2?type=out",
+        },
+      ]);
+    }
   }
 
   @override
