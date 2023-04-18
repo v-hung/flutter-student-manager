@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:273383696499:android:58eefdc465fbd8f32ea206",
+        "mobilesdk_app_id": "1:273383696499:android:d858bd553ab633962ea206",
         "android_client_info": {
-          "package_name": "com.example.flutter_student_manager"
+          "package_name": "com.viethungit.trungtam"
         }
       },
       "oauth_client": [

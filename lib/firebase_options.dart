@@ -45,17 +45,17 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyDX1THdZvYgZotQ63gaIfwcP9JC9BWVYUw',
-    appId: '1:273383696499:web:c254383edbec7c1e2ea206',
+    appId: '1:273383696499:web:725452ce867bad1a2ea206',
     messagingSenderId: '273383696499',
     projectId: 'trung-tam-353af',
     authDomain: 'trung-tam-353af.firebaseapp.com',
     storageBucket: 'trung-tam-353af.appspot.com',
-    measurementId: 'G-0NHY0KC5MB',
+    measurementId: 'G-ZXP6E87D1W',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBzhKr4abH7VK53nzzNCv5Z7hGmN7I-JQ0',
-    appId: '1:273383696499:android:58eefdc465fbd8f32ea206',
+    appId: '1:273383696499:android:d858bd553ab633962ea206',
     messagingSenderId: '273383696499',
     projectId: 'trung-tam-353af',
     storageBucket: 'trung-tam-353af.appspot.com',
@@ -63,17 +63,17 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCh3VQucEH7ITMnb_UsqFyA9L-YV_MRQZE',
-    appId: '1:273383696499:ios:fa3ed0adbc05a9e22ea206',
+    appId: '1:273383696499:ios:c95b65c91254426a2ea206',
     messagingSenderId: '273383696499',
     projectId: 'trung-tam-353af',
     storageBucket: 'trung-tam-353af.appspot.com',
-    iosClientId: '273383696499-elamtpa2a83hn7r3llu5et2ugeo366ld.apps.googleusercontent.com',
-    iosBundleId: 'com.example.flutterStudentManager',
+    iosClientId: '273383696499-jqcj1rcnaa3ai624ts5s4uqbvbi2j7gq.apps.googleusercontent.com',
+    iosBundleId: 'com.viethungit.trungtam',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyCh3VQucEH7ITMnb_UsqFyA9L-YV_MRQZE',
-    appId: '1:273383696499:ios:fa3ed0adbc05a9e22ea206',
+    appId: '1:273383696499:ios:865249431b00a9312ea206',
     messagingSenderId: '273383696499',
     projectId: 'trung-tam-353af',
     storageBucket: 'trung-tam-353af.appspot.com',
