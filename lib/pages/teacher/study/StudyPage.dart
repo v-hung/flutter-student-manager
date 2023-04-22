@@ -100,6 +100,10 @@ class _TeacherStudyPageState extends ConsumerState<TeacherStudyPage> {
                   data: (data) {
                     final filter = TiengViet.parse(searchController.text).toLowerCase();
                     final students = data.students.where((student) => TiengViet.parse(student.name).toLowerCase().contains(filter)).toList();
+
+                    if (students.isEmpty) {
+                      return const Center(child: Text("Không có học sinh nào"),);
+                    }
                     
                     return ListView.builder(
                       itemCount: students.length,

@@ -15,7 +15,7 @@ class TestMarkNotifier extends StateNotifier<TestMarkData> {
   Future load() async {
     state = TestMarkData(loading: true, testMarks: []);
     final data = await ref.read(teacherRepositoryProvider).getTestMarks(id);
-     state = TestMarkData(loading: false, testMarks: data);
+    state = TestMarkData(loading: false, testMarks: data);
   }
 
   Future add(TestMarkModel testMark) async {

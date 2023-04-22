@@ -141,53 +141,53 @@ class _TeacherBodySettingsState extends ConsumerState<TeacherBodySettings> {
           )
         ),
 
-        const SizedBox(height: 20,),
-        Text("Cài đặt", style: TextStyle(
-          color: Colors.grey[700],
-          fontWeight: FontWeight.w600
-        ),),
-        const SizedBox(height: 5,),
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(horizontal: 10 ,vertical: 8),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(7),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.05),
-                spreadRadius: 1,
-                blurRadius: 5,
-                offset: Offset(0, 1), // changes position of shadow
-              ),
-            ]
-          ),
-          child: Row(
-            children: [
-              Container(
-                width: 30, height: 30,
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.circular(7)
-                ),
-                alignment: Alignment.center,
-                child: Icon(CupertinoIcons.bell_fill, color: Colors.white, size: 20,)
-              ),
-              const SizedBox(width: 10,),
-              Expanded(child: Text("Thông báo", style: TextStyle(fontWeight: FontWeight.w500),)),
-              SizedBox(
-                height: 30,
-                child: Transform.scale(
-                  scale: 0.9,
-                  child: CupertinoSwitch(  
-                    onChanged: toggleSwitch,  
-                    value: isSwitched,  
-                  ),
-                ),
-              ) ,
-            ],
-          )
-        ),
+        // const SizedBox(height: 20,),
+        // Text("Cài đặt", style: TextStyle(
+        //   color: Colors.grey[700],
+        //   fontWeight: FontWeight.w600
+        // ),),
+        // const SizedBox(height: 5,),
+        // Container(
+        //   width: double.infinity,
+        //   padding: const EdgeInsets.symmetric(horizontal: 10 ,vertical: 8),
+        //   decoration: BoxDecoration(
+        //     color: Colors.white,
+        //     borderRadius: BorderRadius.circular(7),
+        //     boxShadow: [
+        //       BoxShadow(
+        //         color: Colors.grey.withOpacity(0.05),
+        //         spreadRadius: 1,
+        //         blurRadius: 5,
+        //         offset: Offset(0, 1), // changes position of shadow
+        //       ),
+        //     ]
+        //   ),
+        //   child: Row(
+        //     children: [
+        //       Container(
+        //         width: 30, height: 30,
+        //         decoration: BoxDecoration(
+        //           color: Colors.red,
+        //           borderRadius: BorderRadius.circular(7)
+        //         ),
+        //         alignment: Alignment.center,
+        //         child: Icon(CupertinoIcons.bell_fill, color: Colors.white, size: 20,)
+        //       ),
+        //       const SizedBox(width: 10,),
+        //       Expanded(child: Text("Thông báo", style: TextStyle(fontWeight: FontWeight.w500),)),
+        //       SizedBox(
+        //         height: 30,
+        //         child: Transform.scale(
+        //           scale: 0.9,
+        //           child: CupertinoSwitch(  
+        //             onChanged: toggleSwitch,  
+        //             value: isSwitched,  
+        //           ),
+        //         ),
+        //       ) ,
+        //     ],
+        //   )
+        // ),
         
         const SizedBox(height: 10,),
         InkWell(

@@ -67,6 +67,8 @@ class _StudyStudentPageState extends ConsumerState<StudyStudentPage> {
       .updateTestMarks(testMarkUpdateId ?? "", widget.id, subjectEditValue ?? "", 
       pointEditController.text, exerciseEditValue ?? "", dateEditController.text);
 
+    print(testMark);
+
     setState(() {
       loading = false;
     });
@@ -162,148 +164,120 @@ class _StudyStudentPageState extends ConsumerState<StudyStudentPage> {
           return Stack(
             children: [
               Container(),
-              SingleChildScrollView(
-                child: IntrinsicHeight(
-                  child: Column(
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        margin: const EdgeInsets.all(10),
-                        padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(4),
-                          // border: Border.all(color: Colors.grey[200]!)
-                        ),
-                        child: Column(
-                          children: [
-                            Text("Chấm điểm hôm nay ${testMarkNow != null ? "(Đã chấm)" : ""}", style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500
-                            ),),
-                              
-                            Form(
-                              key: formKey,
-                              child: Column(
-                                children: [
-                                  const SizedBox(height: 20,),
-                                  TextFormField(
-                                    controller: pointController,
-                                    inputFormatters: [
-                                      FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
-                                      NumericalRangeFormatter(min: 0, max: 10),
-                                    ],
-                                    keyboardType: const TextInputType.numberWithOptions(decimal: true, signed: false),
-                                    decoration: InputDecoration(
-                                      labelText: "Điểm kiểm tra trên lớp",
-                                    ),
-                                    validator: (value) =>
-                                      value!.isEmpty ? 'Điểm kiểm tra trên lớp không được để trống' : null,
-                                  ),
-                                  const SizedBox(height: 15,),
-                                  DropdownButtonFormField(
-                                    decoration: const InputDecoration(
-                                      hintText: 'Điểm bài tập về nhà',
-                                    ),
-                                    items: const [
-                                      // DropdownMenuItem(value: 0,child: Text("Không chọn", style: TextStyle(
-                                      //   color: Colors.grey
-                                      // ),)),
-                                      DropdownMenuItem(value: "khonglam",child: Text("Không làm"),),
-                                      DropdownMenuItem(value: "khongdat",child: Text("Không đạt"),),
-                                      DropdownMenuItem(value: "dat",child: Text("Đạt"),)
-                                    ],
-                                    value: exerciseValue,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        exerciseValue = value;
-                                      });
-                                    },
-                                    validator: (value) =>
-                                      value == null ? 'Bài tập về nhà không được để trống' : null,
-                                  ),
-                                      
-                                  const SizedBox(height: 15,),
-                                  DropdownButtonFormField(
-                                    decoration: const InputDecoration(
-                                      hintText: 'Môn học',
-                                    ),
-                                    items: subjects.map((e) => 
-                                      DropdownMenuItem(value: e.id.toString(),child: Text(e.name),),).toList(),
-                                    value: subjectValue,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        subjectValue = value;
-                                      });
-                                    },
-                                    validator: (value) =>
-                                      value == null ? 'Môn không được để trống' : null,
-                                  ),
-                                      
-                                  const SizedBox(height: 15,),
-                                  ElevatedButton(
-                                    onPressed: save,
-                                    child: const Text("Lưu"),
-                                  ),
-                                ],
-                              ),
-                            ),
-                              
-                            const SizedBox(height: 15,),
-                          ],
-                        ),
-                      ),
-                              
-                      testMarksData.testMarks.isNotEmpty ? Expanded(
-                        child: Container(
-                          color: Colors.white,
+              RefreshIndicator(
+                onRefresh: () => ref.read(testMarksProvider(widget.id).notifier).load(),
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: IntrinsicHeight(
+                    child: Column(
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          margin: const EdgeInsets.all(10),
+                          padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(4),
+                            // border: Border.all(color: Colors.grey[200]!)
+                          ),
                           child: Column(
-                            children: testMarksData.testMarks.map((testMark) {
-                              // final testMark = testMarksData.testMarks[index];
-                              return Slidable(
-                                key: UniqueKey(),
-                                endActionPane: ActionPane(
-                                  motion: const StretchMotion(),
-                                  dragDismissible: true,
-                                  dismissible: DismissiblePane(
-                                    closeOnCancel: true,
-                                    dismissThreshold: 0.9,
-                                    onDismissed: () {
-                                      ref.read(testMarksProvider(widget.id).notifier).delete(testMark.id);
-                                    }, 
-                                    confirmDismiss: () async {
-                                      return await showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: const Text("Xóa điểm"),
-                                            content: Text("Bạn có chắc chắn muốn xóa điểm ngày'${DateFormat("dd/MM/yyyy").format(testMark.date)}'"),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                child: Text('Không', style: TextStyle(color: Colors.grey[800]!),),
-                                                onPressed: () {
-                                                  Navigator.pop(context, false);
-                                                },
-                                              ),
-                                              TextButton(
-                                                child: const Text('Xóa', style: TextStyle(color: Colors.red),),
-                                                onPressed: () {
-                                                  Navigator.pop(context, true);
-                                                },
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      ) ?? false;
-                                    }
-                                  ),
+                            children: [
+                              Text("Chấm điểm hôm nay ${testMarkNow != null ? "(Đã chấm)" : ""}", style: const TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500
+                              ),),
+                                
+                              Form(
+                                key: formKey,
+                                child: Column(
                                   children: [
-                                    SlidableAction(
-                                      backgroundColor: Colors.red,
-                                      icon: CupertinoIcons.trash,
-                                      label: 'Xóa',
-                                      onPressed: (context) async {
-                                        bool isDel = await showDialog(
+                                    const SizedBox(height: 20,),
+                                    TextFormField(
+                                      controller: pointController,
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
+                                        NumericalRangeFormatter(min: 0, max: 10),
+                                      ],
+                                      keyboardType: const TextInputType.numberWithOptions(decimal: true, signed: false),
+                                      decoration: InputDecoration(
+                                        labelText: "Điểm kiểm tra trên lớp",
+                                      ),
+                                      validator: (value) =>
+                                        value!.isEmpty ? 'Điểm kiểm tra trên lớp không được để trống' : null,
+                                    ),
+                                    const SizedBox(height: 15,),
+                                    DropdownButtonFormField(
+                                      decoration: const InputDecoration(
+                                        hintText: 'Điểm bài tập về nhà',
+                                      ),
+                                      items: const [
+                                        // DropdownMenuItem(value: 0,child: Text("Không chọn", style: TextStyle(
+                                        //   color: Colors.grey
+                                        // ),)),
+                                        DropdownMenuItem(value: "khonglam",child: Text("Không làm"),),
+                                        DropdownMenuItem(value: "khongdat",child: Text("Không đạt"),),
+                                        DropdownMenuItem(value: "dat",child: Text("Đạt"),)
+                                      ],
+                                      value: exerciseValue,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          exerciseValue = value;
+                                        });
+                                      },
+                                      validator: (value) =>
+                                        value == null ? 'Bài tập về nhà không được để trống' : null,
+                                    ),
+                                        
+                                    const SizedBox(height: 15,),
+                                    DropdownButtonFormField(
+                                      decoration: const InputDecoration(
+                                        hintText: 'Môn học',
+                                      ),
+                                      items: subjects.map((e) => 
+                                        DropdownMenuItem(value: e.id.toString(),child: Text(e.name),),).toList(),
+                                      value: subjectValue,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          subjectValue = value;
+                                        });
+                                      },
+                                      validator: (value) =>
+                                        value == null ? 'Môn không được để trống' : null,
+                                    ),
+                                        
+                                    const SizedBox(height: 15,),
+                                    ElevatedButton(
+                                      onPressed: save,
+                                      child: const Text("Lưu"),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                                
+                              const SizedBox(height: 15,),
+                            ],
+                          ),
+                        ),
+                                
+                        testMarksData.testMarks.isNotEmpty ? Expanded(
+                          child: Container(
+                            color: Colors.white,
+                            child: Column(
+                              children: testMarksData.testMarks.map((testMark) {
+                                // final testMark = testMarksData.testMarks[index];
+                                return Slidable(
+                                  key: UniqueKey(),
+                                  endActionPane: ActionPane(
+                                    motion: const StretchMotion(),
+                                    dragDismissible: true,
+                                    dismissible: DismissiblePane(
+                                      closeOnCancel: true,
+                                      dismissThreshold: 0.9,
+                                      onDismissed: () {
+                                        ref.read(testMarksProvider(widget.id).notifier).delete(testMark.id);
+                                      }, 
+                                      confirmDismiss: () async {
+                                        return await showDialog(
                                           context: context,
                                           builder: (BuildContext context) {
                                             return AlertDialog(
@@ -326,91 +300,123 @@ class _StudyStudentPageState extends ConsumerState<StudyStudentPage> {
                                             );
                                           },
                                         ) ?? false;
-                
-                                        if (isDel) {
-                                          ref.read(testMarksProvider(widget.id).notifier).delete(testMark.id);
-                                        }
-                                      },
-                                    )
-                                  ],
-                                ),
-                                child: Container(
-                                  width: double.infinity,
-                                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                                  decoration: BoxDecoration(
-                                    border: Border(
-                                      bottom: BorderSide(color: Colors.grey[300]!)
-                                    )
-                                  ),
-                                  child: Column(
+                                      }
+                                    ),
                                     children: [
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(testMark.subject?.name ?? "", style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.grey[700]
-                                          ),),
-                                          Text(DateFormat("dd/MM/yyy").format(testMark.date), style: TextStyle(
-                                            fontSize: 12,
-                                            color: Colors.grey[800]
-                                          ),),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 5,),
-                                      Row(
-                                        children: [
-                                          Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: const [
-                                              Text("Điểm trên lớp", style: TextStyle(
-                                                fontWeight: FontWeight.w500,
-                                              ),),
-                                              SizedBox(height: 5,),
-                                              Text("Điểm về nhà  ", style: TextStyle(
-                                                fontWeight: FontWeight.w500,
-                                              ),),
-                                            ],
-                                          ),
-                                          const SizedBox(width: 10,),
-                                          Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text(testMark.point.toString(), style: TextStyle(
-                                                color: Colors.grey[700],
-                                                fontWeight: FontWeight.w500,
-                                              ),),
-                                              const SizedBox(height: 5,),
-                                              Text(testMark.getExercise(), style: TextStyle(
-                                                color: Colors.grey[700],
-                                                fontWeight: FontWeight.w500,
-                                              ),),
-                                            ],
-                                          ),
-                                          const SizedBox(width: 10,),
-                                          const Spacer(),
-                                          TextButton(
-                                            onPressed: () async {
-                                              bool isSave = await modalEdit(testMark) ?? false;
-                                              if (isSave) {
-                                                save(edit: true);
-                                              }
-                                            }, 
-                                            style: TextButton.styleFrom(backgroundColor: Colors.green[100]),
-                                            child: const Text("Chỉnh sửa")
-                                          ) 
-                                        ],
-                                      ),
+                                      SlidableAction(
+                                        backgroundColor: Colors.red,
+                                        icon: CupertinoIcons.trash,
+                                        label: 'Xóa',
+                                        onPressed: (context) async {
+                                          bool isDel = await showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: const Text("Xóa điểm"),
+                                                content: Text("Bạn có chắc chắn muốn xóa điểm ngày'${DateFormat("dd/MM/yyyy").format(testMark.date)}'"),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    child: Text('Không', style: TextStyle(color: Colors.grey[800]!),),
+                                                    onPressed: () {
+                                                      Navigator.pop(context, false);
+                                                    },
+                                                  ),
+                                                  TextButton(
+                                                    child: const Text('Xóa', style: TextStyle(color: Colors.red),),
+                                                    onPressed: () {
+                                                      Navigator.pop(context, true);
+                                                    },
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          ) ?? false;
+                  
+                                          if (isDel) {
+                                            ref.read(testMarksProvider(widget.id).notifier).delete(testMark.id);
+                                          }
+                                        },
+                                      )
                                     ],
                                   ),
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                        )
-                      ) : const Center(child: Text("Chưa có điểm nào"))
-                    ],
+                                  child: Container(
+                                    width: double.infinity,
+                                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        bottom: BorderSide(color: Colors.grey[300]!)
+                                      )
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(testMark.subject?.name ?? "", style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.grey[700]
+                                            ),),
+                                            Text(DateFormat("dd/MM/yyy").format(testMark.date), style: TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.grey[800]
+                                            ),),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 5,),
+                                        Row(
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: const [
+                                                Text("Điểm trên lớp", style: TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                ),),
+                                                SizedBox(height: 5,),
+                                                Text("Điểm về nhà  ", style: TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                ),),
+                                              ],
+                                            ),
+                                            const SizedBox(width: 10,),
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(testMark.point.toString(), style: TextStyle(
+                                                  color: Colors.grey[700],
+                                                  fontWeight: FontWeight.w500,
+                                                ),),
+                                                const SizedBox(height: 5,),
+                                                Text(testMark.getExercise(), style: TextStyle(
+                                                  color: Colors.grey[700],
+                                                  fontWeight: FontWeight.w500,
+                                                ),),
+                                              ],
+                                            ),
+                                            const SizedBox(width: 10,),
+                                            const Spacer(),
+                                            TextButton(
+                                              onPressed: () async {
+                                                bool isSave = await modalEdit(testMark) ?? false;
+                                                if (isSave) {
+                                                  save(edit: true);
+                                                }
+                                              }, 
+                                              style: TextButton.styleFrom(backgroundColor: Colors.green[100]),
+                                              child: const Text("Chỉnh sửa")
+                                            ) 
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          )
+                        ) : const Center(child: Text("Chưa có điểm nào"))
+                      ],
+                    ),
                   ),
                 ),
               ),

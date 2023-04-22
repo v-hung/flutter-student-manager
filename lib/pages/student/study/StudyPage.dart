@@ -60,7 +60,7 @@ class _StudyPageState extends ConsumerState<StudyPage> {
                 physics: const AlwaysScrollableScrollPhysics(),
                 child: testMarks.when(
                   data: (data) {
-                    if (data.length == 0) {
+                    if (data.isEmpty) {
                       return const Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),
                         child: Center(child: Text("Chưa có dữ liệu học tập"),),

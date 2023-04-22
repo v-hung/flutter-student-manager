@@ -329,6 +329,8 @@ class TeacherRepository {
         'authorization': "Bearer ${auth.token}",
       });
 
+      print(response.body);
+
       if (response.statusCode == 200) {
         var body = jsonDecode(response.body);
 
@@ -358,7 +360,7 @@ class TeacherRepository {
         "date": DateTime.now().toString(),
       });
 
-      print({student_id});
+      // print({response.body});
 
       if (response.statusCode == 200) {
         var body = jsonDecode(response.body);
