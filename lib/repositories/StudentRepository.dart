@@ -216,7 +216,11 @@ class StudentRepository {
 
         final tuitions =  List<TuitionModel>.from((data['tuition'] as List<dynamic>).map<TuitionModel>((x) => TuitionModel.fromMap(x as Map<String,dynamic>),),);
 
-        return TuitionData(tuitions: tuitions, debt: data['debt'], paid: data['paid']);
+        return TuitionData(
+          tuitions: tuitions, 
+          debt: data['debt'] is int ? data['debt'] : int.parse(data['debt'] as String), 
+          paid: data['paid'] is int ? data['paid'] : int.parse(data['paid'] as String)
+        );
       } 
       else {
         return Future.error("Không thể tải học phí");

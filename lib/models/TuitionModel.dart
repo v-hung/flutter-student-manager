@@ -32,8 +32,8 @@ class TuitionModel {
     return TuitionModel(
       id: map['id'] as int,
       title: map['title'] as String,
-      student_id: map['student_id'] as int,
-      tuition_fee: map['tuition_fee'] as int,
+      student_id: map['student_id'] is int ? map['student_id'] as int : int.parse(map['student_id'] as String),
+      tuition_fee: map['tuition_fee'] is int ? map['tuition_fee'] as int : int.parse(map['tuition_fee'] as String),
       status: map['status'] as String,
       date: DateTime.parse(map['date'] as String),
     );
