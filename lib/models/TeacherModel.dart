@@ -58,7 +58,7 @@ class TeacherModel {
       phone: map['phone'] != null ? map['phone'] as String : null,
       position: map['position'] != null ? map['position'] as String : null,
       date_of_birth: map['date_of_birth'] != null ? DateTime.parse(map['date_of_birth'] as String) : null,
-      role_id: map['role_id'] != null ? map['role_id'] as int : null,
+      role_id: map['role_id'] != null ? (map['role_id'] is int ? map['role_id'] as int : int.parse(map['role_id'] as String)) : null,
       qrcode: map['qrcode'] != null ? map['qrcode'] as String : null,
     );
   }

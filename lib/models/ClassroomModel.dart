@@ -48,7 +48,7 @@ class ClassroomModel {
       schedule: map['schedule'] != null ? map['schedule'] as String : null,
       images: map['images'] != null ? map['images'] as String : null,
       description: map['description'] != null ? map['description'] as String : null,
-      students_count: map['students_count'] != null ? map['students_count'] as int : null,
+      students_count: map['students_count'] != null ? (map['students_count'] is int ? map['students_count'] as int : int.parse(map['students_count'] as String)) : null,
       students: map['students'] != null ? List<StudentModel>.from((map['students'] as List<dynamic>).map<StudentModel>((x) => StudentModel.fromMap(x as Map<String,dynamic>),),) : [],
     );
   }

@@ -1,1 +1,1 @@
-const BASE_URL = "trungtam.headbull.site";
+const BASE_URL = "saothainguyen.edu.vn";
