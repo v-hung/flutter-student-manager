@@ -203,7 +203,7 @@ Future showAlertSuccess(BuildContext context, StudentModel student, String type)
               height: 80,
               width: 80,
               child: CachedNetworkImage(
-                imageUrl: "data.getImage()",
+                imageUrl: student.getImage(),
                 imageBuilder: (context, imageProvider) => Container(
                   width: double.infinity,
                   height: double.infinity,

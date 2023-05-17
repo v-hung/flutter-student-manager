@@ -87,7 +87,7 @@ class _NotificationsPageState extends ConsumerState<NotificationsPage> {
                           child: Center(
                             child: codeScansData.current_page < codeScansData.last_page 
                               ? const CircularProgressIndicator()
-                              : const Text("Không còn xin nghỉ"),
+                              : const Text("Không còn thông báo"),
                           ),
                         );
                       }

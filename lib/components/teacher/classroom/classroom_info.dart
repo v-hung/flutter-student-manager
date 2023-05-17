@@ -9,7 +9,9 @@ import 'package:flutter_student_manager/controllers/teacher/ClassroomsController
 import 'package:flutter_student_manager/models/ClassroomModel.dart';
 import 'package:flutter_student_manager/repositories/TeacherRepository.dart';
 import 'package:flutter_student_manager/utils/utils.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TeacherClassroomInfo extends ConsumerStatefulWidget {
   final String id;
@@ -155,7 +157,7 @@ class _TeacherClassroomInfoState extends ConsumerState<TeacherClassroomInfo> {
                                         height: double.infinity,
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(20),
-                                          color: Colors.grey,
+                                          // color: Colors.grey,
                                           image: DecorationImage(
                                             image: imageProvider, fit: BoxFit.cover),
                                         ),
@@ -183,10 +185,38 @@ class _TeacherClassroomInfoState extends ConsumerState<TeacherClassroomInfo> {
                                   const SizedBox(width: 10,),
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(data.students[i].name, style: const TextStyle(fontWeight: FontWeight.w500),),
-                                      Text(data.students[i].date_of_birth != null ? DateFormat("dd/MM/yyy").format(data.students[i].date_of_birth!) : ""),
+                                      data.students[i].date_of_birth != null ? Text(DateFormat("dd/MM/yyy").format(data.students[i].date_of_birth!)) : const SizedBox(),
                                     ],
+                                  ),
+                                  const Spacer(),
+                                  if (data.students[i].getPhone() != "") ...[
+                                    IconButton(
+                                      onPressed: () async {
+                                        var _url = Uri.parse('https://zalo.me/0399633237');
+                                        
+                                        if (!await launchUrl(_url)) {
+                                          return showSnackBar(context: context, content: "Không thể mở zalo");
+                                        }
+                                      },
+                                      icon: const Icon(CupertinoIcons.chat_bubble_2_fill, color: Colors.pink,)
+                                    ),
+                                    IconButton(
+                                      onPressed: () async {
+                                        var _url = Uri(scheme: 'tel', path: data.students[i].getPhone());
+                                        if (!await launchUrl(_url)) {
+                                          return showSnackBar(context: context, content: "Không thể gọi điện");
+                                        }
+                                      },
+                                      icon: const Icon(CupertinoIcons.phone_circle_fill, color: Colors.green,)
+                                    ),
+                                  ],
+
+                                  IconButton(
+                                    onPressed: () => context.go('/teacher/students/${data.students[i].id}?classroomId=${data.id}'),
+                                    icon: const Icon(CupertinoIcons.info, color: Colors.blue,)
                                   )
                                 ],
                               ),

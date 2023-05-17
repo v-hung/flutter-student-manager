@@ -208,7 +208,10 @@ class RouterNotifier extends ChangeNotifier {
                 GoRoute(
                   name: "teacher-student-info",
                   path: ":id",
-                  builder: (context, state) => TeacherStudentDetailsPage(id: state.params['id'] ?? "")
+                  builder: (context, state) => TeacherStudentDetailsPage(
+                    id: state.params['id'] ?? "",
+                    classroomId: state.queryParams['classroomId'] ?? ""
+                  )
                 ),
               ]
             ),

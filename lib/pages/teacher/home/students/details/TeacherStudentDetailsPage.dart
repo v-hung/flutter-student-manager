@@ -10,7 +10,8 @@ import 'package:intl/intl.dart';
 
 class TeacherStudentDetailsPage extends ConsumerStatefulWidget {
   final String id;
-  const TeacherStudentDetailsPage({required this.id,  super.key});
+  final String classroomId;
+  const TeacherStudentDetailsPage({required this.id, required this.classroomId, super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _TeacherStudentDetailsPageState();
@@ -50,6 +51,10 @@ class _TeacherStudentDetailsPageState extends ConsumerState<TeacherStudentDetail
               SliverAppBar(
                 automaticallyImplyLeading: showLeading ? true : false,
                 backgroundColor: Colors.green,
+                leading: IconButton(
+                  onPressed: () => widget.classroomId != "" ? context.go('/teacher/classrooms/${widget.classroomId}') : context.pop(), 
+                  icon: const Icon(CupertinoIcons.back)
+                ),
                 actions: [
                   TextButton(
                     onPressed: () => context.go('/teacher/students/edit-add?id=${data.id}'),

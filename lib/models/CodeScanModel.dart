@@ -7,6 +7,7 @@ enum ActionEnum {
   goOut('out'),
   diemKiemTra('diemkiemtra'),
   baiTap('baitap'),
+  hocPhi('hocphi'),
   empty('');
 
   const ActionEnum(this.type);
@@ -24,6 +25,8 @@ extension ConvertCall on String {
         return ActionEnum.diemKiemTra;
       case 'baitap':
         return ActionEnum.baiTap;
+      case 'hocphi':
+        return ActionEnum.hocPhi;
       default:
         return ActionEnum.empty;
     }
@@ -65,4 +68,12 @@ class CodeScanModel {
   String toJson() => json.encode(toMap());
 
   factory CodeScanModel.fromJson(String source) => CodeScanModel.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  String getNameAction() {
+    return action == ActionEnum.goIn ? "Đến Trường" 
+      : action == ActionEnum.goOut ? "Về nhà"
+      : action == ActionEnum.diemKiemTra ? "Điểm kiểm tra"
+      : action == ActionEnum.hocPhi ? "Học phí"
+      : action == ActionEnum.baiTap ? "Điểm bài tập" : "Thông báo";
+  }
 }

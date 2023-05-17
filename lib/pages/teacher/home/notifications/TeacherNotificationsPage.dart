@@ -86,7 +86,7 @@ class _TeacherNotificationsPageState extends ConsumerState<TeacherNotificationsP
                         child: Center(
                           child: breakSchoolsData.current_page < breakSchoolsData.last_page 
                             ? const CircularProgressIndicator()
-                            : const Text("Không còn xin nghỉ"),
+                            : const Text("Không còn thông báo"),
                         ),
                       );
                     }

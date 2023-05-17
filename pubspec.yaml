@@ -66,6 +66,7 @@ dependencies:
   equatable: ^2.0.5
   flutter_local_notifications: ^13.0.0
   modal_bottom_sheet: ^3.0.0-pre
+  url_launcher: ^6.1.11
 
 dev_dependencies:
   flutter_test:
