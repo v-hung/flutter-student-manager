@@ -7,6 +7,7 @@ import 'package:flutter_student_manager/models/StudentModel.dart';
 import 'package:flutter_student_manager/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TeacherStudentDetailsPage extends ConsumerStatefulWidget {
   final String id;
@@ -148,9 +149,35 @@ class _TeacherStudentDetailsPageState extends ConsumerState<TeacherStudentDetail
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text("Thông tin chi tiết", style: TextStyle(
-                              color: Colors.blue
-                            ),),
+                            Row(
+                              children: [
+                                const Text("Thông tin chi tiết", style: TextStyle(
+                                  color: Colors.blue
+                                ),),
+                                const Spacer(),
+                                if (data.getPhone() != "") ...[
+                                  IconButton(
+                                    onPressed: () async {
+                                      var _url = Uri.parse('https://zalo.me/${data.getPhone()}');
+                                      
+                                      if (!await launchUrl(_url, mode: LaunchMode.externalApplication)) {
+                                        return showSnackBar(context: context, content: "Không thể mở zalo");
+                                      }
+                                    },
+                                    icon: const Icon(CupertinoIcons.chat_bubble_2_fill, color: Colors.pink,)
+                                  ),
+                                  IconButton(
+                                    onPressed: () async {
+                                      var _url = Uri(scheme: 'tel', path: data.getPhone());
+                                      if (!await launchUrl(_url)) {
+                                        return showSnackBar(context: context, content: "Không thể gọi điện");
+                                      }
+                                    },
+                                    icon: const Icon(CupertinoIcons.phone_circle_fill, color: Colors.green,)
+                                  ),
+                                ],
+                              ],
+                            ),
                       
                             const SizedBox(height: 10,),
                             const Text("Giới tính", style: TextStyle(

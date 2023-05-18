@@ -70,8 +70,8 @@ class _HomeListIconTeacherState extends ConsumerState<HomeListIconTeacher> {
         physics: const NeverScrollableScrollPhysics(),
         crossAxisCount: 4,
         itemCount: icons.length,
-        mainAxisSpacing: 25,
-        crossAxisSpacing: 25,
+        mainAxisSpacing: 20,
+        crossAxisSpacing: 20,
         itemBuilder: (context, index) {
           final icon = icons[index];
           return InkWell(

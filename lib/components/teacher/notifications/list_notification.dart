@@ -18,8 +18,9 @@ class _HomeListNotificationState extends ConsumerState<HomeListNotification> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        const Spacer(),
+        // const Spacer(),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           decoration: BoxDecoration(
@@ -47,10 +48,10 @@ class _HomeListNotificationState extends ConsumerState<HomeListNotification> {
           ]),
         ),
         Flexible(
-          flex: 0,
+          // flex: 0,
           child: Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             decoration: BoxDecoration(
               color: Colors.grey[200]!.withOpacity(.8),
               borderRadius: const BorderRadius.only(
@@ -65,44 +66,49 @@ class _HomeListNotificationState extends ConsumerState<HomeListNotification> {
                     if (breakSchoolsData.loading) {
                     return const Center(child: CircularProgressIndicator(),);
                   }
-
+              
                   final breakSchools = breakSchoolsData.breakSchools;
-
+              
                   if (breakSchools.isEmpty) {
                     return const Text("Lịch sử xin nghỉ của các con sẽ được hiện thị tại đây");
                   }
-
+              
                   final length = breakSchools.length >= 3 ? 3 : breakSchools.length;
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      for(var i = 0; i < length; i ++) ...[
-                        if (i > 0) ...[
-                          const SizedBox(height: 10,),
-                        ],
-
-                        NotificationTeacherWidget(breakSchool: breakSchools[i]),
-
-                        const SizedBox(height: 10,),
-
-                        if (i == 2) ...[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              InkWell(
-                                onTap: () => context.go('/teacher/notifications'),
-                                child: Text("Xem thêm", style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.green[900],
-                                  decoration: TextDecoration.underline,
-                                  decorationColor: Colors.green[900]
-                                )),
-                              ),
+                  return IntrinsicHeight(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          for(var i = 0; i < length; i ++) ...[
+                            if (i > 0) ...[
+                              const SizedBox(height: 10,),
                             ],
-                          )
+                                    
+                            NotificationTeacherWidget(breakSchool: breakSchools[i]),
+                                    
+                            const SizedBox(height: 10,),
+                                    
+                            if (i == 2) ...[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  InkWell(
+                                    onTap: () => context.go('/teacher/notifications'),
+                                    child: Text("Xem thêm", style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.green[900],
+                                      decoration: TextDecoration.underline,
+                                      decorationColor: Colors.green[900]
+                                    )),
+                                  ),
+                                ],
+                              )
+                            ]
+                          ]
                         ]
-                      ]
-                    ]
+                      ),
+                    ),
                   );
                 },
               ),

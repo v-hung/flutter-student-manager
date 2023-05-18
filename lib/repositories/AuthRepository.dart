@@ -73,7 +73,7 @@ class AuthRepository {
           user = TeacherModel.fromMap(data['user']);
         }
         else if (type == "student") {
-          print(data['user']);
+          // print(data['user']);
           user = StudentModel.fromMap(data['user']);
         }
 
@@ -97,7 +97,7 @@ class AuthRepository {
         "type": type
       });
 
-      print(response.body);
+      // print(response.body);
 
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);

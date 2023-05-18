@@ -195,9 +195,9 @@ class _TeacherClassroomInfoState extends ConsumerState<TeacherClassroomInfo> {
                                   if (data.students[i].getPhone() != "") ...[
                                     IconButton(
                                       onPressed: () async {
-                                        var _url = Uri.parse('https://zalo.me/0399633237');
+                                        var _url = Uri.parse('https://zalo.me/${data.students[i].getPhone()}');
                                         
-                                        if (!await launchUrl(_url)) {
+                                        if (!await launchUrl(_url, mode: LaunchMode.externalApplication)) {
                                           return showSnackBar(context: context, content: "Không thể mở zalo");
                                         }
                                       },

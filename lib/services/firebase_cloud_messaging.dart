@@ -47,7 +47,7 @@ class FirebaseCloudMessagingService {
 
     FirebaseMessaging.onMessageOpenedApp.listen(_firebaseMessagingOpenedAppHandler);
 
-    print(await fcm.getToken());
+    // print(await fcm.getToken());
   }
   
 

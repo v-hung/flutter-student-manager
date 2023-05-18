@@ -65,35 +65,35 @@ class _TeacherBodySettingsState extends ConsumerState<TeacherBodySettings> {
                 color: Colors.red,
                 icon: CupertinoIcons.person_fill,
                 label: "Họ tên",
-                value: user?.name,
+                value: user?.name ?? "Chưa cập nhập",
               ),
 
               InfoWidget(
                 color: Colors.blue,
                 icon: CupertinoIcons.person_2_alt,
                 label: "Giới tính",
-                value: user?.sex,
+                value: user?.sex ?? "Chưa cập nhập",
               ),
 
               InfoWidget(
                 color: Colors.orange,
                 icon: CupertinoIcons.time_solid,
                 label: "Ngày sinh",
-                value: user?.date_of_birth != null ? DateFormat("dd/MM,yyyy").format(user!.date_of_birth!) : "",
+                value: user?.date_of_birth != null ? DateFormat("dd/MM,yyyy").format(user!.date_of_birth!) : "Chưa cập nhập",
               ),
 
               InfoWidget(
                 color: Colors.green,
                 icon: CupertinoIcons.location_fill,
                 label: "Địa chỉ",
-                value: user?.address,
+                value: user?.address ?? "Chưa cập nhập",
               ),
 
               InfoWidget(
                 color: Colors.brown,
                 icon: CupertinoIcons.phone_fill,
                 label: "Số điện thoại liên hệ",
-                value: user?.phone,
+                value: user?.phone ?? "Chưa cập nhập",
                 border: false,
               )
             ],
@@ -127,7 +127,7 @@ class _TeacherBodySettingsState extends ConsumerState<TeacherBodySettings> {
                 color: Colors.cyan,
                 icon: CupertinoIcons.home,
                 label: "Chức vụ",
-                value: user?.position,
+                value: user?.position ?? "Chưa cập nhập",
                 border: false,
               ),
 

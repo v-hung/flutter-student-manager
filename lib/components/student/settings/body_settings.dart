@@ -68,7 +68,7 @@ class _StudentBodySettingsState extends ConsumerState<StudentBodySettings> {
                 color: Colors.red,
                 icon: CupertinoIcons.person_fill,
                 label: "Họ tên",
-                value: user?.name,
+                value: user?.name ?? "Chưa cập nhập",
               ),
 
               InfoWidget(
@@ -82,14 +82,14 @@ class _StudentBodySettingsState extends ConsumerState<StudentBodySettings> {
                 color: Colors.green,
                 icon: CupertinoIcons.location_fill,
                 label: "Địa chỉ",
-                value: user?.address,
+                value: user?.address ?? "Chưa cập nhập",
               ),
 
               InfoWidget(
                 color: Colors.brown,
                 icon: CupertinoIcons.phone_fill,
                 label: "Số điện thoại liên hệ",
-                value: user?.contact_info,
+                value: user?.contact_info ?? "Chưa cập nhập",
                 border: false,
               )
             ],
@@ -130,14 +130,14 @@ class _StudentBodySettingsState extends ConsumerState<StudentBodySettings> {
                 color: Colors.cyan,
                 icon: CupertinoIcons.money_dollar,
                 label: "Học phí",
-                value: user?.tuition != null ? formatCurrencyDouble(user!.tuition!) : null,
+                value: user?.tuition != null ? formatCurrencyDouble(user!.tuition!) : "Chưa cập nhập",
               ),
 
               InfoWidget(
                 color: Colors.purple,
                 icon: CupertinoIcons.suit_club,
                 label: "Các môn theo học",
-                value: subjects.isNotEmpty ? subjects.fold("",(value, element, ) => value! + "${element.name} ") : "Chưa cập nhập",
+                value: subjects.isNotEmpty ? subjects.fold("",(value, element, ) => "${value!}${element.name} ") : "Chưa cập nhập",
                 border: false,
               ),
             ],
