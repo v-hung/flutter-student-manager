@@ -186,7 +186,7 @@ class TeacherRepository {
     }
   }
 
-  Future<StudentModel?> createStudent(String name, String date, String address, String phone, String entrance_exam_score,
+  Future<StudentModel?> createStudent(String name, String date, String address, String info, String phone, String phone2, String entrance_exam_score,
   String tuition, String class_id, String gender, String username, String password, String subject_id, XFile? avatar) async {
     try {
       final auth = ref.watch(authControllerProvider);
@@ -197,7 +197,9 @@ class TeacherRepository {
       request.fields['name'] = name;
       request.fields['date_of_birth'] = date;
       request.fields['address'] = address;
-      request.fields['contact_info'] = phone;
+      request.fields['contact_info'] = info;
+      request.fields['phone'] = phone;
+      request.fields['phone2'] = phone2;
       request.fields['entrance_exam_score'] = entrance_exam_score;
       request.fields['tuition'] = tuition;
       request.fields['class_id'] = class_id;
@@ -230,7 +232,7 @@ class TeacherRepository {
     }
   }
 
-  Future<StudentModel?> updateStudentInfoById(String id, String name, String date, String address, String phone, String entrance_exam_score,
+  Future<StudentModel?> updateStudentInfoById(String id, String name, String date, String address, String info, String phone, String phone2, String entrance_exam_score,
   String tuition, String class_id, String gender, String username, String password, String subject_id, XFile? avatar) async {
     try {
       final auth = ref.watch(authControllerProvider);
@@ -241,7 +243,9 @@ class TeacherRepository {
       request.fields['name'] = name;
       request.fields['date_of_birth'] = date;
       request.fields['address'] = address;
-      request.fields['contact_info'] = phone;
+      request.fields['contact_info'] = info;
+      request.fields['phone'] = phone;
+      request.fields['phone2'] = phone2;
       request.fields['entrance_exam_score'] = entrance_exam_score;
       request.fields['tuition'] = tuition;
       request.fields['class_id'] = class_id;

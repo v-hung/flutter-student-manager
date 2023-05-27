@@ -34,7 +34,9 @@ class _TeacherStudentEditAddPageState extends ConsumerState<TeacherStudentEditAd
   // final genderController = TextEditingController();
   final dateController = TextEditingController();
   final addressController = TextEditingController();
+  final infoController = TextEditingController();
   final phoneController = TextEditingController();
+  final phone2Controller = TextEditingController();
   final emailController = TextEditingController();
   final scoreController = TextEditingController();
   final tuitionController = TextEditingController();
@@ -67,12 +69,14 @@ class _TeacherStudentEditAddPageState extends ConsumerState<TeacherStudentEditAd
     });
 
     StudentModel? student = widget.id == "" ? await ref.read(teacherRepositoryProvider).createStudent(
-      nameController.text, dateController.text, addressController.text, phoneController.text, 
-      scoreController.text, tuitionController.text, classroomValue != null ? classroomValue.toString() : "", 
+      nameController.text, dateController.text, addressController.text, infoController.text, 
+      phoneController.text, phone2Controller.text, scoreController.text, tuitionController.text, 
+      classroomValue != null ? classroomValue.toString() : "", 
       genderValue ?? "", usernameController.text, passwordController.text, subjectsValue.toString(), file
     )
     : await ref.read(teacherRepositoryProvider).updateStudentInfoById(
-      widget.id, nameController.text, dateController.text, addressController.text, phoneController.text, 
+      widget.id, nameController.text, dateController.text, addressController.text, 
+      infoController.text, phoneController.text, phone2Controller.text,
       scoreController.text, tuitionController.text, classroomValue != null ? classroomValue.toString() : "", 
       genderValue ?? "", usernameController.text, passwordController.text, subjectsValue.toString(), file
     );
@@ -132,7 +136,7 @@ class _TeacherStudentEditAddPageState extends ConsumerState<TeacherStudentEditAd
   }
 
   void loadData() async {
-    StudentModel? student = null;
+    StudentModel? student;
     classrooms = await ref.read(classroomsFutureProvider.future).onError((error, stackTrace) => []);
     subjects = await ref.read(subjectsFutureProvider.future).onError((error, stackTrace) => []);
 
@@ -149,7 +153,13 @@ class _TeacherStudentEditAddPageState extends ConsumerState<TeacherStudentEditAd
         genderValue = student?.gender ?? "";
       }
       if (student?.contact_info != null) {
-        phoneController.text = student?.contact_info ?? "";
+        infoController.text = student?.contact_info ?? "";
+      }
+      if (student?.phone != null) {
+        phoneController.text = student?.phone ?? "";
+      }
+      if (student?.phone2 != null) {
+        phone2Controller.text = student?.phone2 ?? "";
       }
       if (student?.address != null) {
         addressController.text = student?.address ?? "";
@@ -175,11 +185,14 @@ class _TeacherStudentEditAddPageState extends ConsumerState<TeacherStudentEditAd
     });
   }
 
-  @override void dispose() {
+  @override 
+  void dispose() {
     nameController.dispose(); 
     dateController.dispose();
     addressController.dispose();
+    infoController.dispose();
     phoneController.dispose();
+    phone2Controller.dispose();
     emailController.dispose();
     scoreController.dispose();
     tuitionController.dispose();
@@ -342,9 +355,40 @@ class _TeacherStudentEditAddPageState extends ConsumerState<TeacherStudentEditAd
                             bottom: BorderSide(color: Colors.grey[300]!)
                           )),
                           child: TextField(
+                            controller: infoController,
+                            keyboardType: TextInputType.multiline,
+                            minLines: 2,
+                            maxLines: 5,
+                            decoration: const InputDecoration(
+                              hintText: 'Thông tin liên hệ',
+                              border: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 13),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(border: Border(
+                            bottom: BorderSide(color: Colors.grey[300]!)
+                          )),
+                          child: TextField(
                             controller: phoneController,
                             decoration: const InputDecoration(
-                              hintText: 'Số điện thoại',
+                              hintText: 'Số điện thoại mẹ',
+                              border: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 13),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(border: Border(
+                            bottom: BorderSide(color: Colors.grey[300]!)
+                          )),
+                          child: TextField(
+                            controller: phone2Controller,
+                            decoration: const InputDecoration(
+                              hintText: 'Số điện thoại bố',
                               border: InputBorder.none,
                               enabledBorder: InputBorder.none,
                               contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 13),

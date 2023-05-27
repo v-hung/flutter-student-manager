@@ -2,23 +2,22 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_student_manager/controllers/teacher/StudentController.dart';
+import 'package:flutter_student_manager/controllers/student/TeacherController.dart';
 import 'package:flutter_student_manager/models/StudentModel.dart';
 import 'package:flutter_student_manager/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class TeacherStudentDetailsPage extends ConsumerStatefulWidget {
+class TeacherDetailsPage extends ConsumerStatefulWidget {
   final String id;
-  final String classroomId;
-  const TeacherStudentDetailsPage({required this.id, required this.classroomId, super.key});
+  const TeacherDetailsPage({required this.id, super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _TeacherStudentDetailsPageState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _TeacherDetailsPageState();
 }
 
-class _TeacherStudentDetailsPageState extends ConsumerState<TeacherStudentDetailsPage> {
+class _TeacherDetailsPageState extends ConsumerState<TeacherDetailsPage> {
   var top = 144.0;
   var showLeading = true;
   late ScrollController scrollController;
@@ -41,10 +40,10 @@ class _TeacherStudentDetailsPageState extends ConsumerState<TeacherStudentDetail
 
   @override
   Widget build(BuildContext context) {
-    final student = ref.watch(studentFutureProvider(widget.id));
+    final teacher = ref.watch(teacherFutureProvider(widget.id));
     return Scaffold(
       extendBodyBehindAppBar: true,
-      body: student.when(
+      body: teacher.when(
         data: (data) {
           return CustomScrollView(
             controller: scrollController,
@@ -53,17 +52,9 @@ class _TeacherStudentDetailsPageState extends ConsumerState<TeacherStudentDetail
                 automaticallyImplyLeading: showLeading ? true : false,
                 backgroundColor: Colors.green,
                 leading: IconButton(
-                  onPressed: () => widget.classroomId != "" ? context.go('/teacher/classrooms/${widget.classroomId}') : context.pop(), 
+                  onPressed: () => context.go('/student/classroom?teacher=true'), 
                   icon: const Icon(CupertinoIcons.back)
                 ),
-                actions: [
-                  TextButton(
-                    onPressed: () => context.go('/teacher/students/edit-add?id=${data.id}'),
-                    child: const Text("Chỉnh sửa", style: TextStyle(
-                      color: Colors.white
-                    ),)
-                  ),
-                ],
                 floating: false,
                 pinned: true,
                 expandedHeight: 200,
@@ -155,10 +146,10 @@ class _TeacherStudentDetailsPageState extends ConsumerState<TeacherStudentDetail
                                   color: Colors.blue
                                 ),),
                                 const Spacer(),
-                                if (data.getPhone() != "") ...[
+                                if (data.phone != "") ...[
                                   IconButton(
                                     onPressed: () async {
-                                      var _url = Uri.parse('https://zalo.me/${data.getPhone()}');
+                                      var _url = Uri.parse('https://zalo.me/${data.phone}');
                                       
                                       if (!await launchUrl(_url, mode: LaunchMode.externalApplication)) {
                                         return showSnackBar(context: context, content: "Không thể mở zalo");
@@ -168,7 +159,7 @@ class _TeacherStudentDetailsPageState extends ConsumerState<TeacherStudentDetail
                                   ),
                                   IconButton(
                                     onPressed: () async {
-                                      var _url = Uri(scheme: 'tel', path: data.getPhone());
+                                      var _url = Uri(scheme: 'tel', path: data.phone);
                                       if (!await launchUrl(_url)) {
                                         return showSnackBar(context: context, content: "Không thể gọi điện");
                                       }
@@ -186,7 +177,7 @@ class _TeacherStudentDetailsPageState extends ConsumerState<TeacherStudentDetail
                               color: Colors.grey
                             ),),
                             const SizedBox(height: 3,),
-                            Text(data.gender != null ? (data.gender == "nam" ? "Name" : "Nữ") : "Chưa cập nhập"),
+                            Text(data.sex != null ? (data.sex == "nam" ? "Name" : "Nữ") : "Chưa cập nhập"),
                             
                             const SizedBox(height: 10,),
                             const Text("Ngày sinh", style: TextStyle(
@@ -207,101 +198,13 @@ class _TeacherStudentDetailsPageState extends ConsumerState<TeacherStudentDetail
                             Text(data.address != null ? data.address! : "Chưa cập nhập"),
 
                             const SizedBox(height: 10,),
-                            const Text("Thông tin liên hệ", style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.grey
-                            ),),
-                            const SizedBox(height: 3,),
-                            Text(data.contact_info != null ? data.contact_info! : "Chưa cập nhập"),
-
-                            const SizedBox(height: 10,),
-                            const Text("Số điện thoại mẹ", style: TextStyle(
+                            const Text("Số điện thoại", style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
                               color: Colors.grey
                             ),),
                             const SizedBox(height: 3,),
                             Text(data.phone != null ? data.phone! : "Chưa cập nhập"),
-
-                            const SizedBox(height: 10,),
-                            const Text("Số điện thoại bố", style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.grey
-                            ),),
-                            const SizedBox(height: 3,),
-                            Text(data.phone2 != null ? data.phone2! : "Chưa cập nhập"),
-
-                            const SizedBox(height: 10,),
-                            const Text("Ngày tạo tài khoản", style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.grey
-                            ),),
-                            const SizedBox(height: 3,),
-                            Text(DateFormat("dd/MM/yyyy").format(data.created_at)),
-                          ],
-                        ),
-                      ),
-
-                      const SizedBox(height: 10,),
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.1),
-                              spreadRadius: 1,
-                              blurRadius: 7,
-                              offset: Offset(0, 3), // changes position of shadow
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text("Học tập", style: TextStyle(
-                              color: Colors.blue
-                            ),),
-                      
-                            const SizedBox(height: 10,),
-                            const Text("Điểm đầu vào", style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.grey
-                            ),),
-                            const SizedBox(height: 3,),
-                            Text(data.entrance_exam_score != null ? data.entrance_exam_score!.toString() : "Chưa cập nhập"),
-                            
-                            const SizedBox(height: 10,),
-                            const Text("Học phí", style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.grey
-                            ),),
-                            const SizedBox(height: 3,),
-                            Text(data.tuition != null ? formatCurrencyDouble(data.tuition!) : "Chưa cập nhập"),
-                            
-                            const SizedBox(height: 10,),
-                            const Text("Lớp học", style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.grey
-                            ),),
-                            const SizedBox(height: 3,),
-                            Text(data.classroom != null ? data.classroom!.name : "Chưa cập nhập"),
-
-                            const SizedBox(height: 10,),
-                            const Text("Môn học", style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.grey
-                            ),),
-                            const SizedBox(height: 3,),
-                            Text(data.subjects.isNotEmpty ? data.subjects.fold("",(value, element, ) => "$value${element.name} ") : "Chưa cập nhập"),
                           ],
                         ),
                       ),

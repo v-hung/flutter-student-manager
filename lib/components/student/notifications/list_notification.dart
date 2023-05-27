@@ -18,8 +18,9 @@ class _HomeListNotificationState extends ConsumerState<HomeListNotification> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        const Spacer(),
+        // const Spacer(),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           decoration: BoxDecoration(
@@ -47,10 +48,10 @@ class _HomeListNotificationState extends ConsumerState<HomeListNotification> {
           ]),
         ),
         Flexible(
-          flex: 0,
+          // flex: 0,
           child: Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             decoration: BoxDecoration(
               color: Colors.grey[200]!.withOpacity(.6),
               borderRadius: const BorderRadius.only(
@@ -74,35 +75,40 @@ class _HomeListNotificationState extends ConsumerState<HomeListNotification> {
 
                   final length = codeScans.length >= 3 ? 3 : codeScans.length;
 
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      for(var i = 0; i < length; i ++) ...[
-                        if (i > 0) ...[
-                          const SizedBox(height: 10,),
-                        ],
-
-                        StudentNotificationWidget(codeScan: codeScans[i]),
-
-                        const SizedBox(height: 10,),
-
-                        if (i == 2) ...[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              InkWell(
-                                onTap: () => context.go('/student/notifications'),
-                                child: Text("Xem thêm", style: TextStyle(
-                                  color: Colors.green[900],
-                                  decoration: TextDecoration.underline,
-                                  decorationColor: Colors.green[900]
-                                )),
-                              ),
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: IntrinsicHeight(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          for(var i = 0; i < length; i ++) ...[
+                            if (i > 0) ...[
+                              const SizedBox(height: 10,),
                             ],
-                          )
+                    
+                            StudentNotificationWidget(codeScan: codeScans[i]),
+                    
+                            const SizedBox(height: 10,),
+                    
+                            if (i == 2) ...[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  InkWell(
+                                    onTap: () => context.go('/student/notifications'),
+                                    child: Text("Xem thêm", style: TextStyle(
+                                      color: Colors.green[900],
+                                      decoration: TextDecoration.underline,
+                                      decorationColor: Colors.green[900]
+                                    )),
+                                  ),
+                                ],
+                              )
+                            ]
+                          ]
                         ]
-                      ]
-                    ]
+                      ),
+                    ),
                   );
                 }
               )

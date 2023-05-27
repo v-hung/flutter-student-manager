@@ -8,7 +8,10 @@ import 'package:flutter_student_manager/models/StudentModel.dart';
 import 'package:flutter_student_manager/models/TeacherModel.dart';
 import 'package:flutter_student_manager/repositories/StudentRepository.dart';
 import 'package:flutter_student_manager/utils/utils.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:tiengviet/tiengviet.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 final teachersProvider = FutureProvider<List<TeacherModel>>((ref) async {
   return await ref.read(studentRepositoryProvider).getTeachers();
@@ -20,8 +23,8 @@ final filterTextProvider = StateProvider<String>((ref) {
 
 final teachersFilterProvider = Provider<List<TeacherModel>>((ref) {
   List<TeacherModel> students = ref.watch(teachersProvider).whenData((value) => value).value ?? [];
-  final filter = ref.watch(filterTextProvider);
-  return students.where((student) => student.name.toLowerCase().contains(filter.toLowerCase())).toList();
+  final filter = TiengViet.parse(ref.watch(filterTextProvider)).toLowerCase();
+  return students.where((student) => TiengViet.parse(student.name).toLowerCase().contains(filter.toLowerCase())).toList();
 });
 
 class ClassroomStudents extends ConsumerStatefulWidget {
@@ -33,6 +36,14 @@ class ClassroomStudents extends ConsumerStatefulWidget {
 
 class _ClassroomStudentsState extends ConsumerState<ClassroomStudents> {
   final searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    if (ref.read(filterTextProvider.notifier).state.isNotEmpty) {
+      searchController.text = ref.read(filterTextProvider.notifier).state;
+    }
+  }
 
   @override
   void dispose() {
@@ -125,7 +136,32 @@ class _ClassroomStudentsState extends ConsumerState<ClassroomStudents> {
                                 ),
                               ),
                               const SizedBox(width: 15,),
-                              const Icon(CupertinoIcons.info, color: Colors.blue,)
+                              if (item.phone != null) ...[
+                                IconButton(
+                                  onPressed: () async {
+                                    var _url = Uri.parse('https://zalo.me/${item.phone}');
+                                    
+                                    if (!await launchUrl(_url, mode: LaunchMode.externalApplication)) {
+                                      return showSnackBar(context: context, content: "Không thể mở zalo");
+                                    }
+                                  },
+                                  icon: const Icon(CupertinoIcons.chat_bubble_2_fill, color: Colors.pink,)
+                                ),
+                                IconButton(
+                                  onPressed: () async {
+                                    var _url = Uri(scheme: 'tel', path: item.phone);
+                                    if (!await launchUrl(_url)) {
+                                      return showSnackBar(context: context, content: "Không thể gọi điện");
+                                    }
+                                  },
+                                  icon: const Icon(CupertinoIcons.phone_circle_fill, color: Colors.green,)
+                                ),
+                              ],
+
+                              IconButton(
+                                onPressed: () => context.go('/student/teachers/${item.id}'),
+                                icon: const Icon(CupertinoIcons.info, color: Colors.blue,)
+                              )
                             ],),
                           )
                         ).toList()

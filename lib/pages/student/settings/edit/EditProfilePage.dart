@@ -24,7 +24,9 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
   final nameController = TextEditingController(); 
   final dateController = TextEditingController();
   final addressController = TextEditingController();
+  final infoController = TextEditingController();
   final phoneController = TextEditingController();
+  final phone2Controller = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool showPassword = false;
@@ -51,7 +53,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
 
     StudentModel? student = await ref.read(studentRepositoryProvider)
       .updateStudentInfoById(file, nameController.text, dateController.text, 
-      addressController.text, phoneController.text);
+      addressController.text, infoController.text, phoneController.text, phone2Controller.text);
 
     setState(() {
       loading = false;
@@ -135,7 +137,9 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
     nameController.dispose(); 
     dateController.dispose();
     addressController.dispose();
+    infoController.dispose();
     phoneController.dispose();
+    phone2Controller.dispose();
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
@@ -257,10 +261,40 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                       ),
                     ),
                     Container(
+                      decoration: BoxDecoration(border: Border(
+                        bottom: BorderSide(color: Colors.grey[300]!)
+                      )),
+                      child: TextField(
+                        controller: infoController,
+                        minLines: 2,
+                        maxLines: 5,
+                        decoration: const InputDecoration(
+                          hintText: 'Thông tin liên hệ',
+                          border: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          contentPadding: EdgeInsets.only(top: 13, bottom: 13, right: 15),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(border: Border(
+                        bottom: BorderSide(color: Colors.grey[300]!)
+                      )),
                       child: TextField(
                         controller: phoneController,
                         decoration: const InputDecoration(
-                          hintText: 'Số điện thoại',
+                          hintText: 'Số điện thoại mẹ',
+                          border: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          contentPadding: EdgeInsets.only(top: 13, bottom: 13, right: 15),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      child: TextField(
+                        controller: phone2Controller,
+                        decoration: const InputDecoration(
+                          hintText: 'Số điện thoại bố',
                           border: InputBorder.none,
                           enabledBorder: InputBorder.none,
                           contentPadding: EdgeInsets.only(top: 13, bottom: 13, right: 15),

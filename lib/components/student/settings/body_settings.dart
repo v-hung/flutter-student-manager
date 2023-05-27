@@ -86,10 +86,24 @@ class _StudentBodySettingsState extends ConsumerState<StudentBodySettings> {
               ),
 
               InfoWidget(
+                color: Colors.blue,
+                icon: CupertinoIcons.pen,
+                label: "Thông tin liên hệ",
+                value: user?.contact_info ?? "Chưa cập nhập",
+              ),
+
+              InfoWidget(
+                color: Colors.teal,
+                icon: CupertinoIcons.phone_down_fill,
+                label: "Số điện thoại mẹ",
+                value: user?.phone ?? "Chưa cập nhập",
+              ),
+
+              InfoWidget(
                 color: Colors.brown,
                 icon: CupertinoIcons.phone_fill,
-                label: "Số điện thoại liên hệ",
-                value: user?.contact_info ?? "Chưa cập nhập",
+                label: "Số điện thoại bố",
+                value: user?.phone2 ?? "Chưa cập nhập",
                 border: false,
               )
             ],
@@ -135,7 +149,7 @@ class _StudentBodySettingsState extends ConsumerState<StudentBodySettings> {
 
               InfoWidget(
                 color: Colors.purple,
-                icon: CupertinoIcons.suit_club,
+                icon: CupertinoIcons.book_solid,
                 label: "Các môn theo học",
                 value: subjects.isNotEmpty ? subjects.fold("",(value, element, ) => "${value!}${element.name} ") : "Chưa cập nhập",
                 border: false,

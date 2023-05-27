@@ -8,6 +8,7 @@ import 'package:flutter_student_manager/pages/student/home/breakschool/BreakScho
 import 'package:flutter_student_manager/pages/student/home/calendar/CalendarPage.dart';
 import 'package:flutter_student_manager/pages/student/home/classroom/ClassroomPage.dart';
 import 'package:flutter_student_manager/pages/student/home/notifications/NotificationsPage.dart';
+import 'package:flutter_student_manager/pages/student/home/teacher/details/TeacherDetailsPage.dart';
 import 'package:flutter_student_manager/pages/student/home/tuition/TuitionPage.dart';
 import 'package:flutter_student_manager/pages/student/settings/SettingsPage.dart';
 import 'package:flutter_student_manager/pages/student/settings/edit/EditProfilePage.dart';
@@ -117,7 +118,11 @@ class RouterNotifier extends ChangeNotifier {
             ),
             GoRoute(
               path: "classroom",
-              builder: (context, state) => const ClassroomPage(),
+              builder: (context, state) => ClassroomPage(teacher: state.queryParams['teacher'] ?? ""),
+            ),
+            GoRoute(
+              path: "teachers/:id",
+              builder: (context, state) => TeacherDetailsPage(id: state.params['id'] ?? "")
             ),
             GoRoute(
               path: "calendar",

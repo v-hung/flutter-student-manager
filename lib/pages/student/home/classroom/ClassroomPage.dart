@@ -8,7 +8,8 @@ import 'package:go_router/go_router.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class ClassroomPage extends ConsumerStatefulWidget {
-  const ClassroomPage({super.key});
+  final String teacher;
+  const ClassroomPage({required this.teacher, super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => ClassroomPageState();
@@ -19,8 +20,12 @@ class ClassroomPageState extends ConsumerState<ClassroomPage> with TickerProvide
 
   @override
   void initState() {
-    tabController = TabController(length: 2, vsync: this);
     super.initState();
+    int initialIndex = 0;
+    if (widget.teacher.isNotEmpty) {
+      initialIndex = 1;
+    }
+    tabController = TabController(length: 2, vsync: this, initialIndex: initialIndex);
   }
 
   @override

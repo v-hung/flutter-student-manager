@@ -56,7 +56,7 @@ class StudentRepository {
     }
   }
 
-  Future<StudentModel?> updateStudentInfoById(XFile? avatar, String name, String date, String address, String phone) async {
+  Future<StudentModel?> updateStudentInfoById(XFile? avatar, String name, String date, String address, String info, String phone, String phone2) async {
     try {
       final auth = ref.watch(authControllerProvider);
       var url = Uri.https(BASE_URL, '/api/${auth.type.toString().split('.').last}/student/${auth.user.id}');
@@ -66,7 +66,9 @@ class StudentRepository {
       request.fields['name'] = name;
       request.fields['date_of_birth'] = date;
       request.fields['address'] = address;
-      request.fields['contact_info'] = phone;
+      request.fields['contact_info'] = info;
+      request.fields['phone'] = phone;
+      request.fields['phone2'] = phone2;
       if (avatar != null) {
         print(avatar);
         request.files.add(await http.MultipartFile.fromPath('avatar', avatar.path, 
@@ -304,6 +306,27 @@ class StudentRepository {
     } catch (e) {
       print(e);
       return [];
+    }
+  }
+
+  Future<TeacherModel> getTeacherById(String id) async {
+    try {
+      final auth = ref.watch(authControllerProvider);
+      var url = Uri.https(BASE_URL, '/api/${auth.type.toString().split('.').last}/teacher/$id');
+      var response = await http.get(url, headers: {
+        'authorization': "Bearer ${auth.token}",
+      });
+
+      if (response.statusCode == 200) {
+        var body = jsonDecode(response.body);
+        final data = TeacherModel.fromMap(body['data']);
+        return data;
+      } 
+      else {
+        return Future.error("Không thể tải giáo viên");
+      }
+    } catch (e) {
+      return Future.error("Không thể tải giáo viên");
     }
   }
 }
