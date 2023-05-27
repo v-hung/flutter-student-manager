@@ -19,3 +19,11 @@ keytool -genkey -v -keystore ./android/app/upload-keystore.jks -storetype JKS -k
 
 # build android
 - flutter build appbundle
+
+# build ios
+- flutter clean
+- delet Podfile, Podfile.lock
+- flutter pub get
+- pod install
+- flutter build ios --no-tree-shake-icons
+- Open xcode, product -> archive (Open list archive: Window -> Organizer)
