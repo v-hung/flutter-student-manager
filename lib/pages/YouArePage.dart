@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_student_manager/pages/LoginPage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_student_manager/controllers/AuthController.dart';
 import 'package:flutter_student_manager/utils/color.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class YouArePage extends ConsumerStatefulWidget {
   const YouArePage({super.key});
@@ -42,7 +44,10 @@ class YouArePageState extends ConsumerState<YouArePage> {
                 ),),
                 const SizedBox(height: 20,),
                 InkWell(
-                  onTap: () => context.go('/login?type=teacher'),
+                  // onTap: () => context.go('/login?type=teacher'),
+                  onTap: () => Navigator.of(context).push(
+                    MaterialWithModalsPageRoute(builder: (context) => const LoginPage(type: 'teacher',))
+                  ),
                   child: Container(
                     height: 90,
                     padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -97,7 +102,10 @@ class YouArePageState extends ConsumerState<YouArePage> {
                 ),
                 const SizedBox(height: 10,),
                 InkWell(
-                  onTap: () => context.go('/login?type=student'),
+                  // onTap: () => context.go('/login?type=student'),
+                  onTap: () => Navigator.of(context).push(
+                    MaterialWithModalsPageRoute(builder: (context) => const LoginPage(type: 'student',))
+                  ),
                   child: Container(
                     height: 90,
                     padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),

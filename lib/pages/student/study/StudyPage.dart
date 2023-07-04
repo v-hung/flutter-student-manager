@@ -27,6 +27,7 @@ class _StudyPageState extends ConsumerState<StudyPage> {
 
   @override
   Widget build(BuildContext context) {
+    // final classroom = ref.watch(classroomFutureProvider).whenData((value) => value).value;
     final size = MediaQuery.of(context).size;
 
     final heightSafeArea = size.height -

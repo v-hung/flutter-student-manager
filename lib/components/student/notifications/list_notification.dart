@@ -70,7 +70,10 @@ class _HomeListNotificationState extends ConsumerState<HomeListNotification> {
                   final codeScans = codeScansData.codeScans;
 
                   if (codeScans.isEmpty) {
-                    return const Text("Lịch trình đi học của con bạn sẽ được hiện thị tại đây");
+                    return const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      child: Text("Lịch trình đi học của con bạn sẽ được hiện thị tại đây"),
+                    );
                   }
 
                   final length = codeScans.length >= 3 ? 3 : codeScans.length;

@@ -110,7 +110,7 @@ class _TeacherStudentEditAddPageState extends ConsumerState<TeacherStudentEditAd
         }
 
         await Future.delayed(const Duration(milliseconds: 300));
-        if (context.mounted) context.go('/teacher/students');
+        if (context.mounted) context.pop();
       }
     }
     else {

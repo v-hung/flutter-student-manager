@@ -125,11 +125,14 @@ class _TeacherSettingsPageState extends ConsumerState<TeacherSettingsPage> {
                       ),
                     ),
                   ),
-                  title: Text(user?.name ?? "", style: TextStyle(
-                    color: Colors.grey[900],
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600
-                  ),),
+                  title: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Text(user?.name ?? "", style: TextStyle(
+                      color: Colors.grey[900],
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis,),
+                  ),
                   centerTitle: true,
                 )
               ),

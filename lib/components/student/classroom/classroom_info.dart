@@ -33,6 +33,10 @@ class _ClassroomInfoState extends ConsumerState<ClassroomInfo> {
           child: classroom.when(
             // skipLoadingOnRefresh: false,
             data: (data) {
+              if (data == null) {
+                return const Center( child: Text("Chưa có dữ liệu lớp học"),);
+              }
+
               List<String> images = [];
               if (data.images != null) {
                 images = (jsonDecode(data.images!) as List<dynamic>).map((e) => toImage(e)).toList();

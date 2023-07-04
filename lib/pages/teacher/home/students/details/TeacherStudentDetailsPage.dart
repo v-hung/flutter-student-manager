@@ -53,12 +53,12 @@ class _TeacherStudentDetailsPageState extends ConsumerState<TeacherStudentDetail
                 automaticallyImplyLeading: showLeading ? true : false,
                 backgroundColor: Colors.green,
                 leading: IconButton(
-                  onPressed: () => widget.classroomId != "" ? context.go('/teacher/classrooms/${widget.classroomId}') : context.pop(), 
+                  onPressed: () => context.pop(), 
                   icon: const Icon(CupertinoIcons.back)
                 ),
                 actions: [
                   TextButton(
-                    onPressed: () => context.go('/teacher/students/edit-add?id=${data.id}'),
+                    onPressed: () => context.push('/teacher/students/edit-add?id=${data.id}'),
                     child: const Text("Chỉnh sửa", style: TextStyle(
                       color: Colors.white
                     ),)
@@ -151,14 +151,16 @@ class _TeacherStudentDetailsPageState extends ConsumerState<TeacherStudentDetail
                           children: [
                             Row(
                               children: [
-                                const Text("Thông tin chi tiết", style: TextStyle(
-                                  color: Colors.blue
-                                ),),
-                                const Spacer(),
-                                if (data.getPhone() != "") ...[
+                                const Expanded(
+                                  child: Text("Thông tin chi tiết", style: TextStyle(
+                                    color: Colors.blue
+                                  ),),
+                                ),
+
+                                if (data.getPhoneChat() != "") ...[
                                   IconButton(
                                     onPressed: () async {
-                                      var _url = Uri.parse('https://zalo.me/${data.getPhone()}');
+                                      var _url = Uri.parse('https://zalo.me/${data.getPhoneChat()}');
                                       
                                       if (!await launchUrl(_url, mode: LaunchMode.externalApplication)) {
                                         return showSnackBar(context: context, content: "Không thể mở zalo");
@@ -166,6 +168,9 @@ class _TeacherStudentDetailsPageState extends ConsumerState<TeacherStudentDetail
                                     },
                                     icon: const Icon(CupertinoIcons.chat_bubble_2_fill, color: Colors.pink,)
                                   ),
+                                ],
+
+                                if (data.getPhone() != "") ...[
                                   IconButton(
                                     onPressed: () async {
                                       var _url = Uri(scheme: 'tel', path: data.getPhone());
@@ -174,6 +179,18 @@ class _TeacherStudentDetailsPageState extends ConsumerState<TeacherStudentDetail
                                       }
                                     },
                                     icon: const Icon(CupertinoIcons.phone_circle_fill, color: Colors.green,)
+                                  ),
+                                ],
+
+                                if (data.getPhone2() != "") ...[
+                                  IconButton(
+                                    onPressed: () async {
+                                      var _url = Uri(scheme: 'tel', path: data.getPhone2());
+                                      if (!await launchUrl(_url)) {
+                                        return showSnackBar(context: context, content: "Không thể gọi điện");
+                                      }
+                                    },
+                                    icon: const Icon(CupertinoIcons.phone_circle_fill, color: Colors.orange,)
                                   ),
                                 ],
                               ],

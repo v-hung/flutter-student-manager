@@ -125,6 +125,33 @@ class AuthRepository {
     }
   }
 
+  Future<bool> register(String email, String password, String name, String type) async {
+    try {
+      var url = Uri.https(BASE_URL, '/api/register');
+
+      print({'email': email, 'name': name, 'password': password, 'type':type});
+
+      var response = await http.post(url, body: {
+        "name": name,
+        "password": password,
+        "email": email,
+        "type": type
+      });
+
+      print(response.statusCode);
+
+      if (response.statusCode == 200) {
+        return true;
+      } 
+      else {
+        return false;
+      }
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
   Future<void> logout() async {
     try {
       var url = Uri.https(BASE_URL, '/api/logout');

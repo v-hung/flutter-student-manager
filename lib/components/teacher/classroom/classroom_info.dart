@@ -183,19 +183,20 @@ class _TeacherClassroomInfoState extends ConsumerState<TeacherClassroomInfo> {
                                     ),
                                   ),
                                   const SizedBox(width: 10,),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(data.students[i].name, style: const TextStyle(fontWeight: FontWeight.w500),),
-                                      data.students[i].date_of_birth != null ? Text(DateFormat("dd/MM/yyy").format(data.students[i].date_of_birth!)) : const SizedBox(),
-                                    ],
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(data.students[i].name, style: const TextStyle(fontWeight: FontWeight.w500),),
+                                        data.students[i].date_of_birth != null ? Text(DateFormat("dd/MM/yyy").format(data.students[i].date_of_birth!)) : const SizedBox(),
+                                      ],
+                                    ),
                                   ),
-                                  const Spacer(),
-                                  if (data.students[i].getPhone() != "") ...[
+                                  if (data.students[i].getPhoneChat() != "") ...[
                                     IconButton(
                                       onPressed: () async {
-                                        var _url = Uri.parse('https://zalo.me/${data.students[i].getPhone()}');
+                                        var _url = Uri.parse('https://zalo.me/${data.students[i].getPhoneChat()}');
                                         
                                         if (!await launchUrl(_url, mode: LaunchMode.externalApplication)) {
                                           return showSnackBar(context: context, content: "Không thể mở zalo");
@@ -203,6 +204,9 @@ class _TeacherClassroomInfoState extends ConsumerState<TeacherClassroomInfo> {
                                       },
                                       icon: const Icon(CupertinoIcons.chat_bubble_2_fill, color: Colors.pink,)
                                     ),
+                                  ],
+
+                                  if (data.students[i].getPhone() != "") ...[
                                     IconButton(
                                       onPressed: () async {
                                         var _url = Uri(scheme: 'tel', path: data.students[i].getPhone());
@@ -214,8 +218,20 @@ class _TeacherClassroomInfoState extends ConsumerState<TeacherClassroomInfo> {
                                     ),
                                   ],
 
+                                  if (data.students[i].getPhone2() != "") ...[
+                                    IconButton(
+                                      onPressed: () async {
+                                        var _url = Uri(scheme: 'tel', path: data.students[i].getPhone2());
+                                        if (!await launchUrl(_url)) {
+                                          return showSnackBar(context: context, content: "Không thể gọi điện");
+                                        }
+                                      },
+                                      icon: const Icon(CupertinoIcons.phone_circle_fill, color: Colors.orange,)
+                                    ),
+                                  ],
+
                                   IconButton(
-                                    onPressed: () => context.go('/teacher/students/${data.students[i].id}?classroomId=${data.id}'),
+                                    onPressed: () => context.push('/teacher/students/${data.students[i].id}'),
                                     icon: const Icon(CupertinoIcons.info, color: Colors.blue,)
                                   )
                                 ],

@@ -110,6 +110,14 @@ class StudentModel {
   }
 
   String getPhone() {
+    return phone ?? "";
+  }
+
+  String getPhone2() {
+    return phone2 ?? "";
+  }
+
+  String getPhoneChat() {
     return phone ?? phone2 ?? "";
   }
 }

@@ -13,20 +13,21 @@ import 'firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  final container = ProviderContainer();
-  // 2. Use it to read the provider 
-  container.read(firebaseCloudMessagingServiceProvider);
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
+  // final container = ProviderContainer();
+  // // 2. Use it to read the provider 
+  // container.read(firebaseCloudMessagingServiceProvider);
 
-  runApp(UncontrolledProviderScope(
-    container: container,
-    child: const MyApp(),
-  ));
+  // runApp(UncontrolledProviderScope(
+  //   container: container,
+  //   child: const MyApp(),
+  // ));
 
-  // runApp(const ProviderScope(child: MyApp()));
+  runApp(const ProviderScope(child: MyApp()));
+  
   // initializeDateFormatting()
   //   .then((value) => runApp(const ProviderScope(child: MyApp())));
 }
@@ -39,7 +40,7 @@ class MyApp extends ConsumerWidget {
     final router = ref.watch(routerProvider);
     final appTheme = ref.watch(appThemeProvider);
     return MaterialApp.router(
-      title: 'Flutter Chat App',
+      title: 'Sao Thái Nguyên',
       // scrollBehavior: const MaterialScrollBehavior().copyWith(
       //   dragDevices: {PointerDeviceKind.mouse, PointerDeviceKind.touch, PointerDeviceKind.stylus, PointerDeviceKind.unknown},
       // ),

@@ -61,14 +61,17 @@ class FirebaseCloudMessagingService {
   }
 
   Future _firebaseMessagingOpenedAppHandler(RemoteMessage message) async {
-    print("Handling a opened app message: ${message .messageId}");
+    // print("Handling a opened app message: ${message .messageId}");
     ref.read(localNotificationServiceProvider).openedNotification(null);
   }
 
   Future subscribeToTopic(dynamic user) async {
     // final user = ref.watch(authControllerProvider).user;
-    print("${user.runtimeType} subscribe");
     if (user is StudentModel) {
+      await fcm.subscribeToTopic("students");
+      if (user.class_id != null) {
+        await fcm.subscribeToTopic("classroom-${user.class_id}");
+      }
       await fcm.subscribeToTopic("student-${user.id}");
     }
     else if (user is TeacherModel) {
@@ -78,8 +81,11 @@ class FirebaseCloudMessagingService {
 
   Future unsubscribeFromTopic(dynamic user) async {
     // final user = ref.watch(authControllerProvider).user;
-    print("${user.runtimeType} unsubscribe");
     if (user is StudentModel) {
+      await fcm.unsubscribeFromTopic("students");
+      if (user.class_id != null) {
+        await fcm.unsubscribeFromTopic("classroom-${user.class_id}");
+      }
       await fcm.unsubscribeFromTopic("student-${user.id}");
     }
     else if (user is TeacherModel) {

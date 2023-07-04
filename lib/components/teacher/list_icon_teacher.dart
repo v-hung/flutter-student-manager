@@ -78,23 +78,28 @@ class _HomeListIconTeacherState extends ConsumerState<HomeListIconTeacher> {
             onTap: () => context.go(icon['path'] ?? "/"),
             child: Column(
               children: [
-                AspectRatio(
-                  aspectRatio: 1/1,
-                  child: Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(.9),
-                      borderRadius: BorderRadius.circular(10),
-                      // boxShadow: [
-                      //   BoxShadow(
-                      //     color: Colors.black.withOpacity(0.3),
-                      //     spreadRadius: 1,
-                      //     blurRadius: 5,
-                      //     offset: const Offset(0, 1), // changes position of shadow
-                      //   ),
-                      // ],
+                Container(
+                  constraints: const BoxConstraints(
+                    maxWidth: 120
+                  ),
+                  child: AspectRatio(
+                    aspectRatio: 1/1,
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(.9),
+                        borderRadius: BorderRadius.circular(10),
+                        // boxShadow: [
+                        //   BoxShadow(
+                        //     color: Colors.black.withOpacity(0.3),
+                        //     spreadRadius: 1,
+                        //     blurRadius: 5,
+                        //     offset: const Offset(0, 1), // changes position of shadow
+                        //   ),
+                        // ],
+                      ),
+                      child: Image.asset(icon["asset"]!),
                     ),
-                    child: Image.asset(icon["asset"]!),
                   ),
                 ),
                 const SizedBox(height: 5,),

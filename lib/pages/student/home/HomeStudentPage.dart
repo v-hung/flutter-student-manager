@@ -46,7 +46,6 @@ class _HomeStudentPageState extends ConsumerState<HomeStudentPage> with WidgetsB
 
   @override
   Widget build(BuildContext context) {
-    final classroom = ref.watch(classroomFutureProvider).whenData((value) => value).value;
     final size = MediaQuery.of(context).size;
     return Stack(
       children: [

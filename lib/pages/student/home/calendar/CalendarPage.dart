@@ -57,6 +57,9 @@ class CalendarPageState extends ConsumerState<CalendarPage> {
           children: [
             classroom.when(
               data: (data) {
+                if (data == null) {
+                  return Container();
+                }
                 if (data.schedule == null) {
                   return Container(
                     height: heightSafeArea,

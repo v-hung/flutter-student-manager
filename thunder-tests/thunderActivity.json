@@ -4,27 +4,16 @@
     "colId": "history",
     "containerId": "",
     "name": "https://trungtam.headbull.site/api/classrooms/5",
-    "url": "https://trungtam.headbull.site/api/student/test-marks-subject/12",
+    "url": "https://saothainguyen.edu.vn/api/teacher/students",
     "method": "GET",
     "sortNum": 0,
     "created": "2023-03-31T10:42:40.595Z",
-    "modified": "2023-04-04T01:31:21.862Z",
+    "modified": "2023-06-22T04:17:27.201Z",
     "headers": [],
     "params": [],
-    "body": {
-      "type": "formdata",
-      "raw": "",
-      "form": [],
-      "files": [
-        {
-          "name": "avatar",
-          "value": "c:\\Users\\Viet Hung\\Downloads\\y-s-9Ukw2zmbXPc-unsplash.jpg"
-        }
-      ]
-    },
     "auth": {
       "type": "bearer",
-      "bearer": "46|EsbsfnMKKrqD4EALNGnbGZiEaHHMvZq4wLiVHmwE"
+      "bearer": "840|ss252YNLUzdH98FKkhOgH2LAHfr0eJc9gbk2Edqy"
     },
     "tests": []
   },
@@ -33,11 +22,11 @@
     "colId": "history",
     "containerId": "",
     "name": "https://trungtam.headbull.site/api/classrooms/5 Copy",
-    "url": "https://trungtam.headbull.site/api/teacher/askforpermission",
-    "method": "GET",
+    "url": "https://saothainguyen.edu.vn/api/register",
+    "method": "POST",
     "sortNum": 0,
     "created": "2023-03-31T10:42:40.595Z",
-    "modified": "2023-04-18T08:40:46.334Z",
+    "modified": "2023-06-22T03:39:07.311Z",
     "headers": [],
     "params": [],
     "body": {
@@ -45,18 +34,22 @@
       "raw": "",
       "form": [
         {
-          "name": "per_page",
-          "value": "20"
+          "name": "email",
+          "value": "a"
         },
         {
-          "name": "page",
-          "value": "1"
+          "name": "name",
+          "value": "a"
+        },
+        {
+          "name": "password",
+          "value": "a"
+        },
+        {
+          "name": "type",
+          "value": "student"
         }
       ]
-    },
-    "auth": {
-      "type": "bearer",
-      "bearer": "83|GPBet9ZIDhCidQlmSpQGhcLa32dTwKY7V0AvYvdo"
     },
     "tests": []
   },
@@ -130,11 +123,11 @@
     "colId": "history",
     "containerId": "",
     "name": "https://trungtam.headbull.site/api/classrooms/5",
-    "url": "https://trungtam.headbull.site/api/login?type=teacher",
+    "url": "https://saothainguyen.edu.vn/api/login?type=teacher",
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-31T10:42:44.856Z",
-    "modified": "2023-04-07T02:40:40.911Z",
+    "modified": "2023-06-22T04:17:20.397Z",
     "headers": [],
     "params": [
       {
@@ -149,11 +142,11 @@
       "form": [
         {
           "name": "username",
-          "value": "viet.hung.2898@gmail.com"
+          "value": "superadmin@admin.com"
         },
         {
           "name": "password",
-          "value": "Admin123!"
+          "value": "password"
         }
       ]
     },

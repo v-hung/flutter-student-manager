@@ -139,7 +139,7 @@ class _TeacherStudentsPageState extends ConsumerState<TeacherStudentsPage> {
                   ],
                 ),
                 InkWell(
-                  onTap: () => context.go('/teacher/students/edit-add'),
+                  onTap: () => context.push('/teacher/students/edit-add'),
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
                     decoration: BoxDecoration(
@@ -235,7 +235,7 @@ class _TeacherStudentsPageState extends ConsumerState<TeacherStudentsPage> {
                                 backgroundColor: Colors.green,
                                 icon: CupertinoIcons.pen,
                                 label: 'Sửa',
-                                onPressed: (context) => context.go('/teacher/students/edit-add?id=${student.id}'),
+                                onPressed: (context) => context.push('/teacher/students/edit-add?id=${student.id}'),
                               ),
                               SlidableAction(
                                 backgroundColor: Colors.red,
@@ -276,7 +276,7 @@ class _TeacherStudentsPageState extends ConsumerState<TeacherStudentsPage> {
                           child: Builder(
                             builder: (slidableContext) {
                               return InkWell(
-                                onTap: () => context.go('/teacher/students/${student.id}'),
+                                onTap: () => context.push('/teacher/students/${student.id}'),
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                                   child: Row(
@@ -333,21 +333,23 @@ class _TeacherStudentsPageState extends ConsumerState<TeacherStudentsPage> {
                                         ))
                                       ),
                                       const SizedBox(height: 5,),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(student.name, style: const TextStyle(
-                                              fontWeight: FontWeight.w500
-                                            ),),
-                                            const SizedBox(height: 5,),
-                                            Text(student.date_of_birth != null ? DateFormat("dd/MM/yyyy").format(student.date_of_birth!) : ""),
-                                          ],
+                                      Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(student.name, style: const TextStyle(
+                                                fontWeight: FontWeight.w500
+                                              ),),
+                                              const SizedBox(height: 5,),
+                                              Text(student.date_of_birth != null ? DateFormat("dd/MM/yyyy").format(student.date_of_birth!) : ""),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                       const SizedBox(height: 5,),
-                                      const Spacer(),
+                                      // const Spacer(),
                                       IconButton(
                                         onPressed: () {
                                           final slidable = Slidable.of(slidableContext)!;

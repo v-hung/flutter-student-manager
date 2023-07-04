@@ -12,7 +12,10 @@ import 'package:flutter_student_manager/models/AuthModel.dart';
 import 'package:flutter_student_manager/repositories/AuthRepository.dart';
 import 'package:flutter_student_manager/utils/utils.dart';
 
-final classroomFutureProvider = FutureProvider<ClassroomModel>((ref) async {
-  final id = (ref.watch(authControllerProvider).user as StudentModel).class_id;
-  return await ref.read(classroomRepositoryProvider).getClassroomById(id ?? 0);
+final classroomFutureProvider = FutureProvider<ClassroomModel?>((ref) async {
+  final user = ref.watch(authControllerProvider).user as StudentModel;
+
+  if (user.class_id == null) return null;
+
+  return await ref.read(classroomRepositoryProvider).getClassroomById(user.id);
 });

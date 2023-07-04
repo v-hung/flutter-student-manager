@@ -19,7 +19,6 @@ import 'package:flutter_student_manager/pages/teacher/home/classrooms/details/Cl
 import 'package:flutter_student_manager/pages/teacher/home/HomeTeacherPage.dart';
 import 'package:flutter_student_manager/pages/teacher/home/notifications/TeacherNotificationsPage.dart';
 import 'package:flutter_student_manager/pages/teacher/home/qrcode/QrCodePage.dart';
-import 'package:flutter_student_manager/pages/teacher/home/qrcode/details/QrCodeDetailsPage.dart';
 import 'package:flutter_student_manager/pages/teacher/home/qrcode2/QrCodePage2.dart';
 import 'package:flutter_student_manager/pages/teacher/home/students/details/TeacherStudentDetailsPage.dart';
 import 'package:flutter_student_manager/pages/teacher/home/students/edit-add/TeacherStudentEditAddPage.dart';
@@ -38,7 +37,7 @@ import 'package:flutter_student_manager/pages/LoginPage.dart';
 
 class RouterNotifier extends ChangeNotifier {
   final Ref _ref;
-  final List<String> loginPages = ["/", "/login"];
+  final List<String> loginPages = ["/", "/login", "/register"];
 
   RouterNotifier(this._ref) {
     _ref.listen(authControllerProvider, 
@@ -88,6 +87,11 @@ class RouterNotifier extends ChangeNotifier {
           path: "login",
           builder: (context, state) => LoginPage(type: state.queryParams['type'] ?? "parents"),
         ),
+        // GoRoute(
+        //   name: "register",
+        //   path: "register",
+        //   builder: (context, state) => Register(type: state.queryParams['type'] ?? "parents"),
+        // ),
       ]
     ),
 
