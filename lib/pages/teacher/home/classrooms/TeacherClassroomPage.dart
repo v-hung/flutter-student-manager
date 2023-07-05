@@ -8,6 +8,7 @@ import 'package:flutter_student_manager/utils/utils.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart'; 
 import 'package:flutter_student_manager/controllers/teacher/ClassroomsController.dart';
+import 'package:tiengviet/tiengviet.dart';
 
 class TeacherClassroomPage extends ConsumerStatefulWidget {
   const TeacherClassroomPage({super.key});
@@ -17,6 +18,15 @@ class TeacherClassroomPage extends ConsumerStatefulWidget {
 }
 
 class _TeacherClassroomPageState extends ConsumerState<TeacherClassroomPage> {
+  bool isSearch = false;
+  final searchController = TextEditingController();
+  final searchFocus = FocusNode();
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +49,37 @@ class _TeacherClassroomPageState extends ConsumerState<TeacherClassroomPage> {
             ),
           ),
         ),
-        title: const Text("Danh sách lớp"),
+        title: isSearch ? TextField(
+          focusNode: searchFocus,
+          controller: searchController,
+          onChanged: (value) => setState(() {}),
+          style: TextStyle(color: Colors.white),
+          decoration: InputDecoration(
+            hintText: "Tìm kiếm",
+            enabledBorder:  UnderlineInputBorder(
+              borderSide: BorderSide(width: 1, color: Colors.white.withOpacity(.7))
+            ),
+            focusedBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(width: 1, color: Colors.white)
+            ),
+            contentPadding: const EdgeInsets.symmetric(vertical: 10,),
+            hintStyle: TextStyle(color: Colors.white.withOpacity(0.7), fontWeight: FontWeight.normal),
+          )
+        ) : const Text("Danh sách lớp"),
+        actions: [
+          IconButton(
+            onPressed: () => setState(() {
+              isSearch = !isSearch;  
+              if (isSearch) {
+                searchFocus.requestFocus();
+              }
+              else {
+                searchController.text = "";
+              }
+            }),
+            icon: Icon(isSearch ? CupertinoIcons.xmark : CupertinoIcons.search)
+          )
+        ],
       ),
       body: Container(
         constraints: BoxConstraints(
@@ -55,7 +95,10 @@ class _TeacherClassroomPageState extends ConsumerState<TeacherClassroomPage> {
               ),
               child: classrooms.when(
                 data: (data) {
-                  if (data.length == 0) {
+                  final filter = TiengViet.parse(searchController.text).toLowerCase();
+                  final dataFilter = data.where((item) => TiengViet.parse(item.name).toLowerCase().contains(filter)).toList();
+
+                  if (dataFilter.isEmpty) {
                     return const Center(child: Text("Không có lớp nào"),);
                   }
 
@@ -63,12 +106,12 @@ class _TeacherClassroomPageState extends ConsumerState<TeacherClassroomPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: data.length,
+                    itemCount: dataFilter.length,
                     crossAxisCount: 2,
                     mainAxisSpacing: 10,
                     crossAxisSpacing: 10,
                     itemBuilder: (context, index) {
-                      final classroom = data[index];
+                      final classroom = dataFilter[index];
                       List<String> images = [];
                       if (classroom.images != null) {
                         images = (jsonDecode(classroom.images!) as List<dynamic>).map((e) => toImage(e)).toList();
@@ -95,7 +138,7 @@ class _TeacherClassroomPageState extends ConsumerState<TeacherClassroomPage> {
                                 width: double.infinity,
                                 height: 100,
                                 child: images.isNotEmpty ? CachedNetworkImage(
-                                  imageUrl: images.length > 0 ? images[0] : "",
+                                  imageUrl: images.isNotEmpty ? images[0] : "",
                                   imageBuilder: (context, imageProvider) => Container(
                                     width: double.infinity,
                                     height: double.infinity,

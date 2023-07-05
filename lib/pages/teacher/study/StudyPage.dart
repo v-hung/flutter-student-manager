@@ -72,6 +72,9 @@ class _TeacherStudyPageState extends ConsumerState<TeacherStudyPage> {
               if (isSearch) {
                 searchFocus.requestFocus();
               }
+              else {
+                searchController.text = "";
+              }
             }),
             icon: Icon(isSearch ? CupertinoIcons.xmark : CupertinoIcons.search)
           )

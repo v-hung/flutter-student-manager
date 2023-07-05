@@ -54,12 +54,15 @@ void showModalQrCode(BuildContext context, String avatar, String qrcode, String 
                         ),
                       ),
                       const SizedBox(height: 20,),
-                      Text(name.toUpperCase(), style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.grey[700],
-                        fontWeight: FontWeight.w900,
-                        decoration: TextDecoration.none,
-                      ),),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Text(name.toUpperCase(), style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.grey[700],
+                          fontWeight: FontWeight.w900,
+                          decoration: TextDecoration.none,
+                        ), overflow: TextOverflow.ellipsis, maxLines: 1,),
+                      ),
                       const SizedBox(height: 20,),
                     ],
                   ),

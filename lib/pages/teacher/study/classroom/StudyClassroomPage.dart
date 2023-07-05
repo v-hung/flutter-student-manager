@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_student_manager/controllers/teacher/ClassroomsController.dart';
 import 'package:flutter_student_manager/utils/utils.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tiengviet/tiengviet.dart';
 
 class StudyClassroomPage extends ConsumerStatefulWidget {
   const StudyClassroomPage({super.key});
@@ -18,6 +19,15 @@ class StudyClassroomPage extends ConsumerStatefulWidget {
 
 class _StudyClassroomPageState extends ConsumerState<StudyClassroomPage> {
   int? idCheck = null;
+  bool isSearch = false;
+  final searchController = TextEditingController();
+  final searchFocus = FocusNode();
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,22 +35,59 @@ class _StudyClassroomPageState extends ConsumerState<StudyClassroomPage> {
     final classroomStatus = ref.watch(classroomStatusProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Chọn lớp"),
         leading: IconButton(
           onPressed: () => context.pop(),
           icon: const Icon(CupertinoIcons.back)
         ),
+        title: isSearch ? TextField(
+          focusNode: searchFocus,
+          controller: searchController,
+          onChanged: (value) => setState(() {}),
+          style: TextStyle(color: Colors.white),
+          decoration: InputDecoration(
+            hintText: "Tìm kiếm",
+            enabledBorder:  UnderlineInputBorder(
+              borderSide: BorderSide(width: 1, color: Colors.white.withOpacity(.7))
+            ),
+            focusedBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(width: 1, color: Colors.white)
+            ),
+            contentPadding: const EdgeInsets.symmetric(vertical: 10,),
+            hintStyle: TextStyle(color: Colors.white.withOpacity(0.7), fontWeight: FontWeight.normal),
+          )
+        ) : const Text("Chọn lớp"),
+        actions: [
+          IconButton(
+            onPressed: () => setState(() {
+              isSearch = !isSearch;  
+              if (isSearch) {
+                searchFocus.requestFocus();
+              }
+              else {
+                searchController.text = "";
+              }
+            }),
+            icon: Icon(isSearch ? CupertinoIcons.xmark : CupertinoIcons.search)
+          )
+        ],
       ),
       body: Stack(
         children: [
           Container(),
           classrooms.when(
             data: (data) {
+              final filter = TiengViet.parse(searchController.text).toLowerCase();
+              final dataFilter = data.where((item) => TiengViet.parse(item.name).toLowerCase().contains(filter)).toList();
+
+              if (dataFilter.isEmpty) {
+                return const Center(child: Text("Không có lớp nào"),);
+              }
+
               return ListView.builder(
-                itemCount: data.length,
+                itemCount: dataFilter.length,
                 padding: const EdgeInsets.only(bottom: 60),
                 itemBuilder: (context, index) {
-                  final classroom = data[index];
+                  final classroom = dataFilter[index];
                   List<String> images = [];
                   
                   if (classroom.images != null) {
@@ -146,7 +193,7 @@ class _StudyClassroomPageState extends ConsumerState<StudyClassroomPage> {
                   ref.read(classroomStatusProvider.notifier).changeStatus(idCheck!);
                   context.pop();
                 },
-                child: Text("Chọn lớp"),
+                child: const Text("Chọn lớp"),
               ),
             ),
           ) : const SizedBox()
