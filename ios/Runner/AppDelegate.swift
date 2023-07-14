@@ -11,6 +11,9 @@ import flutter_local_notifications
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
 
+    // Messaging.messaging().apnsToken = deviceToken
+    // super.application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
+
     FlutterLocalNotificationsPlugin.setPluginRegistrantCallback { (registry) in
     GeneratedPluginRegistrant.register(with: registry)}
     
