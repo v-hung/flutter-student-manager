@@ -63,12 +63,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCh3VQucEH7ITMnb_UsqFyA9L-YV_MRQZE',
-    appId: '1:273383696499:ios:c95b65c91254426a2ea206',
+    appId: '1:273383696499:ios:e399205cc38acf852ea206',
     messagingSenderId: '273383696499',
     projectId: 'trung-tam-353af',
     storageBucket: 'trung-tam-353af.appspot.com',
-    iosClientId: '273383696499-jqcj1rcnaa3ai624ts5s4uqbvbi2j7gq.apps.googleusercontent.com',
-    iosBundleId: 'com.viethungit.trungtam',
+    iosClientId: '273383696499-4tocfm4806ijj715v87hmrjls9auirls.apps.googleusercontent.com',
+    iosBundleId: 'com.viethungit.trungtam2',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(

@@ -31,10 +31,11 @@
               "client_type": 3
             },
             {
-              "client_id": "273383696499-elamtpa2a83hn7r3llu5et2ugeo366ld.apps.googleusercontent.com",
+              "client_id": "273383696499-1ehiik97t6st05cr8qaba2d8qgb30cm9.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.flutterStudentManager"
+                "bundle_id": "com.viethungit.trungtam",
+                "app_store_id": "6448031835"
               }
             }
           ]
