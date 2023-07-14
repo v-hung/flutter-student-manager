@@ -11,7 +11,7 @@ import 'package:flutter_student_manager/models/SubjectModel.dart';
 import 'package:flutter_student_manager/repositories/StudentRepository.dart';
 import 'package:fl_chart/fl_chart.dart';
 
-final testMarksProvider = FutureProvider<List<SubjectModel>>((ref) async {
+final testMarksProvider = FutureProvider.autoDispose<List<SubjectModel>>((ref) async {
   final user = ref.watch(authControllerProvider).user as StudentModel;
   return await ref.read(studentRepositoryProvider).getTestMarks(user.id);
 });

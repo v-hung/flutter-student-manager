@@ -42,7 +42,7 @@ class BreakSchoolNotifier extends StateNotifier<BreakSchoolData> {
   }
 }
 
-final breakSchoolControllerProvider = StateNotifierProvider<BreakSchoolNotifier, BreakSchoolData>((ref) {
+final breakSchoolControllerProvider = StateNotifierProvider.autoDispose<BreakSchoolNotifier, BreakSchoolData>((ref) {
   return BreakSchoolNotifier(ref);
 });
 

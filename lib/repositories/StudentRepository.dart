@@ -48,11 +48,11 @@ class StudentRepository {
         return StudentModel.fromMap(data['data']);
       } 
       else {
-        return Future.error("Không thể tải lớp");
+        return Future.error("Không thể học sinh");
       }
     } catch (e) {
       print(e);
-      return Future.error("Không thể tải lớp");
+      return Future.error("Không thể học sinh");
     }
   }
 
@@ -102,6 +102,8 @@ class StudentRepository {
       var response = await http.get(url, headers: {
         'authorization': "Bearer ${auth.token}",
       });
+
+      print(id);
 
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);

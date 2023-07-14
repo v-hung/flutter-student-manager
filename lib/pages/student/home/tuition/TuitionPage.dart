@@ -14,7 +14,7 @@ import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-final tuitionProvider = FutureProvider<TuitionData>((ref) async {
+final tuitionProvider = FutureProvider.autoDispose<TuitionData>((ref) async {
   final user = ref.watch(authControllerProvider).user as StudentModel;
   return await ref.read(studentRepositoryProvider).getTuitionByUserId(user.id);
 });

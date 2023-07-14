@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:equatable/equatable.dart';
+// import 'package:equatable/equatable.dart';
 
 import 'package:flutter_student_manager/config/app.dart';
 import 'package:flutter_student_manager/models/StudentModel.dart';

@@ -16,6 +16,5 @@ final classroomFutureProvider = FutureProvider<ClassroomModel?>((ref) async {
   final user = ref.watch(authControllerProvider).user as StudentModel;
 
   if (user.class_id == null) return null;
-
-  return await ref.read(classroomRepositoryProvider).getClassroomById(user.id);
+  return await ref.read(classroomRepositoryProvider).getClassroomById(user.class_id!);
 });

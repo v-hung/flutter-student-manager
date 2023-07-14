@@ -31,6 +31,8 @@ class ClassRepository {
         'authorization': "Bearer ${auth.token}",
       });
 
+      print(id);
+
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
 
