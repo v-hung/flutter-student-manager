@@ -50,7 +50,7 @@ class _PieChartTuitionState extends ConsumerState<PieChartTuition> {
               builder: (data, _, __, ___, ____) => 
                 Text(data.value != 0 ? formatCurrency(data.value) : "", style: const TextStyle(
                   color: Colors.white,
-                  fontSize: 12
+                  fontSize: 10
                 ),),
             ),
 

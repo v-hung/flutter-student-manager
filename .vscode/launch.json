@@ -12,9 +12,9 @@
         "run",
         "-d",
         // "edge",
-        "window",
+        // "window",
         // "emulator-5554",
-        // "R58M52BXQ0H",
+        "R58M52BXQ0H",
         // "2db4d3d2",
         // "5C770DA9-3EE9-49A1-9585-58FD258FF1C3"
       ]

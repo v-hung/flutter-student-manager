@@ -67,8 +67,6 @@ class _StudyStudentPageState extends ConsumerState<StudyStudentPage> {
       .updateTestMarks(testMarkUpdateId ?? "", widget.id, subjectEditValue ?? "", 
       pointEditController.text, exerciseEditValue ?? "", dateEditController.text);
 
-    print(testMark);
-
     setState(() {
       loading = false;
     });
@@ -101,7 +99,7 @@ class _StudyStudentPageState extends ConsumerState<StudyStudentPage> {
     }
     else {
       if (context.mounted) {
-        showSnackBar(context: context, content: "Không thể cập nhập thông tin, vui lòng thử lại sau");
+        showSnackBar(context: context, content: "Không thể cập nhập điểm, vui lòng thử lại sau");
       }
     }
   }
@@ -153,13 +151,13 @@ class _StudyStudentPageState extends ConsumerState<StudyStudentPage> {
           TestMarkModel? testMarkNow = testMarksData.testMarks.firstWhereOrNull((element) => 
             DateFormat("dd/MM/yyyy").format(element.date) == DateFormat("dd/MM/yyyy").format(DateTime.now()));
 
-          if (testMarkNow != null) {
-            if (pointController.text.isEmpty) {
-              pointController.text = testMarkNow.point.toString();
-            }
-            exerciseValue ??= testMarkNow.exercise?.type;
-            subjectValue ??= testMarkNow.subject?.id.toString();
-          }
+          // if (testMarkNow != null) {
+          //   if (pointController.text.isEmpty) {
+          //     pointController.text = testMarkNow.point.toString();
+          //   }
+          //   exerciseValue ??= testMarkNow.exercise?.type;
+          //   subjectValue ??= testMarkNow.subject?.id.toString();
+          // }
 
           return Stack(
             children: [
@@ -237,6 +235,15 @@ class _StudyStudentPageState extends ConsumerState<StudyStudentPage> {
                                         DropdownMenuItem(value: e.id.toString(),child: Text(e.name),),).toList(),
                                       value: subjectValue,
                                       onChanged: (value) {
+                                        TestMarkModel? testMarkSubjectNow = testMarksData.testMarks.firstWhereOrNull((element) => 
+                                          DateFormat("dd/MM/yyyy").format(element.date) == DateFormat("dd/MM/yyyy").format(DateTime.now()) 
+                                          && element.subject?.id.toString() == value);
+
+                                        if (testMarkSubjectNow != null) {
+                                          pointController.text = testMarkSubjectNow.point.toString();
+                                          exerciseValue = testMarkSubjectNow.exercise?.type;
+                                        }
+
                                         setState(() {
                                           subjectValue = value;
                                         });
@@ -345,7 +352,8 @@ class _StudyStudentPageState extends ConsumerState<StudyStudentPage> {
                                     decoration: BoxDecoration(
                                       border: Border(
                                         bottom: BorderSide(color: Colors.grey[300]!)
-                                      )
+                                      ),
+                                      color: DateFormat("dd/MM/yyyy").format(testMark.date) == DateFormat("dd/MM/yyyy").format(DateTime.now()) ? Colors.green[50] : null
                                     ),
                                     child: Column(
                                       children: [
@@ -366,9 +374,9 @@ class _StudyStudentPageState extends ConsumerState<StudyStudentPage> {
                                         const SizedBox(height: 5,),
                                         Row(
                                           children: [
-                                            Column(
+                                            const Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: const [
+                                              children: [
                                                 Text("Điểm trên lớp", style: TextStyle(
                                                   fontWeight: FontWeight.w500,
                                                 ),),

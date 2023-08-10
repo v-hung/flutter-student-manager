@@ -96,7 +96,7 @@ class _TeacherNotificationsPageState extends ConsumerState<TeacherNotificationsP
                       // margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: DateFormat("dd/MM/yyyy").format(breakSchool.date) == DateFormat("dd/MM/yyyy").format(DateTime.now()) ? Colors.green[50] : Colors.white,
                         // borderRadius: BorderRadius.circular(7),
                         border: Border(
                           bottom: BorderSide(color: Colors.grey[300]!)

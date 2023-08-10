@@ -21,12 +21,12 @@ String toImage(String image) {
 }
 
 String formatCurrency(int price) {
-  final currencyFormatter = NumberFormat.currency(locale: 'vi');
+  final currencyFormatter = NumberFormat.simpleCurrency(locale: 'vi', );
   return currencyFormatter.format(price);
 }
 
 String formatCurrencyDouble(double price) {
-  final currencyFormatter = NumberFormat.currency(locale: 'vi');
+  final currencyFormatter = NumberFormat.simpleCurrency(locale: 'vi');
   return currencyFormatter.format(price);
 }
 

@@ -101,7 +101,7 @@ class TuitionPageState extends ConsumerState<TuitionPage> {
                           constraints: BoxConstraints(
                             minHeight: heightSafeArea
                           ),
-                          child: Center(child: Text("Không có lịch sử học phí nào"))
+                          child: const Center(child: Text("Không có lịch sử học phí nào"))
                         );
                       }
 

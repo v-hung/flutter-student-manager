@@ -6,7 +6,7 @@ class TuitionModel {
   final int student_id;
   final int tuition_fee;
   final String status;
-  final DateTime date;
+  final DateTime? name;
 
   TuitionModel({
     required this.id,
@@ -14,7 +14,7 @@ class TuitionModel {
     required this.student_id,
     required this.tuition_fee,
     required this.status,
-    required this.date,
+    required this.name,
   });
 
   Map<String, dynamic> toMap() {
@@ -24,7 +24,7 @@ class TuitionModel {
       'student_id': student_id,
       'tuition_fee': tuition_fee,
       'status': status,
-      'date': date.toString(),
+      'name': name?.toString(),
     };
   }
 
@@ -35,7 +35,7 @@ class TuitionModel {
       student_id: map['student_id'] is int ? map['student_id'] as int : int.parse(map['student_id'] as String),
       tuition_fee: map['tuition_fee'] is int ? map['tuition_fee'] as int : int.parse(map['tuition_fee'] as String),
       status: map['status'] as String,
-      date: DateTime.parse(map['date'] as String),
+      name: map['name'] != null ? DateTime.parse(map['name'] as String) : null,
     );
   }
 
