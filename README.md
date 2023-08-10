@@ -24,6 +24,10 @@ keytool -genkey -v -keystore ./android/app/upload-keystore.jks -storetype JKS -k
 - flutter clean
 - delet Podfile, Podfile.lock
 - flutter pub get
-- pod install
+- cd ios  -> pod install
++ comment RunnerTests if three is an error
+    # target 'RunnerTests' do
+    #   inherit! :search_paths
+    # end
 - flutter build ios --no-tree-shake-icons
 - Open xcode, product -> archive (Open list archive: Window -> Organizer)
